@@ -1,9 +1,6 @@
-{
-  "games": [
+use web-shop-ban-game
+db.games.insertMany([
     {
-      "_id": {
-        "$oid": "6193b1e98ee567321631b9e2"
-      },
       "name": "Far Cry® 6",
       "short_name": "",
       "type": "base",
@@ -11,11 +8,9 @@
       "description": "#FAR CRY® 6\nWelcome to Yara, a tropical paradise frozen in time. As the dictator of Yara, Antón Castillo is intent on restoring his nation back to its former glory by any means, with his son, Diego, following in his bloody footsteps. Their oppressive rule has ignited a revolution.",
       "developer": "Ubisoft Toronto",
       "publisher": "Ubisoft",
-      "release_date": {
-        "$date": "2021-09-19T14:37:48Z"
-      },
+      "release_date": "2021-09-19T14:37:48.000+00:00",
       "platform": "windows",
-      "price": 60,
+      "price": "60",
       "keys": [
         "fcad40cc-bdf6-4b08-a4f5-aac06e3ed7a1",
         "eee4e99d-98c4-4ece-af70-98782f6138f6",
@@ -38,28 +33,9 @@
           "type": "template"
         }
       ],
-      "videos": [],
-      "includes": [
-        {
-          "$oid": "6193b1e98ee567321631b9e6"
-        },
-        {
-          "$oid": "6193b1e98ee567321631b9e5"
-        }
-      ],
-      "included_in": [
-        {
-          "$oid": "6193b1e98ee567321631b9e4"
-        },
-        {
-          "$oid": "6193b1e98ee567321631b9e3"
-        }
-      ]
+      "videos": []
     },
     {
-      "_id": {
-        "$oid": "6193b1e98ee567321631b9e3"
-      },
       "name": "Far Cry 6 - Gold Edition",
       "short_name": "",
       "type": "edition",
@@ -67,11 +43,14 @@
       "description": "#Gold Edition\nFar Cry® 6 Gold Edition includes the game and season pass (3 new DLCs) where you play as your favorite Far Cry villains.",
       "developer": "Ubisoft Toronto",
       "publisher": "Ubisoft",
-      "release_date": {
-        "$date": "2021-09-19T14:37:48Z"
-      },
+      "release_date": "2021-09-19T14:37:48.000+00:00",
       "platform": "windows",
-      "price": 90,
+      "price": "90",
+      "kes": [
+        "80473b04-e63e-48a5-806e-5ce460e6b94f",
+        "0e2513e1-302c-44b9-a360-85c8a17c1396",
+        "a35b5125-cc5c-4ef9-bd3b-1152ae82c835"
+      ],
       "images": [
         {
           "url": "https://cdn1.epicgames.com/b4565296c22549e4830c13bc7506642d/offer/TETRA_PREORDER_STANDARD%20EDITION_EPIC_Store_Portrait_1200x1600-1200x1600-ca8b802ff13813c37a44ebf68d0946a2.png",
@@ -86,26 +65,9 @@
           "type": "template"
         }
       ],
-      "videos": [],
-      "keys": [
-        "80473b04-e63e-48a5-806e-5ce460e6b94f",
-        "0e2513e1-302c-44b9-a360-85c8a17c1396",
-        "a35b5125-cc5c-4ef9-bd3b-1152ae82c835"
-      ],
-      "includes": [
-        {
-          "$oid": "6193b1e98ee567321631b9e2"
-        },
-        {
-          "$oid": "6193b1e98ee567321631b9e5"
-        }
-      ],
-      "included_in": []
+      "videos": []
     },
     {
-      "_id": {
-        "$oid": "6193b1e98ee567321631b9e4"
-      },
       "name": "Ultimate Edition",
       "short_name": "",
       "type": "edition",
@@ -113,11 +75,9 @@
       "description": "#Far Cry 6 - Ultimate Edition\nGet the complete Far Cry® 6 experience with the Ultimate Edition, including the game, the Ultimate Pack, and the season pass (3 new DLCs and more).",
       "developer": "Ubisoft Toronto",
       "publisher": "Ubisoft",
-      "release_date": {
-        "$date": "2021-09-19T14:37:48Z"
-      },
+      "release_date": "2021-09-19T14:37:48.000+00:00",
       "platform": "windows",
-      "price": 100,
+      "price": "100",
       "keys": [
         "f29ce18a-a333-4da6-afb9-cdebc0a80543",
         "a1ef2525-49db-4cee-9019-d478fa29a6dd",
@@ -137,24 +97,9 @@
           "type": "template"
         }
       ],
-      "videos": [],
-      "includes": [
-        {
-          "$oid": "6193b1e98ee567321631b9e2"
-        },
-        {
-          "$oid": "6193b1e98ee567321631b9e5"
-        },
-        {
-          "$oid": "6193b1e98ee567321631b9e6"
-        }
-      ],
-      "included_in": []
+      "videos": []
     },
     {
-      "_id": {
-        "$oid": "6193b1e98ee567321631b9e5"
-      },
       "name": "Far Cry® 6 - Season Pass",
       "short_name": "",
       "type": "add-on",
@@ -162,11 +107,9 @@
       "description": "#Far Cry® 6 - Season Pass\nFar Cry® 6 Season Pass contains three DLC episodes featuring your favorite Far Cry villains and the iconic Far Cry® 3 Blood Dragon Classic Edition.",
       "developer": "Ubisoft Toronto",
       "publisher": "Ubisoft",
-      "release_date": {
-        "$date": "2021-09-19T14:37:48Z"
-      },
+      "release_date": "2021-09-19T14:37:48.000+00:00",
       "platform": "windows",
-      "price": 30,
+      "price": "30",
       "keys": [
         "3ea485e7-6816-49fb-897e-ee45c7d2ff54",
         "c3886c0d-310d-4a76-8aa7-201945dda2e2",
@@ -184,24 +127,9 @@
           "type": "logo"
         }
       ],
-      "videos": [],
-      "includes": [],
-      "included_in": [
-        {
-          "$oid": "6193b1e98ee567321631b9e2"
-        },
-        {
-          "$oid": "6193b1e98ee567321631b9e3"
-        },
-        {
-          "$oid": "6193b1e98ee567321631b9e4"
-        }
-      ]
+      "videos": []
     },
     {
-      "_id": {
-        "$oid": "6193b1e98ee567321631b9e6"
-      },
       "name": "Far Cry® 6 - Starter Pack",
       "short_name": "",
       "type": "add-on",
@@ -209,11 +137,9 @@
       "description": "#Far Cry® 6 - Starter Pack\nTake what you can and give nothing back in this swashbuckling bundle featuring a pirate outfit, unique firearm, and more",
       "developer": "Ubisoft Toronto",
       "publisher": "Ubisoft",
-      "release_date": {
-        "$date": "2021-09-19T14:37:48Z"
-      },
+      "release_date": "2021-09-19T14:37:48.000+00:00",
       "platform": "windows",
-      "price": 30,
+      "price": "30",
       "keys": [
         "0459ae9e-054e-4b88-a8a6-0813ce1e060e",
         "fc573da3-7505-482a-acbe-3410a6fa40ab",
@@ -231,16 +157,6 @@
           "type": "logo"
         }
       ],
-      "videos": [],
-      "includes": [],
-      "included_in": [
-        {
-          "$oid": "6193b1e98ee567321631b9e2"
-        },
-        {
-          "$oid": "6193b1e98ee567321631b9e4"
-        }
-      ]
+      "videos": []
     }
-  ]
-}
+])
