@@ -4,6 +4,7 @@ import connectDB from "./config/db";
 import cors from "cors";
 
 import sampleRoutes from "./routes/sampleRoutes";
+import gameRoutes from "./routes/gameRoutes";
 
 dotenv.config();
 
@@ -14,11 +15,12 @@ const app = express();
 app.use(express.json());
 app.use(cors({ origin: "*" })); // will be changed later?
 
-app.get("/", (req, res) => {
+app.get("/", (_, res) => {
   res.send("API is running");
 });
 
 app.use("/api/sample", sampleRoutes);
+app.use("/api/games", gameRoutes);
 
 const PORT = process.env.PORT || 5000;
 
