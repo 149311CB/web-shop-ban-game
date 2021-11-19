@@ -20,7 +20,8 @@
     "json-server": "^0.16.3"
   },
   "scripts": {
-    "start": "node server",
-    "server": "tsc -w & nodemon dist/server.js"
+    "start": "node dist/server.js",
+    "server": "tsc -w & nodemon dist/server.js",
+    "build": "tsc"
   }
 }

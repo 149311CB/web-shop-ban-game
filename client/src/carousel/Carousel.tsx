@@ -10,11 +10,9 @@ const imgListPlaceholder = [
   "https://cdn2.unrealengine.com/egs-battlefield2042ultimateedition-dice-editions-s2-1200x1600-1200x1600-e4393b8a5e50.jpg",
 ];
 
-const Carousel: React.FC<{ headerRef: React.Ref<unknown> }> = ({
-  headerRef,
-}) => {
+const Carousel = () => {
   const stackRef = useRef<any>(null);
-  const [marginTop, setMarginTop] = useState(0);
+
   useEffect(() => {
     if (stackRef.current) {
       const stackItems = stackRef.current.querySelectorAll(
@@ -27,12 +25,6 @@ const Carousel: React.FC<{ headerRef: React.Ref<unknown> }> = ({
     }
   }, [stackRef]);
 
-  useEffect(() => {
-    // @ts-ignore
-    if (headerRef && headerRef.current)
-      // @ts-ignore
-      setMarginTop(headerRef.current.offsetHeight);
-  }, [headerRef]);
 
   return (
     <Box
@@ -42,7 +34,6 @@ const Carousel: React.FC<{ headerRef: React.Ref<unknown> }> = ({
         gap: "0.9rem",
         // minHeight: "80vh",
         padding: "1.5rem 0",
-        marginTop: marginTop + "px",
         marginBottom: "0.9rem",
       }}
     >
@@ -61,7 +52,7 @@ const Carousel: React.FC<{ headerRef: React.Ref<unknown> }> = ({
         maxWidth={"15%"}
         ref={stackRef}
         gap={"0.6rem"}
-        border={"1px solid red"}
+        // border={"1px solid red"}
       >
         {imgListPlaceholder.map((img: string) => (
           <Paper

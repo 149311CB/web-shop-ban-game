@@ -13,14 +13,16 @@ const Category = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const { data } = await axios.get("http://localhost:5000/games");
+      const { data } = await axios.get("https://web-shop-ban-game.herokuapp.com/api/games");
       setData(data);
     };
     fetchData();
   }, []);
 
   return (
-    <Box className={"category"} sx={{ border: "1px solid yellow" }}>
+    <Box className={"category"} 
+      // sx={{ border: "1px solid yellow" }}
+      >
       <Link to={"#"} className={"category-nav"}>
         <Typography
           variant={"h2"}
@@ -56,20 +58,26 @@ const Category = () => {
                 }}
                 key={item._id}
               >
-                <Link to={"/"}>
+                <Link
+                  to={{
+                    pathname: `/product/${item.name
+                      .replace(/\s+/g, "-")
+                      .toLowerCase()}`,
+                    state: { _id: item._id },
+                  }}
+                >
                   <Box className={"img-container"}>
                     <img
                       src={
                         item.images.find((img: any) => {
-                          return img.type === "3-4";
+                          return img.type === "portrait";
                         })?.url
                       }
                       style={{
                         width: "100%",
-                        // objectFit: "cover",
                         borderRadius: "0.3rem",
                       }}
-                      alt={""}
+                      alt={item.name + "portrait"}
                       className={"game-thumnail"}
                     />
                   </Box>

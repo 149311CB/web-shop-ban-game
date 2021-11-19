@@ -1,6 +1,4 @@
 import {
-  Box,
-  Container,
   createTheme,
   PaletteMode,
   ThemeProvider,
@@ -8,46 +6,11 @@ import {
 } from "@mui/material";
 import React, { createContext, useEffect, useRef } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
-import Carousel from "./carousel/Carousel";
-import Category from "./category/Category";
 import Header from "./header/Header";
-
-const getDesignTokens = (mode: PaletteMode) => {
-  return {
-    palette: {
-      mode,
-      ...(mode === "light"
-        ? {
-            primary: {
-              main: "hsl(0, 0%, 100%)",
-              dark: "hsl(0,0%, 50%)",
-            },
-
-            background: {
-              default: "hsl(0, 0%, 100%)",
-            },
-          }
-        : {
-            primary: {
-              main: "hsl(0, 0%, 11%)",
-              light: "hsl(0, 0%, 100%)",
-              dark: "hsl(0,0%,16%)",
-            },
-            background: {
-              default: "hsl(0, 0%, 11%)",
-              paper: "hsl(0, 0%, 11%)",
-            },
-            text: {
-              primary: "hsl(0,0%,100%)",
-              secondary: "hsl(0,0%,80%)",
-            },
-            info: {
-              main: "hsl(209,100%,45%)",
-            },
-          }),
-    },
-  };
-};
+import Page from "./page/Page";
+import { getTheme } from "./hooks/useTheme";
+import Homepage from "./homepage/Homepage";
+import Product from "./product/Product";
 
 export const DarkModeContext = createContext<any>(null);
 function App() {
@@ -66,14 +29,13 @@ function App() {
     []
   );
 
-  const fixedHeaderContainer = useRef<any>(null);
-  const headerRef = useRef<any>(null);
+  const headerRef = useRef<HTMLDivElement | null>(null);
 
   // useEffect(() => {
   //   setMode(prefersDarkMode ? "dark" : "light");
   // }, [prefersDarkMode]);
 
-  const theme = React.useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
+  const theme = React.useMemo(() => createTheme(getTheme(mode)), [mode]);
 
   return (
     <Router>
@@ -81,31 +43,14 @@ function App() {
         <ThemeProvider theme={theme}>
           {/* <Starter /> */}
           <Header headerRef={headerRef} />
-          <Route
-            path={"/"}
-            component={() => {
-              return (
-                <Box
-                  sx={{ width: { xs: "100%" }, bgcolor: "background.default" }}
-                >
-                  <Container
-                    sx={{
-                      border: "1px solid red",
-                      bgcolor: "background.default",
-                      maxWidth: {
-                        lg: "80%",
-                      },
-                      paddingBottom:"1.2rem"
-                    }}
-                  >
-                    <Carousel headerRef={headerRef} />
-                    <Category />
-                  </Container>
-                </Box>
-              );
-            }}
-            exact
-          />
+          <Page headerRef={headerRef}>
+            <Route path={"/"} exact>
+              <Homepage />
+            </Route>
+            <Route path={"/product/:name"} exact>
+              <Product />
+            </Route>
+          </Page>
         </ThemeProvider>
       </DarkModeContext.Provider>
     </Router>

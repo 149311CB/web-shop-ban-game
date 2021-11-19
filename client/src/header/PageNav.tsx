@@ -6,7 +6,7 @@ const PageNav = () => {
       sx={{
         display: "flex",
         alignItems: "center",
-        border: "1px solid green",
+        // border: "1px solid green",
         maxWidth: {
           lg: "80%",
         },

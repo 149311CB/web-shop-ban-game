@@ -17,7 +17,7 @@ const Header: React.FC<{ headerRef: React.Ref<unknown> }> = ({ headerRef }) => {
         width: {
           xs: "100%",
         },
-        border: "1px solid blue",
+        // border: "1px solid blue",
         zIndex:"1000"
       }}
       ref={headerRef}
