@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 
-const DevTitleTypo = styled("p")(({ theme }) => ({
-  color: alpha(theme.palette.text.secondary, 0.7),
+export const AlphaTypo = styled("p")(({ theme }) => ({
+  color: alpha(theme.palette.text.secondary, 0.6),
 }));
 
 const Category = () => {
@@ -13,7 +13,7 @@ const Category = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const { data } = await axios.get("https://web-shop-ban-game.herokuapp.com/api/games");
+      const { data } = await axios.get("http://localhost:5000/api/games");
       setData(data);
     };
     fetchData();
@@ -87,9 +87,9 @@ const Category = () => {
                   >
                     {item.name}
                   </Typography>
-                  <DevTitleTypo className={"text-small game-developer"}>
+                  <AlphaTypo className={"text-small game-developer"}>
                     {item.developer}
-                  </DevTitleTypo>
+                  </AlphaTypo>
                   <Box
                     className={"game-price"}
                     sx={{ paddingTop: "0.9rem", color: "text.primary" }}

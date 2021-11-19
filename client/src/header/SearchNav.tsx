@@ -11,6 +11,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import PersonIcon from "@mui/icons-material/Person";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { DarkModeContext } from "../App";
+import { useHistory } from "react-router-dom";
 
 interface styledProps {
   mode?: any;
@@ -71,6 +72,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function SearchNav() {
   const { mode } = React.useContext(DarkModeContext);
+  const history = useHistory();
   return (
     <div className={"header"}>
       <Box sx={{ flexGrow: 1, bgcolor: "primary.dark" }}>
@@ -102,6 +104,9 @@ export default function SearchNav() {
               color="inherit"
               aria-label="open drawer"
               sx={{ ml: 2 }}
+              onClick={() => {
+                history.push("/cart");
+              }}
             >
               <ShoppingCartIcon fontSize={"small"} />
             </IconButton>

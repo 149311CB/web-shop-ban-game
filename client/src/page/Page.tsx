@@ -6,6 +6,7 @@ const Page: React.FC<{ headerRef: React.Ref<HTMLDivElement> }> = ({
   children,
 }) => {
   const [paddingTop, setPaddingTop] = useState(0);
+
   useEffect(() => {
     if (headerRef) {
       //@ts-ignore

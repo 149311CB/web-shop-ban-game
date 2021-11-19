@@ -18,8 +18,10 @@ export const getTheme = (mode: PaletteMode) => {
         : {
             primary: {
               main: "hsl(209, 100%, 45%)",
-              light: "hsl(0, 0%, 100%)",
               dark: "hsl(0,0%,16%)",
+            },
+            secondary: {
+              main: "hsl(0,0%,16%)",
             },
             background: {
               default: "hsl(0, 0%, 11%)",
@@ -27,7 +29,7 @@ export const getTheme = (mode: PaletteMode) => {
             },
             text: {
               primary: "hsl(0,0%,100%)",
-              secondary: "hsl(0,0%,80%)",
+              secondary: "hsl(0,0%,96%)",
             },
             info: {
               main: "hsl(209,100%,45%)",

@@ -60,7 +60,8 @@ small,
 }
 
 p {
-  font-size: 0.875 !important;
+  font-size: 0.875rem !important;
+  font-family: brutal-regular !important;
 }
 
 a {
@@ -119,6 +120,7 @@ a {
     }
   }
 }
+
 /* .product-group-control { */
   /* Chrome, Safari, Edge, Opera */
   /* input::-webkit-outer-spin-button, */
@@ -130,5 +132,13 @@ a {
   /* Firefox */
 /*   input[type="number"] { */
 /*     -moz-appearance: textfield; */
+/*   } */
+/* } */
+
+/* div{ */
+/*   &:hover{ */
+/*     button{ */
+
+/*     } */
 /*   } */
 /* } */

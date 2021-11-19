@@ -5,7 +5,7 @@ const GameType: React.FC<{ type: string }> = ({ type }) => {
   return (
     <Box
       sx={{
-        bgcolor: "background.paper",
+        bgcolor: "secondary.main",
         display: "inline-flex",
         padding: "0.3rem 0.6rem",
         borderRadius: "0.3rem",

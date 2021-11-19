@@ -1,4 +1,7 @@
 import { alpha, Box, styled } from "@mui/material";
+import { useContext, useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
+import { DarkModeContext } from "../App";
 import PageNav from "./PageNav";
 import SearchNav from "./SearchNav";
 
@@ -8,7 +11,13 @@ const PageNavWrapper = styled("div")(({ theme }) => ({
   backdropFilter: "blur(25px)",
 }));
 
+const excludedPageNav = ["/cart"];
 const Header: React.FC<{ headerRef: React.Ref<unknown> }> = ({ headerRef }) => {
+  const [hidePageNav, setHidePageNav] = useState(false);
+  const value = useContext(DarkModeContext);
+  useEffect(() => {
+    value.setHidePageNav = setHidePageNav;
+  }, [setHidePageNav]);
   return (
     <Box
       className={"header"}
@@ -18,14 +27,16 @@ const Header: React.FC<{ headerRef: React.Ref<unknown> }> = ({ headerRef }) => {
           xs: "100%",
         },
         // border: "1px solid blue",
-        zIndex:"1000"
+        zIndex: "1000",
       }}
       ref={headerRef}
     >
       <SearchNav />
-      <PageNavWrapper>
-        <PageNav />
-      </PageNavWrapper>
+      {!hidePageNav ? (
+        <PageNavWrapper>
+          <PageNav />
+        </PageNavWrapper>
+      ) : null}
     </Box>
   );
 };

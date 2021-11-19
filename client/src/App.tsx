@@ -11,6 +11,7 @@ import Page from "./page/Page";
 import { getTheme } from "./hooks/useTheme";
 import Homepage from "./homepage/Homepage";
 import Product from "./product/Product";
+import Cart from "./cart/Cart";
 
 export const DarkModeContext = createContext<any>(null);
 function App() {
@@ -49,6 +50,9 @@ function App() {
             </Route>
             <Route path={"/product/:name"} exact>
               <Product />
+            </Route>
+            <Route path={"/cart"} exact>
+              <Cart />
             </Route>
           </Page>
         </ThemeProvider>
