@@ -9,7 +9,6 @@ const getAllGame = asyncHandler(async (_, res) => {
 const getGameById = asyncHandler(async (req, res) => {
   try {
     const { id } = req.params;
-    console.log(req.params)
     if (!id) {
       return res.status(400).json({ message: "required game id" });
     }

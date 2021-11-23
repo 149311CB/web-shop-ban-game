@@ -14,7 +14,7 @@ const Category = () => {
   useEffect(() => {
     const fetchData = async () => {
       const { data } = await axios.get(
-        "http://localhost:5000/api/products/games"
+        "/api/products/games"
       );
       setData(data);
     };

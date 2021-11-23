@@ -1,13 +1,25 @@
 import React from "react";
 import { Box, Button, FormControl, Select, MenuItem } from "@mui/material";
 import { useState } from "react";
+import axios from "axios";
 
 const AddToCartControll: React.FC<{ data: any }> = ({ data }) => {
   const [qty, setQty] = useState<number>(1);
+
   const changeQty = (e: any) => {
     const selectedQty = parseInt(e.target.value);
     setQty(selectedQty);
   };
+
+  const addToCart = async () => {
+    console.log(data._id)
+    const { data: cart } = await axios.post("/api/carts/auth/add", {
+      user: { _id: "610844bf701a78827a321fa6" },
+      product: { _id: data._id, quantity: qty },
+    });
+    console.log(cart);
+  };
+
   return (
     <Box
       className={"product-group-control"}
@@ -38,8 +50,8 @@ const AddToCartControll: React.FC<{ data: any }> = ({ data }) => {
           }}
         >
           {data.keys.map((value: any, index: number) => (
-            <MenuItem value={index} key={value}>
-              {index}
+            <MenuItem value={index + 1} key={value.value}>
+              {index + 1}
             </MenuItem>
           ))}
         </Select>
@@ -58,6 +70,9 @@ const AddToCartControll: React.FC<{ data: any }> = ({ data }) => {
           "&:hover": {
             backgroundColor: "info.main",
           },
+        }}
+        onClick={() => {
+          addToCart();
         }}
       >
         ADD TO CART

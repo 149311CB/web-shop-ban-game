@@ -1,4 +1,5 @@
 import { Schema, model } from "mongoose";
+import { IGame } from "../types/gameTypes";
 
 const gameSchema = new Schema({
   name: {
@@ -41,6 +42,10 @@ const gameSchema = new Schema({
     type: Number,
     required: true,
   },
+  keys: {
+    type: [Object],
+    required: false,
+  },
   images: {
     // Should describe this more explicit
     type: [Object],
@@ -60,6 +65,6 @@ const gameSchema = new Schema({
   },
 });
 
-const Game = model("Game", gameSchema, "games");
+const Game = model<IGame>("Game", gameSchema, "games");
 
-export { Game }
+export { Game };

@@ -2,11 +2,11 @@ import { Box, Container } from "@mui/material";
 import React from "react";
 
 const Page: React.FC<React.ReactNode> = ({ children }) => {
-
   return (
     <Box
       sx={{
         width: { xs: "100%" },
+        minHeight: { xs: "100vh" },
         bgcolor: "background.default",
       }}
     >

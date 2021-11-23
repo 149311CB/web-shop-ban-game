@@ -39,6 +39,9 @@ export const getTheme = (mode: PaletteMode) => {
               active: "hsl(209,100%,45%)",
               focus: "hsl(209,100%,45%)",
             },
+            error: {
+              main: "hsl(5,89%,65%)",
+            },
           }),
     },
   };

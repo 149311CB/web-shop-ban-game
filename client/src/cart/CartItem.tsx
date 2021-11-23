@@ -5,6 +5,8 @@ import {
   OutlinedInput,
   TypographyProps,
   styled,
+  Stack,
+  Divider,
 } from "@mui/material";
 import { AlphaTypo } from "../category/Category";
 import RemoveIcon from "@mui/icons-material/Remove";
@@ -34,7 +36,8 @@ const CartItem: React.FC<{
   mode: any;
   updating: boolean;
   setUpdating: Function;
-}> = ({ item, mode, updating, setUpdating }) => {
+  setData: Function;
+}> = ({ item, mode, updating, setUpdating, setData }) => {
   const [qty, setQty] = useState(item.quantity ? item.quantity : 0);
 
   const changeQty = async (actionType: "plus" | "minus") => {
@@ -42,17 +45,26 @@ const CartItem: React.FC<{
     let quantity = item.quantity;
     if (actionType === "plus" && qty < item.product.keys.length) {
       setQty((current: number) => current + 1);
-      quantity = item.quantity + 1;
+      quantity = qty + 1;
     }
 
     if (actionType === "minus" && qty > 0) {
       setQty((current: number) => current - 1);
-      quantity = item.quantity - 1;
+      quantity = qty - 1;
     }
 
-    await axios.post("http://localhost:5000/api/carts/auth/qty/update", {
+    await axios.post("/api/carts/auth/qty/update", {
       user: { _id: "610844bf701a78827a321fa6" },
       product: { ...item, quantity: quantity },
+    });
+    setUpdating(false);
+  };
+
+  const removeFromCart = async () => {
+    setUpdating(true);
+    await axios.post("/api/carts/auth/remove", {
+      user: { _id: "610844bf701a78827a321fa6" },
+      product: { _id: item.product._id },
     });
     setUpdating(false);
   };
@@ -93,72 +105,91 @@ const CartItem: React.FC<{
           </AlphaTypo>
           <GoldenPriceTag mode={mode}>${item.product.price}</GoldenPriceTag>
         </Box>
-        <Box
-          sx={{
-            display: "inline-flex", // border: "1px solid red"
-            marginBottom: "8px",
-          }}
+        <Stack
+          direction={"row"}
+          spacing={1}
+          sx={{ marginBottom: "8px", alignItems: "center" }}
         >
-          <Button
+          <Box
             sx={{
-              padding: "0 0.3rem",
-              color: "text.primary",
-              bgcolor: "info.main",
-              fontFamily: "brutal-medium",
-              fontSize: "0.75rem",
-              borderTopRightRadius: "0",
-              borderBottomRightRadius: "0",
-              "&:hover": {
-                backgroundColor: "info.main",
-              },
-              minWidth: "0px",
+              display: "inline-flex", // border: "1px solid red"
             }}
-            onClick={() => {
-              changeQty("minus");
-            }}
-            disabled={qty <= 1 || updating}
           >
-            <RemoveIcon />
-          </Button>
-          <OutlinedInput
-            size={"small"}
-            sx={{
-              width: "3rem",
-              textAlign: "center",
-              padding: "0",
-              borderRadius: "0",
-              ".MuiOutlinedInput-notchedOutline": {
-                borderColor: "primary.main",
-                borderWidth: "2px",
-              },
-              ".MuiOutlinedInput-input": {
+            <Button
+              sx={{
+                padding: "0 0.3rem",
+                color: "text.primary",
+                bgcolor: "info.main",
+                fontFamily: "brutal-medium",
+                fontSize: "0.75rem",
+                borderTopRightRadius: "0",
+                borderBottomRightRadius: "0",
+                "&:hover": {
+                  backgroundColor: "info.main",
+                },
+                minWidth: "0px",
+              }}
+              onClick={() => {
+                changeQty("minus");
+              }}
+              disabled={qty <= 1 || updating}
+            >
+              <RemoveIcon />
+            </Button>
+            <OutlinedInput
+              size={"small"}
+              sx={{
+                width: "3rem",
                 textAlign: "center",
-              },
-            }}
-            inputProps={{ min: "0" }}
-            value={qty}
-          />
-          <Button
-            sx={{
-              color: "text.primary",
-              bgcolor: "info.main",
-              fontFamily: "brutal-medium",
-              fontSize: "0.75rem",
-              borderTopLeftRadius: "0",
-              borderBottomLeftRadius: "0",
-              "&:hover": {
-                backgroundColor: "info.main",
-              },
-              minWidth: "0px",
-            }}
-            onClick={() => {
-              changeQty("plus");
-            }}
-            disabled={qty >= item.product.keys.length || updating}
-          >
-            <AddIcon />
-          </Button>
-        </Box>
+                padding: "0",
+                borderRadius: "0",
+                ".MuiOutlinedInput-notchedOutline": {
+                  borderColor: "primary.main",
+                  borderWidth: "1px",
+                },
+                ".MuiOutlinedInput-input": {
+                  textAlign: "center",
+                },
+              }}
+              inputProps={{ min: "0" }}
+              value={qty}
+            />
+            <Button
+              sx={{
+                color: "text.primary",
+                bgcolor: "info.main",
+                fontFamily: "brutal-medium",
+                fontSize: "0.75rem",
+                borderTopLeftRadius: "0",
+                borderBottomLeftRadius: "0",
+                "&:hover": {
+                  backgroundColor: "info.main",
+                },
+                minWidth: "0px",
+              }}
+              onClick={() => {
+                changeQty("plus");
+              }}
+              disabled={qty >= item.product.keys.length || updating}
+            >
+              <AddIcon />
+            </Button>
+          </Box>
+          <Box>
+            <Button
+              sx={{
+                fontFamily: "brutal-regular",
+                color: "error.main",
+                textTransform: "none",
+              }}
+              onClick={() => {
+                removeFromCart();
+              }}
+            >
+              Remove
+            </Button>
+          </Box>
+        </Stack>
       </Box>
     </>
   );

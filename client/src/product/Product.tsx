@@ -24,7 +24,7 @@ const Product = () => {
 
     const fetchData = async () => {
       const { data } = await axios.get(
-        `http://localhost:5000/api/products/games/${_id}`
+        `/api/products/games/${_id}`
       );
       setData(data);
     };

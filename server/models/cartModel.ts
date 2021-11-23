@@ -1,13 +1,14 @@
 import { Schema, model } from "mongoose";
+import { IGame } from "../types/gameTypes";
 
 export interface IItem {
-  product: string;
+  product: IGame | string | null;
   quantity: number;
 }
 
 export interface ICart {
   user: string;
-  products: [ IItem ];
+  products: [IItem];
   isActive: boolean;
 }
 

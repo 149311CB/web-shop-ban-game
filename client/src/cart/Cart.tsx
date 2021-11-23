@@ -40,9 +40,10 @@ const Cart = () => {
   };
 
   useEffect(() => {
+    if(updating) return;
     const fetchData = async () => {
       const { data: cart } = await axios.post(
-        "http://localhost:5000/api/carts/auth/active",
+        "/api/carts/auth/active",
         {
           user: { _id: "610844bf701a78827a321fa6" },
         }
@@ -50,7 +51,7 @@ const Cart = () => {
       setData(cart);
     };
     fetchData();
-  }, []);
+  }, [updating]);
 
   return (
     <Box
@@ -101,6 +102,7 @@ const Cart = () => {
                       mode={mode}
                       updating={updating}
                       setUpdating={setUpdating}
+                      setData={setData}
                     />
                   </StackItem>
                 ))

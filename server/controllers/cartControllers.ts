@@ -14,17 +14,45 @@ const authAddToCart = asyncHandler(async (req, res) => {
       exist = await Cart.findOne({
         user: user._id,
         isActive: true,
+      }).populate({
+        path: "products.product",
+        match: { _id: { $eq: product._id } },
+        option: { limit: 1 },
       });
     }
 
     if (exist) {
-      const existItem = exist.products.find((item: IItem) => {
-        return item.product == product._id;
+      const existItem: any = exist.products.find((item: IItem) => {
+        return item.product !== null;
       });
 
       if (existItem) {
+        if (
+          existItem.quantity + product.quantity >
+          existItem.product.keys.length
+        ) {
+          return res.status(400).json({
+            message: `this item can only be bought up to ${existItem.product.keys.length}`,
+            details: {
+              max: existItem.product.keys.length,
+              in_cart: existItem.quantity,
+              request: product.quantity,
+            },
+          });
+        }
+
         existItem.quantity = existItem.quantity + product.quantity;
       } else {
+        // if (product.quantity > existItem.product.keys.length) {
+        //   return res.status(400).json({
+        //     message: `this item can only be bought up to ${existItem.product.keys.length}`,
+        //     details: {
+        //       max: existItem.product.keys.length,
+        //       in_cart: 0,
+        //       request: product.quantity,
+        //     },
+        //   });
+        // }
         exist.products.push({
           product: product._id,
           quantity: product.quantity,
@@ -32,11 +60,8 @@ const authAddToCart = asyncHandler(async (req, res) => {
       }
 
       const cart = await exist.save();
-      if (user) {
-        return res.status(201).json(cart);
-      } else if (cart) {
-        return res.status(201).json({ cart });
-      }
+
+      return res.status(201).json(cart);
     } else {
       const newCart = new Cart({
         user: user._id,
@@ -47,8 +72,8 @@ const authAddToCart = asyncHandler(async (req, res) => {
       const cart = await newCart.save();
       res.status(201).json(cart);
     }
-  } catch (error) {
-    res.status(500).json({ message: error });
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
   }
 });
 
@@ -97,6 +122,7 @@ const authUpdateQuantity = asyncHandler(async (req, res) => {
     const updateItem = exist.products.find((item) => {
       return item.product == product.product._id;
     });
+    // console.log(updateItem);
 
     if (!updateItem) {
       return res
@@ -113,4 +139,44 @@ const authUpdateQuantity = asyncHandler(async (req, res) => {
   }
 });
 
-export { getAllCart, authAddToCart, authGetActiveCart, authUpdateQuantity };
+const authRemoveFromCart = asyncHandler(async (req, res) => {
+  const { user, product } = req.body;
+  try {
+    let exist;
+    if (user) {
+      exist = await Cart.findOne({
+        user: user._id,
+        isActive: true,
+      });
+      console.log(product);
+
+      if (exist) {
+        let itemIndex = -1;
+        exist.products.find((item, index) => {
+          if (item.product == product._id) {
+            itemIndex = index;
+          }
+        });
+        console.log(itemIndex);
+        if (itemIndex > -1) {
+          exist.products.splice(itemIndex, 1);
+        }
+        console.log(exist.products);
+        const updatedCart = await exist.save();
+        return res.status(201).json(updatedCart);
+      } else {
+        return res.json({ message: "cart not found" });
+      }
+    }
+  } catch (error: any) {
+    return res.status(500).json({ message: error.message });
+  }
+});
+
+export {
+  getAllCart,
+  authAddToCart,
+  authGetActiveCart,
+  authUpdateQuantity,
+  authRemoveFromCart,
+};
