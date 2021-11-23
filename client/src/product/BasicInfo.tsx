@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Divider, Typography, Stack, styled } from "@mui/material";
 import { AlphaTypo } from "../category/Category";
 
-const Item = styled(Box)(({ theme }) => ({
+export const StackItem = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
   color: theme.palette.text.secondary,
   display: "flex",
@@ -17,24 +17,24 @@ const BasicInfo: React.FC<{ data: any }> = ({ data }) => {
       divider={<Divider orientation="horizontal" flexItem />}
       spacing={1}
     >
-      <Item>
+      <StackItem>
         <AlphaTypo>Developer</AlphaTypo>
         <Typography>{data.developer}</Typography>
-      </Item>
-      <Item>
+      </StackItem>
+      <StackItem>
         <AlphaTypo>Publisher</AlphaTypo>
         <Typography>{data.publisher}</Typography>
-      </Item>
-      <Item>
+      </StackItem>
+      <StackItem>
         <AlphaTypo>Release Date</AlphaTypo>
         <Typography>
           {new Date(data.release_date).toLocaleDateString()}
         </Typography>
-      </Item>
-      <Item>
+      </StackItem>
+      <StackItem>
         <AlphaTypo>Platform</AlphaTypo>
         <Typography>{data.platform}</Typography>
-      </Item>
+      </StackItem>
     </Stack>
   );
 };

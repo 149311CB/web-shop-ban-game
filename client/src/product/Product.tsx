@@ -17,7 +17,6 @@ const Product = () => {
   const [data, setData] = useState<any>(null);
 
   useEffect(() => {
-    console.log("run");
     let _id: string;
     if (state && state._id) {
       _id = state._id;
@@ -25,7 +24,7 @@ const Product = () => {
 
     const fetchData = async () => {
       const { data } = await axios.get(
-        `http://localhost:5000/api/games/${_id}`
+        `http://localhost:5000/api/products/games/${_id}`
       );
       setData(data);
     };

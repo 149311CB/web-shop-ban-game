@@ -1,7 +1,6 @@
 import { alpha, Box, styled } from "@mui/material";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { DarkModeContext } from "../App";
 import PageNav from "./PageNav";
 import SearchNav from "./SearchNav";
 
@@ -12,31 +11,59 @@ const PageNavWrapper = styled("div")(({ theme }) => ({
 }));
 
 const excludedPageNav = ["/cart"];
-const Header: React.FC<{ headerRef: React.Ref<unknown> }> = ({ headerRef }) => {
+const Header: React.FC<{ match: any }> = ({ match }) => {
+  const {
+    location: { pathname },
+  } = useHistory();
+  const [headerHeight, setHeaderHeight] = useState(0);
   const [hidePageNav, setHidePageNav] = useState(false);
-  const value = useContext(DarkModeContext);
+  const headerRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
-    value.setHidePageNav = setHidePageNav;
-  }, [setHidePageNav]);
+    if (headerRef) {
+      // @ts-ignore
+      const { current } = headerRef;
+      if (current) {
+        setHeaderHeight(current.offsetHeight);
+      }
+    }
+  }, [headerRef, hidePageNav]);
+
+  useEffect(() => {
+    if (excludedPageNav.includes(pathname)) {
+      setHidePageNav(true);
+      return;
+    }
+    setHidePageNav(false)
+  }, [pathname, match]);
+
   return (
     <Box
-      className={"header"}
       sx={{
-        position: "fixed",
-        width: {
-          xs: "100%",
-        },
-        // border: "1px solid blue",
-        zIndex: "1000",
+        backgroundColor: "background.default",
+        // border: "1px solid red",
+        height: headerHeight + "px",
       }}
-      ref={headerRef}
     >
-      <SearchNav />
-      {!hidePageNav ? (
-        <PageNavWrapper>
-          <PageNav />
-        </PageNavWrapper>
-      ) : null}
+      <Box
+        id={"header"}
+        className={"header"}
+        sx={{
+          position: "fixed",
+          width: {
+            xs: "100%",
+          },
+          // border: "1px solid blue",
+          zIndex: "1000",
+        }}
+        ref={headerRef}
+      >
+        <SearchNav />
+        {!hidePageNav ? (
+          <PageNavWrapper>
+            <PageNav />
+          </PageNavWrapper>
+        ) : null}
+      </Box>
     </Box>
   );
 };

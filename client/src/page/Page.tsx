@@ -1,29 +1,13 @@
 import { Box, Container } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React from "react";
 
-const Page: React.FC<{ headerRef: React.Ref<HTMLDivElement> }> = ({
-  headerRef,
-  children,
-}) => {
-  const [paddingTop, setPaddingTop] = useState(0);
-
-  useEffect(() => {
-    if (headerRef) {
-      //@ts-ignore
-      const { current } = headerRef;
-      if (current) {
-        setPaddingTop(current.offsetHeight);
-      }
-    }
-  }, [headerRef]);
+const Page: React.FC<React.ReactNode> = ({ children }) => {
 
   return (
     <Box
       sx={{
         width: { xs: "100%" },
         bgcolor: "background.default",
-        //@ts-ignore
-        paddingTop: paddingTop + "px",
       }}
     >
       <Container

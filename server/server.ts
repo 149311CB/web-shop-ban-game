@@ -4,7 +4,8 @@ import connectDB from "./config/db";
 import cors from "cors";
 
 import sampleRoutes from "./routes/sampleRoutes";
-import gameRoutes from "./routes/gameRoutes";
+import productRoutes from "./routes/productRoutes";
+import cartRoutes from "./routes/cartRoutes";
 
 dotenv.config();
 
@@ -20,7 +21,8 @@ app.get("/", (_, res) => {
 });
 
 app.use("/api/sample", sampleRoutes);
-app.use("/api/games", gameRoutes);
+app.use("/api/products", productRoutes);
+app.use("/api/carts", cartRoutes);
 
 const PORT = process.env.PORT || 5000;
 

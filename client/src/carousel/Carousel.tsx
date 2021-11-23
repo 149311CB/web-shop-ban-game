@@ -1,5 +1,5 @@
 import { Box, Paper, Stack } from "@mui/material";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef} from "react";
 
 const imgListPlaceholder = [
   "https://cdn2.unrealengine.com/jwe2-desktop-image-with-logo-1248x702-1248x702-73c4b7a65b42.png",
@@ -54,8 +54,9 @@ const Carousel = () => {
         gap={"0.6rem"}
         // border={"1px solid red"}
       >
-        {imgListPlaceholder.map((img: string) => (
+        {imgListPlaceholder.map((img: string,index:number) => (
           <Paper
+            key={index}
             className={"carousel-stack-item"}
             sx={{
               padding: "0.6rem",

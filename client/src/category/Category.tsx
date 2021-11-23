@@ -1,4 +1,4 @@
-import { alpha, Box, Container, styled, Typography } from "@mui/material";
+import { alpha, Box, styled, Typography } from "@mui/material";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { Link } from "react-router-dom";
 import axios from "axios";
@@ -13,16 +13,19 @@ const Category = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const { data } = await axios.get("http://localhost:5000/api/games");
+      const { data } = await axios.get(
+        "http://localhost:5000/api/products/games"
+      );
       setData(data);
     };
     fetchData();
   }, []);
 
   return (
-    <Box className={"category"} 
+    <Box
+      className={"category"}
       // sx={{ border: "1px solid yellow" }}
-      >
+    >
       <Link to={"#"} className={"category-nav"}>
         <Typography
           variant={"h2"}

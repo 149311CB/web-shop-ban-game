@@ -1,5 +1,5 @@
 import asyncHandler from "express-async-handler";
-import Game from "../models/gameModel";
+import { Game } from "../models/productModel";
 
 const getAllGame = asyncHandler(async (_, res) => {
   const games = await Game.find({});

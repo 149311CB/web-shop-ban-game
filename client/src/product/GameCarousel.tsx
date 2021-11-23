@@ -125,9 +125,10 @@ const GameCarousel: React.FC<{ data: any }> = ({ data }) => {
             listStyle: "none",
           }}
         >
-          {data.images.map((img: any) => {
+          {data.images.map((img: any, index: number) => {
             return allowCarousel.includes(img.type) ? (
               <li
+                key={"img" + index}
                 className={"game-media"}
                 style={{
                   flexBasis: "100%",
@@ -160,6 +161,7 @@ const GameCarousel: React.FC<{ data: any }> = ({ data }) => {
         {data.images.map((img: any, index: number) => {
           return allowCarousel.includes(img.type) ? (
             <AlphaListItem
+              key={"small-img" + index}
               className={index === currentItem ? "active" : ""}
               sx={{
                 width: "100px",

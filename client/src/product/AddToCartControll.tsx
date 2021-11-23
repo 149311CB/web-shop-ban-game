@@ -14,7 +14,6 @@ const AddToCartControll: React.FC<{ data: any }> = ({ data }) => {
       sx={{
         display: "flex",
         width: "100%",
-        border: "1px solid red",
       }}
     >
       <FormControl
@@ -31,7 +30,7 @@ const AddToCartControll: React.FC<{ data: any }> = ({ data }) => {
             borderBottomRightRadius: 0,
             ".MuiOutlinedInput-notchedOutline": {
               borderColor: "primary.main",
-              borderWidth: "2px",
+              borderWidth: "1px",
             },
           }}
           onChange={(e) => {

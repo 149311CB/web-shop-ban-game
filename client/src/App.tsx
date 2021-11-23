@@ -30,8 +30,6 @@ function App() {
     []
   );
 
-  const headerRef = useRef<HTMLDivElement | null>(null);
-
   // useEffect(() => {
   //   setMode(prefersDarkMode ? "dark" : "light");
   // }, [prefersDarkMode]);
@@ -43,8 +41,8 @@ function App() {
       <DarkModeContext.Provider value={{ colorMode, mode }}>
         <ThemeProvider theme={theme}>
           {/* <Starter /> */}
-          <Header headerRef={headerRef} />
-          <Page headerRef={headerRef}>
+          <Route component={Header} exact={false} />
+          <Page>
             <Route path={"/"} exact>
               <Homepage />
             </Route>
