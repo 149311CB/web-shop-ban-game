@@ -5,13 +5,14 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import React, { createContext, useEffect, useRef } from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Header from "./header/Header";
 import Page from "./page/Page";
 import { getTheme } from "./hooks/useTheme";
 import Homepage from "./homepage/Homepage";
 import Product from "./product/Product";
 import Cart from "./cart/Cart";
+import Checkout from "./checkout/Checkout";
 
 export const DarkModeContext = createContext<any>(null);
 function App() {
@@ -49,8 +50,11 @@ function App() {
             <Route path={"/product/:name"} exact>
               <Product />
             </Route>
-            <Route path={"/cart"} exact>
+            <Route path={"/cart"}>
               <Cart />
+            </Route>
+            <Route path={"/checkout"}>
+              <Checkout />
             </Route>
           </Page>
         </ThemeProvider>

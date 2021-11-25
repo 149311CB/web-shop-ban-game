@@ -2,9 +2,11 @@ import React from "react";
 import { Box, Button, FormControl, Select, MenuItem } from "@mui/material";
 import { useState } from "react";
 import axios from "axios";
+import { useCookies } from "react-cookie";
 
 const AddToCartControll: React.FC<{ data: any }> = ({ data }) => {
   const [qty, setQty] = useState<number>(1);
+  const [cookies] = useCookies(["cookie-name"]);
 
   const changeQty = (e: any) => {
     const selectedQty = parseInt(e.target.value);
@@ -12,11 +14,20 @@ const AddToCartControll: React.FC<{ data: any }> = ({ data }) => {
   };
 
   const addToCart = async () => {
-    console.log(data._id)
-    const { data: cart } = await axios.post("/api/carts/auth/add", {
-      user: { _id: "610844bf701a78827a321fa6" },
-      product: { _id: data._id, quantity: qty },
-    });
+    console.log(data._id);
+    const { data: cart } = await axios.post(
+      "/api/carts/auth/add",
+      {
+        product: { _id: data._id, quantity: qty },
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          // @ts-ignore
+          Authorization: `Bearer ${cookies.login_token}`,
+        },
+      }
+    );
     console.log(cart);
   };
 

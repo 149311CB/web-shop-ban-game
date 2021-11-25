@@ -6,6 +6,9 @@ import cors from "cors";
 import sampleRoutes from "./routes/sampleRoutes";
 import productRoutes from "./routes/productRoutes";
 import cartRoutes from "./routes/cartRoutes";
+import orderRoutes from "./routes/orderRoutes";
+import userRoutes from "./routes/userRoutes";
+import paymentRoutes from "./routes/paymentRoutes";
 
 dotenv.config();
 
@@ -23,6 +26,9 @@ app.get("/", (_, res) => {
 app.use("/api/sample", sampleRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/carts", cartRoutes);
+app.use("/api/orders", orderRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/payments", paymentRoutes);
 
 const PORT = process.env.PORT || 5000;
 

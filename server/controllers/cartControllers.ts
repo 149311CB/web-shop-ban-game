@@ -13,7 +13,7 @@ const authAddToCart = asyncHandler(async (req, res) => {
     if (user) {
       exist = await Cart.findOne({
         user: user._id,
-        isActive: true,
+        status: true,
       }).populate({
         path: "products.product",
         match: { _id: { $eq: product._id } },
@@ -66,7 +66,7 @@ const authAddToCart = asyncHandler(async (req, res) => {
       const newCart = new Cart({
         user: user._id,
         products: [{ product: product._id, quantity: product.quantity }],
-        isActive: true,
+        status: true,
       });
 
       const cart = await newCart.save();
@@ -78,15 +78,17 @@ const authAddToCart = asyncHandler(async (req, res) => {
 });
 
 const authGetActiveCart = asyncHandler(async (req, res) => {
-  const { user } = req.body;
+  const { user, select } = req.body;
   let exist;
   if (user) {
     exist = await Cart.findOne({
-      isActive: true,
+      status: true,
       user: user._id,
-    }).populate({
-      path: "products.product",
-    });
+    })
+      .populate({
+        path: "products.product",
+      })
+      .select(select && select !== undefined ? select.toString() : undefined);
   }
 
   if (!exist) {
@@ -96,7 +98,7 @@ const authGetActiveCart = asyncHandler(async (req, res) => {
   return res.status(201).json({
     _id: exist._id,
     products: exist.products,
-    isActive: exist.isActive,
+    status: exist.status,
     user: exist.user,
   });
 });
@@ -106,7 +108,7 @@ const authUpdateQuantity = asyncHandler(async (req, res) => {
   try {
     const exist = await Cart.findOne({
       user: user._id,
-      isActive: true,
+      status: true,
     });
 
     if (!exist) {
@@ -146,9 +148,9 @@ const authRemoveFromCart = asyncHandler(async (req, res) => {
     if (user) {
       exist = await Cart.findOne({
         user: user._id,
-        isActive: true,
+        status: true,
       });
-      console.log(product);
+      // console.log(product);
 
       if (exist) {
         let itemIndex = -1;
@@ -157,11 +159,11 @@ const authRemoveFromCart = asyncHandler(async (req, res) => {
             itemIndex = index;
           }
         });
-        console.log(itemIndex);
+        // console.log(itemIndex);
         if (itemIndex > -1) {
           exist.products.splice(itemIndex, 1);
         }
-        console.log(exist.products);
+        // console.log(exist.products);
         const updatedCart = await exist.save();
         return res.status(201).json(updatedCart);
       } else {
@@ -173,10 +175,24 @@ const authRemoveFromCart = asyncHandler(async (req, res) => {
   }
 });
 
+const authCountItemInCart = asyncHandler(async (req, res) => {
+  const { user } = req.body;
+  try {
+    const exist = await Cart.findOne({ user: user, status: true });
+    if (exist) {
+      return res.json({ count: exist.products.length });
+    }
+    return res.status(404);
+  } catch (error) {
+    return res.status(500).json({ message: error });
+  }
+});
+
 export {
   getAllCart,
   authAddToCart,
   authGetActiveCart,
   authUpdateQuantity,
   authRemoveFromCart,
+  authCountItemInCart,
 };

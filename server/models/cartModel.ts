@@ -9,7 +9,7 @@ export interface IItem {
 export interface ICart {
   user: string;
   products: [IItem];
-  isActive: boolean;
+  status: boolean;
 }
 
 const itemSchema = new Schema<IItem>({
@@ -29,7 +29,7 @@ const cartSchema = new Schema<ICart>({
     type: Schema.Types.ObjectId,
   },
   products: [itemSchema],
-  isActive: {
+  status: {
     type: Boolean,
     required: true,
   },

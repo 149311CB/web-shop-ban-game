@@ -3,37 +3,41 @@ import bcrypt from "bcryptjs";
 
 type userTypes = {
   _id: string;
-  firstName: string;
-  lastName: string;
-  isActive: boolean;
+  first_name: string;
+  middle_name:string;
+  last_name: string;
+  active: boolean;
   email: string;
   phoneNumber: string;
   password: string;
 };
 
 const userSchema = new Schema<userTypes>({
-  firstName: {
+  first_name: {
     type: String,
     required: true,
   },
-  lastName: {
+  middle_name: {
+    type: String,
+    required: false,
+  },
+  last_name: {
     type: String,
     required: true,
   },
-  isActive: {
-    type: Boolean,
+  birthday: {
+    type: Date,
     required: true,
   },
-  isGuest: {
+  active: {
     type: Boolean,
     required: true,
-    default: false,
   },
   email: {
     type: String,
     required: true,
   },
-  phoneNumber: {
+  phone_number: {
     type: String,
     required: true,
   },
@@ -56,6 +60,6 @@ userSchema.pre("save", async function (next) {
   this.password = await bcrypt.hash(this.password, salt);
 });
 
-const User = model("User", userSchema, "users");
+const User = model<userTypes>("User", userSchema, "users");
 
 export default User;

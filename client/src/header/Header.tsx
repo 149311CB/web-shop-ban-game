@@ -10,7 +10,7 @@ const PageNavWrapper = styled("div")(({ theme }) => ({
   backdropFilter: "blur(25px)",
 }));
 
-const excludedPageNav = ["/cart"];
+const excludedPageNav = ["/cart","/checkout"];
 const Header: React.FC<{ match: any }> = ({ match }) => {
   const {
     location: { pathname },

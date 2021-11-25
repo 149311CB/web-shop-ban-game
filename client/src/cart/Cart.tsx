@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   alpha,
   Box,
@@ -12,8 +12,10 @@ import axios from "axios";
 import { StackItem } from "../product/BasicInfo";
 import { DarkModeContext } from "../App";
 import CartItem, { GoldenPriceTag } from "./CartItem";
+import { useHistory } from "react-router-dom";
+import { useCookies } from "react-cookie";
 
-const AlphaContainer = styled(Box)(({ theme }) => ({
+export const AlphaContainer = styled(Box)(({ theme }) => ({
   padding: "0.9rem",
   border: "1px",
   borderStyle: "solid",
@@ -25,6 +27,8 @@ const Cart = () => {
   const [data, setData] = useState<any>(null);
   const [updating, setUpdating] = useState(false);
   const { mode } = useContext(DarkModeContext);
+  const history = useHistory();
+  const [cookies] = useCookies(["cookie-name"]);
 
   const getProductPrice = () => {
     let total = 0;
@@ -40,25 +44,32 @@ const Cart = () => {
   };
 
   useEffect(() => {
-    if(updating) return;
+    if (updating) return;
     const fetchData = async () => {
       const { data: cart } = await axios.post(
         "/api/carts/auth/active",
+        {},
         {
-          user: { _id: "610844bf701a78827a321fa6" },
+          headers: {
+            "Content-Type": "application/json",
+            // @ts-ignore
+            Authorization: `Bearer ${cookies.login_token}`,
+          },
         }
       );
       setData(cart);
     };
     fetchData();
-  }, [updating]);
+  }, [updating, cookies]);
 
   return (
     <Box
+      className={"cart"}
       sx={{
         color: "text.primary",
         fontFamily: "brutal-regular",
-        border: "1px solid red",
+        // border: "1px solid yellow",
+        width: "100%",
       }}
     >
       <Typography
@@ -96,6 +107,7 @@ const Cart = () => {
                       gap: "0.9rem",
                       backgroundColor: "background.paper",
                     }}
+                    key={item._id}
                   >
                     <CartItem
                       item={item}
@@ -180,6 +192,9 @@ const Cart = () => {
               },
             }}
             disabled={updating}
+            onClick={() => {
+              history.push(`/checkout`);
+            }}
           >
             Proceed to checkout
           </Button>

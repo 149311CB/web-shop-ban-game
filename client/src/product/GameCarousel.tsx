@@ -93,7 +93,7 @@ const GameCarousel: React.FC<{ data: any }> = ({ data }) => {
         sx={{
           overflow: "hidden",
           position: "relative",
-          border: "1px solid purple",
+          // border: "1px solid purple",
         }}
       >
         <Box
@@ -143,7 +143,7 @@ const GameCarousel: React.FC<{ data: any }> = ({ data }) => {
                   style={{
                     width: "100%",
                     borderRadius: "0.6rem",
-                    border: "1px solid blue",
+                    // border: "1px solid blue",
                   }}
                 />
               </li>

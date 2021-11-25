@@ -8,7 +8,7 @@ export interface paymentMethodInterface {
 export interface orderInterface {
   cart: string;
   user: string;
-  state: string;
+  status: string;
   paymentMethod: paymentMethodInterface;
   paidAt: Date;
   cancelledAt: Date;
@@ -26,7 +26,7 @@ const orderSchema = new Schema<orderInterface>(
       ref: "Order",
       required: true,
     },
-    state: {
+    status: {
       type: String,
       required: true,
     },

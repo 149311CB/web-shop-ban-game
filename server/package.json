@@ -17,6 +17,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "5.13.5",
     "nodemon": "^2.0.12",
+    "stripe": "^8.191.0",
     "ts-node": "^10.2.1",
     "typescript": "^4.4.3"
   },

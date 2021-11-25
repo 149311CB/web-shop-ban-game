@@ -2,7 +2,7 @@ import asyncHandler from "express-async-handler";
 import User from "../models/userModel";
 import jwt from "jsonwebtoken";
 
-const protect = asyncHandler(async (req, res, next) => {
+export const protect = asyncHandler(async (req, res, next) => {
   let token;
   try {
     const result = verifyToken(req);
@@ -12,20 +12,19 @@ const protect = asyncHandler(async (req, res, next) => {
       // if the user exist in token, use user
       if (userId) {
         const user = await User.findById(userId).select("-password");
-        req.body = { ...req.body, rest, user };
-        return next();
+        if (user) {
+          req.body = { ...req.body, rest, user };
+          return next();
+        }
       }
-      res.status(401);
-      throw new Error("Not authorized, token found");
+      return res.status(401).json({ message: "Not authorized, token found" });
     }
-  } catch (error) {
-    res.status(401);
-    throw new Error("Not authorized, token failed");
+  } catch (error: any) {
+    return res.status(500).json({ message: error.message });
   }
 
   if (!token) {
-    res.status(401);
-    throw new Error("Not authorized, no token");
+    return res.status(401).json({ message: "Not authorized, no token" });
   }
 });
 

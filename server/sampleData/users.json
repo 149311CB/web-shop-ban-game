@@ -1,0 +1,16 @@
+[{
+  "_id": {
+    "$oid": "619e32b47661fa10e6afb5c9"
+  },
+  "first_name": "Nick",
+  "middle_name": "",
+  "birthday": {
+    "$date": "2000-08-11T17:00:00Z"
+  },
+  "last_name": "Nguyen",
+  "email": "an.nickhcm2000v2@gmail.com",
+  "phone_number": "0965493574",
+  "password": "$2a$10$t7f9hTyu95s6Zk8i1GT.3u12uN7aZnWH0pqP8qz5ZFYm8ThxCyvAm",
+  "active": true,
+  "__v": 0
+}]
