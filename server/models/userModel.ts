@@ -39,7 +39,7 @@ const userSchema = new Schema<userTypes>({
   },
   phone_number: {
     type: String,
-    required: true,
+    required: false,
   },
   password: {
     type: String,

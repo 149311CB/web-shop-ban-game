@@ -9,36 +9,41 @@ export interface orderInterface {
   cart: string;
   user: string;
   status: string;
-  paymentMethod: paymentMethodInterface;
-  paidAt: Date;
-  cancelledAt: Date;
+  payment_method: paymentMethodInterface;
+  paid_at: Date;
+  cancelled_at: Date;
+  total: Number;
 }
 
 const orderSchema = new Schema<orderInterface>(
   {
     cart: {
       type: Schema.Types.ObjectId,
-      ref: "Golf",
+      ref: "Cart",
       required: true,
     },
     user: {
       type: Schema.Types.ObjectId,
-      ref: "Order",
+      ref: "User",
       required: true,
     },
     status: {
       type: String,
       required: true,
     },
-    paymentMethod: {
+    payment_method: {
       type: Object,
       required: true,
     },
-    paidAt: {
+    paid_at: {
       type: Date,
     },
-    cancelledAt: {
+    cancelled_at: {
       type: Date,
+    },
+    total: {
+      type: Number,
+      required: true,
     },
   },
   { timestamps: true }

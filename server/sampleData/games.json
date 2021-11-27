@@ -14,7 +14,8 @@
       "$date": "2021-09-19T14:37:48Z"
     },
     "platform": "windows",
-    "price": 60,
+    "purchase_price": 50,
+    "sale_price": 60,
     "keys": [
       {
         "code": "fcad40cc-bdf6-4b08-a4f5-aac06e3ed7a1",
@@ -92,7 +93,8 @@
       "$date": "2021-09-19T14:37:48Z"
     },
     "platform": "windows",
-    "price": 90,
+    "purchase_price": 50,
+    "sale_price": 90,
     "images": [
       {
         "url": "https://cdn1.epicgames.com/b4565296c22549e4830c13bc7506642d/offer/TETRA_PREORDER_STANDARD%20EDITION_EPIC_Store_Portrait_1200x1600-1200x1600-ca8b802ff13813c37a44ebf68d0946a2.png",
@@ -147,7 +149,8 @@
       "$date": "2021-09-19T14:37:48Z"
     },
     "platform": "windows",
-    "price": 100,
+    "purchase_price": 50,
+    "sale_price": 100,
     "keys": [
       {
         "code": "f29ce18a-a333-4da6-afb9-cdebc0a80543",
@@ -205,7 +208,8 @@
       "$date": "2021-09-19T14:37:48Z"
     },
     "platform": "windows",
-    "price": 30,
+    "purchase_price": 50,
+    "sale_price": 30,
     "keys": [
       { "code": "3ea485e7-6816-49fb-897e-ee45c7d2ff54", "status": false },
       { "code": "c3886c0d-310d-4a76-8aa7-201945dda2e2", "status": false },
@@ -252,7 +256,8 @@
       "$date": "2021-09-19T14:37:48Z"
     },
     "platform": "windows",
-    "price": 30,
+    "purchase_price": 50,
+    "sale_price": 30,
     "keys": [
       { "code": "0459ae9e-054e-4b88-a8a6-0813ce1e060e", "status": false },
       { "code": "fc573da3-7505-482a-acbe-3410a6fa40ab", "status": false },
@@ -282,4 +287,3 @@
     ]
   }
 ]
-

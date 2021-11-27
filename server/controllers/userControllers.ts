@@ -32,13 +32,17 @@ const authUser = asyncHandler(async (req, res) => {
 const registerUser = asyncHandler(async (req, res) => {
   const {
     first_name,
-    middle_name,
     last_name,
     birthday,
     email,
-    phone_number,
     password,
+    confirm_pass,
+    phone_number,
   } = req.body;
+
+  if (password !== confirm_pass) {
+    return res.status(401).json({ message: "password not match confirmation" });
+  }
 
   const userExists = await User.findOne({ email });
 
@@ -49,7 +53,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
   const user = await User.create({
     first_name,
-    middle_name,
+    middle_name: "",
     birthday,
     last_name,
     email,

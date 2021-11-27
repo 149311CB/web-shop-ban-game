@@ -8,7 +8,8 @@ export interface IGame {
   publisher: string;
   release_date: Date;
   platform: string;
-  price: number;
+  purchase_price: number;
+  sale_price: number;
   keys: [object];
   images: [object];
   videos: [object];

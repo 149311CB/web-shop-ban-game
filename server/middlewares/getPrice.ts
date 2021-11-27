@@ -5,7 +5,7 @@ const getPrice = asyncHandler(async (req, res, next) => {
   const { user } = req.body;
   const cart = await Cart.findOne({ user: user._id, status: true }).populate({
     path: "products.product",
-    select: "price",
+    select: "sale_price",
   });
 
   let total = 0;
@@ -13,7 +13,9 @@ const getPrice = asyncHandler(async (req, res, next) => {
   if (cart) {
     cart.products.forEach((item) => {
       //@ts-ignore
-      total = total + item.quantity * item.product.price;
+      console.log(item.product.sale_price)
+      //@ts-ignore
+      total = total + item.quantity * item.product.sale_price;
     });
     req.body.total = total;
     return next();
