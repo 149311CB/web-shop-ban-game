@@ -81,7 +81,7 @@ const Product = () => {
                 }}
               >
                 <GameType type={"Base Game"} />
-                <Typography>${data.price}</Typography>
+                <Typography>${data.sale_price}</Typography>
                 <AddToCartControll data={data} />
                 <WishlistButton className={"wishlist-btn"}>
                   <AddCircleOutlineIcon sx={{ paddingRight: "0.3rem" }} />

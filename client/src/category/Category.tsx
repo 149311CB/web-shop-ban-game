@@ -97,7 +97,7 @@ const Category = () => {
                     className={"game-price"}
                     sx={{ paddingTop: "0.9rem", color: "text.primary" }}
                   >
-                    ${item.price}
+                    ${item.sale_price}
                   </Box>
                 </Link>
               </Box>

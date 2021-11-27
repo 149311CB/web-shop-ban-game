@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import { StackItem } from "../product/BasicInfo";
-import { DarkModeContext } from "../App";
+import { GlobalContext } from "../App";
 import CartItem, { GoldenPriceTag } from "./CartItem";
 import { useHistory } from "react-router-dom";
 import { useCookies } from "react-cookie";
@@ -23,25 +23,25 @@ export const AlphaContainer = styled(Box)(({ theme }) => ({
   borderRadius: "0.6rem",
 }));
 
+export const getProductPrice = (data: any) => {
+  let total = 0;
+  if (!data) return;
+  data.products.forEach((product: any) => {
+    if (product) {
+      if (product.product) {
+        total = total + product.product.sale_price * product.quantity;
+      }
+    }
+  });
+  return total;
+};
+
 const Cart = () => {
   const [data, setData] = useState<any>(null);
   const [updating, setUpdating] = useState(false);
-  const { mode } = useContext(DarkModeContext);
+  const { mode } = useContext(GlobalContext);
   const history = useHistory();
   const [cookies] = useCookies(["cookie-name"]);
-
-  const getProductPrice = () => {
-    let total = 0;
-    if (!data) return;
-    data.products.forEach((product: any) => {
-      if (product) {
-        if (product.product) {
-          total = total + product.product.price;
-        }
-      }
-    });
-    return total;
-  };
 
   useEffect(() => {
     if (updating) return;
@@ -60,6 +60,7 @@ const Cart = () => {
       setData(cart);
     };
     fetchData();
+    window.scrollTo(0, 0);
   }, [updating, cookies]);
 
   return (
@@ -174,7 +175,7 @@ const Cart = () => {
             <Box sx={{ display: "flex", justifyContent: "space-between" }}>
               <Typography>Total</Typography>
               <GoldenPriceTag sx={{ fontFamily: "brutal-regular !important" }}>
-                ${getProductPrice()}
+                ${getProductPrice(data)}
               </GoldenPriceTag>
             </Box>
           </AlphaContainer>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, Button, FormControl, Select, MenuItem } from "@mui/material";
 import { useState } from "react";
 import axios from "axios";
@@ -6,6 +6,7 @@ import { useCookies } from "react-cookie";
 
 const AddToCartControll: React.FC<{ data: any }> = ({ data }) => {
   const [qty, setQty] = useState<number>(1);
+  const [keys, setKeys] = useState<any[]>([]);
   const [cookies] = useCookies(["cookie-name"]);
 
   const changeQty = (e: any) => {
@@ -14,8 +15,7 @@ const AddToCartControll: React.FC<{ data: any }> = ({ data }) => {
   };
 
   const addToCart = async () => {
-    console.log(data._id);
-    const { data: cart } = await axios.post(
+    await axios.post(
       "/api/carts/auth/add",
       {
         product: { _id: data._id, quantity: qty },
@@ -28,8 +28,15 @@ const AddToCartControll: React.FC<{ data: any }> = ({ data }) => {
         },
       }
     );
-    console.log(cart);
   };
+
+  useEffect(() => {
+    if (!data) return;
+    const activeKeys = data.keys.filter((key: any) => {
+      return key.status === false;
+    });
+    setKeys(activeKeys);
+  }, [data]);
 
   return (
     <Box
@@ -60,8 +67,8 @@ const AddToCartControll: React.FC<{ data: any }> = ({ data }) => {
             changeQty(e);
           }}
         >
-          {data.keys.map((value: any, index: number) => (
-            <MenuItem value={index + 1} key={value.value}>
+          {keys.map((_, index: number) => (
+            <MenuItem value={index + 1} key={`${index}`}>
               {index + 1}
             </MenuItem>
           ))}

@@ -9,8 +9,10 @@ import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
 import PersonIcon from "@mui/icons-material/Person";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import { DarkModeContext } from "../App";
+import { GlobalContext } from "../App";
 import { useHistory } from "react-router-dom";
+import AuthModal from "../user/auth/AuthModal";
+import { useState } from "react";
 
 interface styledProps {
   mode?: any;
@@ -70,8 +72,12 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function SearchNav() {
-  const { mode } = React.useContext(DarkModeContext);
+  const [open, setOpen] = useState(false);
+  const { mode } = React.useContext(GlobalContext);
   const history = useHistory();
+  const handleClose = () => {
+    setOpen(false);
+  };
   return (
     <div className={"header"}>
       <Box sx={{ flexGrow: 1, bgcolor: "primary.dark" }}>
@@ -114,13 +120,16 @@ export default function SearchNav() {
               edge="start"
               color="inherit"
               aria-label="open drawer"
-              // sx={{ ml: 2 }}
+              onClick={() => {
+                setOpen(true);
+              }}
             >
               <PersonIcon fontSize={"small"} />
             </IconButton>
           </Toolbar>
         </AppBar>
       </Box>
+      <AuthModal open={open} handleClose={handleClose} />
     </div>
   );
 }

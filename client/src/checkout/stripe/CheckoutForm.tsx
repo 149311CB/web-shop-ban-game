@@ -26,7 +26,6 @@ const CheckoutForm = () => {
     cartId,
     processing,
     error,
-    success,
     cancelled,
     handleProcessing,
     handleError,
@@ -94,7 +93,8 @@ const CheckoutForm = () => {
       }
     };
     fetchData();
-  }, [error, success, cancelled, cookies]);
+    // @ts-ignore
+  }, [error, cancelled, cookies.login_token]);
 
   return (
     <Box>
@@ -113,6 +113,7 @@ const CheckoutForm = () => {
             backgroundColor: "action.hover",
           },
         }}
+        disabled={processing}
         onClick={() => {
           handleSubmit();
         }}

@@ -4,7 +4,7 @@ import {
   ThemeProvider,
   useMediaQuery,
 } from "@mui/material";
-import React, { createContext, useEffect, useRef } from "react";
+import React, { createContext, useEffect, useRef, useState } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Header from "./header/Header";
 import Page from "./page/Page";
@@ -13,10 +13,14 @@ import Homepage from "./homepage/Homepage";
 import Product from "./product/Product";
 import Cart from "./cart/Cart";
 import Checkout from "./checkout/Checkout";
+import Report from "./report/Report";
 
-export const DarkModeContext = createContext<any>(null);
+export const GlobalContext = createContext<any>(null);
 function App() {
-  const [mode, setMode] = React.useState<PaletteMode>("dark");
+  
+  const [mode, setMode] = useState<PaletteMode>("dark");
+
+  const [loginToken, setLoginToken] = useState<string | null>(null);
   // const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
 
   const colorMode = React.useMemo(
@@ -39,7 +43,9 @@ function App() {
 
   return (
     <Router>
-      <DarkModeContext.Provider value={{ colorMode, mode }}>
+      <GlobalContext.Provider
+        value={{ colorMode, mode, loginToken, setLoginToken }}
+      >
         <ThemeProvider theme={theme}>
           {/* <Starter /> */}
           <Route component={Header} exact={false} />
@@ -56,9 +62,12 @@ function App() {
             <Route path={"/checkout"}>
               <Checkout />
             </Route>
+            <Route path={"/report"}>
+              <Report />
+            </Route>
           </Page>
         </ThemeProvider>
-      </DarkModeContext.Provider>
+      </GlobalContext.Provider>
     </Router>
   );
 }

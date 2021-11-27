@@ -6,12 +6,11 @@ import {
   TypographyProps,
   styled,
   Stack,
-  Divider,
 } from "@mui/material";
 import { AlphaTypo } from "../category/Category";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import { useCookies } from "react-cookie";
@@ -41,6 +40,7 @@ const CartItem: React.FC<{
   setData: Function;
 }> = ({ item, mode, updating, setUpdating, setData }) => {
   const [qty, setQty] = useState(item.quantity ? item.quantity : 0);
+  const [keys, setKeys] = useState<any[]>([]);
   const [cookies] = useCookies(["cookie-name"]);
   const {
     location: { pathname },
@@ -49,7 +49,7 @@ const CartItem: React.FC<{
   const changeQty = async (actionType: "plus" | "minus") => {
     setUpdating(true);
     let quantity = item.quantity;
-    if (actionType === "plus" && qty < item.product.keys.length) {
+    if (actionType === "plus" && qty < keys.length) {
       setQty((current: number) => current + 1);
       quantity = qty + 1;
     }
@@ -93,6 +93,14 @@ const CartItem: React.FC<{
     setUpdating(false);
   };
 
+  useEffect(() => {
+    if (!item) return;
+    const activeKeys = item.product.keys.filter((key: any) => {
+      return key.status === false;
+    });
+    setKeys(activeKeys);
+  },[item]);
+
   return (
     <>
       <Box className={"img-container"} sx={{ width: "25%" }}>
@@ -100,7 +108,7 @@ const CartItem: React.FC<{
           src={
             item.product.images.find((img: any) => {
               return img.type === "portrait";
-            }).url
+            })?.url
           }
           alt={item.product.name + "portrait"}
           style={{ width: "100%", borderRadius: "0.6rem" }}
@@ -129,7 +137,7 @@ const CartItem: React.FC<{
             <AlphaTypo sx={{ paddingBottom: "0.6rem" }}>
               {item.product.developer}
             </AlphaTypo>
-            <GoldenPriceTag mode={mode}>${item.product.price}</GoldenPriceTag>
+            <GoldenPriceTag mode={mode}>${item.product.sale_price}</GoldenPriceTag>
           </Box>
           <Stack
             direction={"row"}
@@ -196,7 +204,7 @@ const CartItem: React.FC<{
                 onClick={() => {
                   changeQty("plus");
                 }}
-                disabled={qty >= item.product.keys.length || updating}
+                disabled={qty >= keys.length || updating}
               >
                 <AddIcon />
               </Button>

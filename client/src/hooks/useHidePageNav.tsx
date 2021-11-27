@@ -1,8 +1,8 @@
 import { useContext, useEffect } from "react";
-import { DarkModeContext } from "../App";
+import { GlobalContext } from "../App";
 
 export const useTogglePageNav = (hide = true) => {
-  const value = useContext(DarkModeContext);
+  const value = useContext(GlobalContext);
   useEffect(() => {
     const { setHidePageNav } = value;
     if (setHidePageNav) {

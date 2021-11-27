@@ -3,19 +3,19 @@ import axios from "axios";
 import { useEffect, useState, createContext } from "react";
 import { useCookies } from "react-cookie";
 import { useHistory } from "react-router-dom";
-import { AlphaContainer } from "../cart/Cart";
+import { AlphaContainer, getProductPrice } from "../cart/Cart";
+import Paypal from "./paypal/Paypal";
 import Stripe from "./stripe/Stripe";
 
 export const CheckoutContext = createContext<any>(null);
 const Checkout = () => {
-  const [updating, setUpdating] = useState(false);
   const [processing, setProcessing] = useState(false);
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState(false);
   const [cancelled, setCancelled] = useState(false);
   const [cart, setCart] = useState<any>(null);
   const history = useHistory();
   const [cookies] = useCookies(["cookie-name"]);
+  console.log(cart)
 
   const createOrder = (order: any) => {
     const fetchData = async () => {
@@ -46,7 +46,7 @@ const Checkout = () => {
 
   const handleSuccess = (order: any) => {
     handleError("");
-    createOrder(order);
+    createOrder({ ...order, total: getProductPrice(cart) });
   };
 
   const handleCancelled = (order: any) => {
@@ -59,7 +59,6 @@ const Checkout = () => {
       cartId: cart._id,
       processing,
       error,
-      success,
       cancelled,
       handleProcessing,
       handleError,
@@ -69,7 +68,6 @@ const Checkout = () => {
   }
 
   useEffect(() => {
-    if (updating) return;
     const fetchData = async () => {
       try {
         const { data } = await axios.post(
@@ -89,7 +87,7 @@ const Checkout = () => {
       }
     };
     fetchData();
-  }, [updating, cookies, history]);
+  }, [cookies, history]);
 
   return (
     <CheckoutContext.Provider value={value}>
@@ -125,7 +123,7 @@ const Checkout = () => {
                       src={
                         item.product.images.find((image: any) => {
                           return image.type === "portrait";
-                        }).url
+                        })?.url
                       }
                       alt={""}
                       style={{ width: "100%" }}
@@ -150,6 +148,7 @@ const Checkout = () => {
           </Typography>
           <AlphaContainer sx={{ backgroundColor: "background.paper" }}>
             {cart && <Stripe />}
+            {cart && <Paypal />}
           </AlphaContainer>
         </Box>
       </Box>
