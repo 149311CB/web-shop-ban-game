@@ -4,8 +4,8 @@ import {
   ThemeProvider,
   useMediaQuery,
 } from "@mui/material";
-import React, { createContext, useEffect, useRef, useState } from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import React, { createContext, useCallback, useEffect, useState } from "react";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import Header from "./header/Header";
 import Page from "./page/Page";
 import { getTheme } from "./hooks/useTheme";
@@ -14,10 +14,11 @@ import Product from "./product/Product";
 import Cart from "./cart/Cart";
 import Checkout from "./checkout/Checkout";
 import Report from "./report/Report";
+import axios from "axios";
+import UserManager from "./user/manage/UserManager";
 
 export const GlobalContext = createContext<any>(null);
 function App() {
-  
   const [mode, setMode] = useState<PaletteMode>("dark");
 
   const [loginToken, setLoginToken] = useState<string | null>(null);
@@ -34,12 +35,27 @@ function App() {
     }),
     []
   );
+  const theme = React.useMemo(() => createTheme(getTheme(mode)), [mode]);
+
+  const verifyUser = useCallback(async () => {
+    const { data } = await axios.post("/api/users/token/refresh", null, {
+      withCredentials: true,
+    });
+    if (data && data.token) {
+      setLoginToken(data.token);
+    } else {
+      setLoginToken(null);
+    }
+    setTimeout(verifyUser, 5 * 60 * 1000);
+  }, [setLoginToken]);
 
   // useEffect(() => {
   //   setMode(prefersDarkMode ? "dark" : "light");
   // }, [prefersDarkMode]);
 
-  const theme = React.useMemo(() => createTheme(getTheme(mode)), [mode]);
+  useEffect(() => {
+    verifyUser();
+  }, [verifyUser]);
 
   return (
     <Router>
@@ -64,6 +80,9 @@ function App() {
             </Route>
             <Route path={"/report"}>
               <Report />
+            </Route>
+            <Route path={"/user"}>
+              <UserManager />
             </Route>
           </Page>
         </ThemeProvider>

@@ -5,7 +5,9 @@ import { InputValidationType } from "../../hooks/useFormValidation";
 const Email: React.FC<{
   setEmail: Function;
   emailValidation: InputValidationType;
-}> = ({ setEmail, emailValidation }) => {
+  disabled?: boolean;
+  children?: React.ReactNode;
+}> = ({ setEmail, emailValidation, disabled = false, children }) => {
   return (
     <TextField
       error={emailValidation.false}
@@ -18,7 +20,10 @@ const Email: React.FC<{
       onChange={(e) => {
         setEmail(e.target.value);
       }}
-    />
+      disabled={disabled}
+    >
+      {children}
+    </TextField>
   );
 };
 

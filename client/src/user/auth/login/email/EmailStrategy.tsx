@@ -7,7 +7,7 @@ import Password from "../../../../components/form/Password";
 import { useInputValidation } from "../../../../hooks/useFormValidation";
 import { GlobalContext } from "../../../../App";
 
-const EmailLoginPreview = styled(Button)(({ theme }) => ({
+export const EmailLoginPreview = styled(Button)(({ theme }) => ({
   width: "100%",
   color: theme.palette.text.primary,
   fontFamily: "brutal-regular",

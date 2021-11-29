@@ -10,9 +10,14 @@ import SearchIcon from "@mui/icons-material/Search";
 import PersonIcon from "@mui/icons-material/Person";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { GlobalContext } from "../App";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import AuthModal from "../user/auth/AuthModal";
 import { useState } from "react";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { useClickOutside } from "../hooks/useClickOutside";
+import { Button, Stack } from "@mui/material";
+import { StackItem } from "../product/BasicInfo";
+import AccountMenu from "./AccountMenu";
 
 interface styledProps {
   mode?: any;
@@ -73,8 +78,15 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function SearchNav() {
   const [open, setOpen] = useState(false);
-  const { mode } = React.useContext(GlobalContext);
+  const { mode, loginToken } = React.useContext(GlobalContext);
+  const [visible, setVisible, dropdownRef] = useClickOutside(false);
+
   const history = useHistory();
+
+  const handleCloseUserToolBar = () => {
+    setVisible((current: boolean) => !current);
+  };
+
   const handleClose = () => {
     setOpen(false);
   };
@@ -121,10 +133,14 @@ export default function SearchNav() {
               color="inherit"
               aria-label="open drawer"
               onClick={() => {
-                setOpen(true);
+                return !loginToken ? setOpen(true) : null;
               }}
             >
-              <PersonIcon fontSize={"small"} />
+              {loginToken ? (
+                <AccountMenu />
+              ) : (
+                <PersonIcon fontSize={"small"} />
+              )}
             </IconButton>
           </Toolbar>
         </AppBar>

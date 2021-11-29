@@ -2,14 +2,15 @@ import { Box, Button, Divider } from "@mui/material";
 import React, { createContext, useEffect, useMemo, useState } from "react";
 import { useCookies } from "react-cookie";
 import EmailStrategy from "./email/EmailStrategy";
+import FacebookStrategy from "./facebook/FacebookStrategy";
 
 export const LoginContext = createContext<any>(null);
 const LoginModal: React.FC<{ setRegister: Function }> = ({ setRegister }) => {
   const [token, setToken] = useState(null);
   const [loginMethods, setLoginMethods] = useState<any[]>([
-    <EmailStrategy preview={true} />,
+    <EmailStrategy preview={true} key={"email"}/>,
   ]);
-  const [choosenLoginMethod, setChoosenLoginMethod] = useState(<EmailStrategy />);
+  const [choosenLoginMethod, setChoosenLoginMethod] = useState(<FacebookStrategy />);
   /*eslint-disable*/
   const [cookies, setCookie] = useCookies(["login_token"]);
 
