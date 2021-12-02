@@ -1,50 +1,23 @@
-import { useContext, useEffect, useState } from "react";
-import {
-  alpha,
-  Box,
-  Button,
-  Divider,
-  Stack,
-  styled,
-  Typography,
-} from "@mui/material";
+import {useContext, useEffect, useState} from "react";
+import {Box, Button, Divider, Stack, Typography,} from "@mui/material";
 import axios from "axios";
-import { StackItem } from "../product/BasicInfo";
-import { GlobalContext } from "../App";
-import CartItem, { GoldenPriceTag } from "./CartItem";
-import { useHistory } from "react-router-dom";
-import { useCookies } from "react-cookie";
-
-export const AlphaContainer = styled(Box)(({ theme }) => ({
-  padding: "0.9rem",
-  border: "1px",
-  borderStyle: "solid",
-  borderColor: alpha(theme.palette.text.primary, 0.3),
-  borderRadius: "0.6rem",
-}));
-
-export const getProductPrice = (data: any) => {
-  let total = 0;
-  if (!data) return;
-  data.products.forEach((product: any) => {
-    if (product) {
-      if (product.product) {
-        total = total + product.product.sale_price * product.quantity;
-      }
-    }
-  });
-  return total;
-};
+import {GlobalContext} from "../App";
+import CartItem from "./CartItem";
+import {useHistory} from "react-router-dom";
+import {AlphaContainer} from "../components/AlphaContainer";
+import {getProductPrice} from "../utils/getProductPrice";
+import {GoldenPriceTag} from "../components/GoldenPriceTag";
+import {StackItem} from "../components/StackItem";
 
 const Cart = () => {
   const [data, setData] = useState<any>(null);
   const [updating, setUpdating] = useState(false);
   const { mode } = useContext(GlobalContext);
   const history = useHistory();
-  const [cookies] = useCookies(["cookie-name"]);
+  const { loginToken } = useContext(GlobalContext);
 
   useEffect(() => {
-    if (updating) return;
+    if (updating || !loginToken) return;
     const fetchData = async () => {
       const { data: cart } = await axios.post(
         "/api/carts/auth/active",
@@ -53,15 +26,21 @@ const Cart = () => {
           headers: {
             "Content-Type": "application/json",
             // @ts-ignore
-            Authorization: `Bearer ${cookies.login_token}`,
+            Authorization: `Bearer ${loginToken}`,
           },
         }
       );
       setData(cart);
     };
     fetchData();
-    window.scrollTo(0, 0);
-  }, [updating, cookies]);
+  }, [updating, loginToken]);
+
+  // useEffect(()=>{
+  //   window.addEventListener("wheel", (e)=>{
+  //     console.log(e)
+  //     // document.querySelector(".cart-main")?.scroll()
+  //   })
+  // },[])
 
   return (
     <Box
@@ -69,7 +48,7 @@ const Cart = () => {
       sx={{
         color: "text.primary",
         fontFamily: "brutal-regular",
-        // border: "1px solid yellow",
+        border: "1px solid yellow",
         width: "100%",
       }}
     >
@@ -93,6 +72,9 @@ const Cart = () => {
           sx={{
             width: "70%",
             backgroundColor: "background.paper",
+            // overflow: "scroll",
+            maxHeight: "80vh",
+            overflowY: "scroll",
           }}
         >
           <Stack

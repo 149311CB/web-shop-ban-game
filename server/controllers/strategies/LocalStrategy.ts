@@ -10,7 +10,6 @@ const authenticateUser = async (email: string, password: string, done: any) => {
   try {
     // @ts-ignore
     if (await user.matchPassword(password)) {
-      console.log(user)
       return done(null, user);
     } else {
       return done(null, false, {

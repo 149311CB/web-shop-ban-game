@@ -1,4 +1,5 @@
 import express from "express";
+import passport from "passport";
 import {
   authAddToCart,
   authCountItemInCart,
@@ -7,15 +8,22 @@ import {
   authUpdateQuantity,
   getAllCart,
 } from "../controllers/cartControllers";
-import { protect } from "../middlewares/protect";
 
 const router = express.Router();
 
 router.route("/").get(getAllCart);
-router.route("/auth/add").post(protect, authAddToCart);
-router.route("/auth/active").post(protect, authGetActiveCart);
-router.route("/auth/qty/update").post(protect, authUpdateQuantity);
-router.route("/auth/remove").post(protect, authRemoveFromCart);
-router.route("/auth/count").post(authCountItemInCart);
+router.route("/auth/add").post(passport.authenticate("jwt"), authAddToCart);
+router
+  .route("/auth/active")
+  .post(passport.authenticate("jwt"), authGetActiveCart);
+router
+  .route("/auth/qty/update")
+  .post(passport.authenticate("jwt"), authUpdateQuantity);
+router
+  .route("/auth/remove")
+  .post(passport.authenticate("jwt"), authRemoveFromCart);
+router
+  .route("/auth/count")
+  .get(passport.authenticate("jwt"), authCountItemInCart);
 
 export default router;

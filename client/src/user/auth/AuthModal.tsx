@@ -13,6 +13,8 @@ const style: any = {
   // border: "2px solid #000",
   boxShadow: 24,
   borderRadius: "0.3rem",
+  maxHeight: "90%",
+  overflowY: "scroll",
   p: 4,
 };
 
@@ -24,12 +26,18 @@ const AuthModal: React.FC<{ open: boolean; handleClose: any }> = ({
   return (
     <Modal
       open={open}
-      onClose={handleClose}
+      onClose={() => {
+        setRegister(false);
+        handleClose();
+      }}
       aria-labelledby="login-modal"
       aria-describedby="login-modal-des"
       sx={{ border: "1px solid red" }}
     >
-      <Box sx={{ ...style, ...{ width: register ? "450px" : "400px" } }}>
+      <Box
+        className={"auth-container"}
+        sx={{ ...style, ...{ width: register ? "450px" : "400px" } }}
+      >
         {register ? (
           <RegisterModal setRegister={setRegister} />
         ) : (

@@ -1,36 +1,12 @@
-import {
-  Box,
-  Button,
-  Typography,
-  OutlinedInput,
-  TypographyProps,
-  styled,
-  Stack,
-} from "@mui/material";
-import { AlphaTypo } from "../category/Category";
+import {Box, Button, OutlinedInput, Stack, Typography,} from "@mui/material";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
-import React, { useEffect, useState } from "react";
+import React, {useContext, useEffect, useState} from "react";
 import axios from "axios";
-import { useHistory } from "react-router-dom";
-import { useCookies } from "react-cookie";
-
-interface IGoldenPriceTagProps {
-  mode?: any;
-}
-
-export const GoldenPriceTag = styled(
-  (props: IGoldenPriceTagProps & TypographyProps) => <Typography {...props} />
-)(({ mode, theme }) => ({
-  display: "inline-flex",
-  textAlign: "center",
-  alignItems: "center",
-  padding: "0.3rem 0.6rem",
-  borderRadius: "0.3rem",
-  backgroundColor: mode === "dark" ? "hsl(54,76%,59%)" : "hsl(57, 76%, 65%)",
-  color: "hsl(0,0%,11%)",
-  fontFamily: "brutal-medium !important",
-}));
+import {useHistory} from "react-router-dom";
+import {GlobalContext} from "../App";
+import {GoldenPriceTag} from "../components/GoldenPriceTag";
+import {AlphaTypo} from "../components/AlphaTypo";
 
 const CartItem: React.FC<{
   item: any;
@@ -41,7 +17,7 @@ const CartItem: React.FC<{
 }> = ({ item, mode, updating, setUpdating, setData }) => {
   const [qty, setQty] = useState(item.quantity ? item.quantity : 0);
   const [keys, setKeys] = useState<any[]>([]);
-  const [cookies] = useCookies(["cookie-name"]);
+  const { loginToken, fetchCount } = useContext(GlobalContext);
   const {
     location: { pathname },
   } = useHistory();
@@ -68,7 +44,7 @@ const CartItem: React.FC<{
         headers: {
           "Content-Type": "application/json",
           // @ts-ignore
-          Authorization: `Bearer ${cookies.login_token}`,
+          Authorization: `Bearer ${loginToken}`,
         },
       }
     );
@@ -86,11 +62,12 @@ const CartItem: React.FC<{
         headers: {
           "Content-Type": "application/json",
           // @ts-ignore
-          Authorization: `Bearer ${cookies.login_token}`,
+          Authorization: `Bearer ${loginToken}`,
         },
       }
     );
     setUpdating(false);
+    fetchCount(loginToken)
   };
 
   useEffect(() => {
@@ -99,7 +76,7 @@ const CartItem: React.FC<{
       return key.status === false;
     });
     setKeys(activeKeys);
-  },[item]);
+  }, [item]);
 
   return (
     <>
@@ -137,7 +114,9 @@ const CartItem: React.FC<{
             <AlphaTypo sx={{ paddingBottom: "0.6rem" }}>
               {item.product.developer}
             </AlphaTypo>
-            <GoldenPriceTag mode={mode}>${item.product.sale_price}</GoldenPriceTag>
+            <GoldenPriceTag mode={mode}>
+              ${item.product.sale_price}
+            </GoldenPriceTag>
           </Box>
           <Stack
             direction={"row"}

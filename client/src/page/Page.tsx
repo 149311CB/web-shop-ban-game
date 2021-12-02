@@ -6,8 +6,9 @@ const Page: React.FC<React.ReactNode> = ({ children }) => {
     <Box
       sx={{
         width: { xs: "100%" },
-        minHeight: { xs: "100vh" },
+        minHeight: { xs: "90vh" },
         bgcolor: "background.default",
+        border: "1px solid blue",
       }}
     >
       <Container
@@ -17,7 +18,8 @@ const Page: React.FC<React.ReactNode> = ({ children }) => {
           maxWidth: {
             lg: "80%",
           },
-          paddingBottom: "1.2rem",
+          border: "1px solid red",
+          paddingBottom: "1.8rem",
         }}
       >
         {children}

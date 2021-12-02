@@ -13,6 +13,7 @@ export interface userTypes {
   refresh_token: string;
   facebook_id: string;
   avatar: string;
+  google_id: string;
 }
 
 const sessionSchema = new Schema({
@@ -37,7 +38,7 @@ const userSchema = new Schema<userTypes>({
   },
   birthday: {
     type: Date,
-    required: true,
+    required: false,
   },
   email: {
     type: String,
@@ -56,6 +57,10 @@ const userSchema = new Schema<userTypes>({
     default: "",
   },
   facebook_id: {
+    type: String,
+    required: false,
+  },
+  google_id: {
     type: String,
     required: false,
   },

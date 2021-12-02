@@ -10,7 +10,12 @@ const PageNavWrapper = styled("div")(({ theme }) => ({
   backdropFilter: "blur(25px)",
 }));
 
-const excludedPageNav = ["/cart", "/checkout", "/report"];
+const excludedPageNav = [
+  "/cart",
+  "/checkout",
+  "/report",
+  "/user"
+];
 const Header: React.FC<{ match: any }> = ({ match }) => {
   const {
     location: { pathname },
@@ -29,7 +34,11 @@ const Header: React.FC<{ match: any }> = ({ match }) => {
   }, [headerRef, hidePageNav]);
 
   useEffect(() => {
-    if (excludedPageNav.includes(pathname)) {
+    if (
+      excludedPageNav.some((value: any) => {
+        return pathname.includes(value);
+      })
+    ) {
       setHidePageNav(true);
       return;
     }

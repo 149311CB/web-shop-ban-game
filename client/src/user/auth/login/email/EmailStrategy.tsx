@@ -1,33 +1,11 @@
-import { alpha, Button, styled, Box } from "@mui/material";
+import {Box, Button} from "@mui/material";
 import axios from "axios";
-import React, { FormEvent, useContext, useEffect, useState } from "react";
-import { getTransparentOverlay } from "../../../../utils/transparentOverlay";
+import React, {FormEvent, useContext, useEffect, useState} from "react";
 import Email from "../../../../components/form/Email";
 import Password from "../../../../components/form/Password";
-import { useInputValidation } from "../../../../hooks/useFormValidation";
-import { GlobalContext } from "../../../../App";
-
-export const EmailLoginPreview = styled(Button)(({ theme }) => ({
-  width: "100%",
-  color: theme.palette.text.primary,
-  fontFamily: "brutal-regular",
-  fontSize: "0.75rem",
-  position: "relative",
-  border: "1px",
-  borderStyle: "solid",
-  borderColor: alpha(theme.palette.text.primary, 0.23),
-  "&::after": {
-    ...getTransparentOverlay({ alpha: 0, background: "hsl(100, 100%, 100%)" }),
-  },
-  padding: "0.9rem 0",
-  backgroundColor: "hsl(0,0%,17%)",
-  "&:hover": {
-    backgroundColor: "transparent",
-    "&::after": {
-      opacity: "0.05",
-    },
-  },
-}));
+import {useInputValidation} from "../../../../hooks/useFormValidation";
+import {GlobalContext} from "../../../../App";
+import {AlphaButton} from "../../AlphaButton";
 
 const EmailStrategy: React.FC<{ preview?: boolean }> = ({
   preview = false,
@@ -68,7 +46,7 @@ const EmailStrategy: React.FC<{ preview?: boolean }> = ({
   }, [emailValidation.false, passwordValidation.false]);
 
   if (preview) {
-    return <EmailLoginPreview>Login by email</EmailLoginPreview>;
+    return <AlphaButton>Login by email</AlphaButton>;
   }
 
   return (

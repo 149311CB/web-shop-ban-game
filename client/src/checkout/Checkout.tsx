@@ -1,35 +1,51 @@
-import { Box, Stack, Typography } from "@mui/material";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Box,
+  Divider,
+  Stack,
+  Typography,
+} from "@mui/material";
 import axios from "axios";
-import { useEffect, useState, createContext } from "react";
-import { useCookies } from "react-cookie";
+import { useEffect, useState, createContext, useContext } from "react";
 import { useHistory } from "react-router-dom";
-import { AlphaContainer, getProductPrice } from "../cart/Cart";
+import { GlobalContext } from "../App";
 import Paypal from "./paypal/Paypal";
 import Stripe from "./stripe/Stripe";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { AlphaContainer } from "../components/AlphaContainer";
+import { getProductPrice } from "../utils/getProductPrice";
+import { AlphaTypo } from "../components/AlphaTypo";
 
 export const CheckoutContext = createContext<any>(null);
 const Checkout = () => {
+  const [expanded, setExpanded] = useState<string | false>(false);
+  const handleChange =
+    (panel: string) => (_: React.SyntheticEvent, isExpanded: boolean) => {
+      setExpanded(isExpanded ? panel : false);
+    };
   const [processing, setProcessing] = useState(false);
   const [error, setError] = useState("");
   const [cancelled, setCancelled] = useState(false);
   const [cart, setCart] = useState<any>(null);
   const history = useHistory();
-  const [cookies] = useCookies(["cookie-name"]);
-  console.log(cart)
+  const { loginToken, fetchCount } = useContext(GlobalContext);
 
   const createOrder = (order: any) => {
     const fetchData = async () => {
-      await axios.post("/api/orders/create", order, {
+      const { data } = await axios.post("/api/orders/create", order, {
         headers: {
           "Content-Type": "application/json",
           // @ts-ignore
-          Authorization: `Bearer ${cookies.login_token}`,
+          Authorization: `Bearer ${loginToken}`,
         },
       });
       if (order.state === "cancelled") {
         setCancelled(true);
       } else {
-        history.push("/success");
+        fetchCount(loginToken);
+        history.push("/checkout/success", { createdOrder: data });
       }
     };
     fetchData();
@@ -68,6 +84,7 @@ const Checkout = () => {
   }
 
   useEffect(() => {
+    if (!loginToken) return;
     const fetchData = async () => {
       try {
         const { data } = await axios.post(
@@ -77,7 +94,7 @@ const Checkout = () => {
             headers: {
               "Content-Type": "application/json",
               // @ts-ignore
-              Authorization: `Bearer ${cookies.login_token}`,
+              Authorization: `Bearer ${loginToken}`,
             },
           }
         );
@@ -87,7 +104,7 @@ const Checkout = () => {
       }
     };
     fetchData();
-  }, [cookies, history]);
+  }, [history, loginToken]);
 
   return (
     <CheckoutContext.Provider value={value}>
@@ -115,19 +132,56 @@ const Checkout = () => {
             Cart Details
           </Typography>
           <AlphaContainer sx={{ backgroundColor: "background.paper" }}>
-            <Stack>
+            <Stack
+              divider={<Divider orientation="horizontal" flexItem />}
+              spacing={1}
+            >
               {cart &&
                 cart.products.map((item: any) => (
-                  <Box className={"img-container"} key={item._id}>
-                    <img
-                      src={
-                        item.product.images.find((image: any) => {
-                          return image.type === "portrait";
-                        })?.url
-                      }
-                      alt={""}
-                      style={{ width: "100%" }}
-                    />
+                  <Box
+                    className={"category-item"}
+                    sx={{
+                      width: "100%",
+                      height: "auto",
+                      borderRadius: "0.3rem",
+                      color: "text.primary",
+                      display: "flex",
+                      gap: "0.6rem",
+                    }}
+                    key={item._id}
+                  >
+                    <Box className={"img-container"} sx={{ width: "100%" }}>
+                      <img
+                        src={
+                          item.product.images.find((img: any) => {
+                            return img.type === "portrait";
+                          })?.url
+                        }
+                        style={{
+                          width: "100%",
+                          borderRadius: "0.3rem",
+                        }}
+                        alt={item.product.name + "portrait"}
+                        className={"game-thumnail"}
+                      />
+                    </Box>
+                    <Box sx={{ width: "100%" }}>
+                      <Typography
+                        className={"game-title"}
+                        sx={{ color: "text.primary" }}
+                      >
+                        {item.product.name}
+                      </Typography>
+                      <AlphaTypo className={"text-small game-developer"}>
+                        {item.product.developer}
+                      </AlphaTypo>
+                      <Box
+                        className={"game-price"}
+                        sx={{ paddingTop: "0.6rem", color: "text.primary" }}
+                      >
+                        ${item.product.sale_price}
+                      </Box>
+                    </Box>
                   </Box>
                 ))}
             </Stack>
@@ -147,8 +201,43 @@ const Checkout = () => {
             Payment
           </Typography>
           <AlphaContainer sx={{ backgroundColor: "background.paper" }}>
-            {cart && <Stripe />}
-            {cart && <Paypal />}
+            <Box
+              sx={{ display: "flex", gap: "0.3rem", paddingBottom: "0.9rem" }}
+            >
+              <Typography sx={{ fontSize: "1rem !important" }}>
+                Total:{" "}
+              </Typography>
+              <Typography sx={{ fontSize: "1rem !important" }}>
+                ${getProductPrice(cart)}
+              </Typography>
+            </Box>
+            <Accordion
+              expanded={expanded === "panel1"}
+              onChange={handleChange("panel1")}
+            >
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+              >
+                <Typography>Stripe</Typography>
+              </AccordionSummary>
+              <AccordionDetails>{cart && <Stripe />}</AccordionDetails>
+            </Accordion>
+
+            <Accordion
+              expanded={expanded === "panel2"}
+              onChange={handleChange("panel2")}
+            >
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+              >
+                <Typography>Paypal</Typography>
+              </AccordionSummary>
+              <AccordionDetails>{cart && <Paypal />}</AccordionDetails>
+            </Accordion>
           </AlphaContainer>
         </Box>
       </Box>

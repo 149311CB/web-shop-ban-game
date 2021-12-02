@@ -3,7 +3,7 @@ import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { useContext, useEffect, useState } from "react";
 import { CheckoutContext } from "../Checkout";
 import axios from "axios";
-import { useCookies } from "react-cookie";
+import { GlobalContext } from "../../App";
 
 const cardStyle = {
   style: {
@@ -34,7 +34,7 @@ const CheckoutForm = () => {
   } = useContext(CheckoutContext);
   const stripe = useStripe();
   const elements = useElements();
-  const [cookies] = useCookies(["cookie-name"]);
+  const { loginToken } = useContext(GlobalContext);
 
   const handleSubmit = async () => {
     handleProcessing(true);
@@ -44,6 +44,10 @@ const CheckoutForm = () => {
       //@ts-ignore
       card: elements.getElement(CardElement),
     });
+
+    if (!paymentMethod.paymentMethod) {
+      return;
+    }
 
     const payload = await stripe!.confirmCardPayment(clientSecret, {
       payment_method: paymentMethod.paymentMethod!.id,
@@ -85,7 +89,7 @@ const CheckoutForm = () => {
         headers: {
           "Content-Type": "application/json",
           // @ts-ignore
-          Authorization: `Bearer ${cookies.login_token}`,
+          Authorization: `Bearer ${loginToken}`,
         },
       });
       if (data.clientSecret) {
@@ -94,7 +98,7 @@ const CheckoutForm = () => {
     };
     fetchData();
     // @ts-ignore
-  }, [error, cancelled, cookies.login_token]);
+  }, [error, cancelled, loginToken]);
 
   return (
     <Box>

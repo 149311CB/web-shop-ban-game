@@ -1,17 +1,9 @@
-import {
-  alpha,
-  Box,
-  Button,
-  ButtonProps,
-  List,
-  ListItem,
-  styled,
-} from "@mui/material";
-import React, { useRef, useState } from "react";
-import { useAnimationFrame } from "../hooks/useAnimationFrame";
+import {Box, Button, ButtonProps, List, styled,} from "@mui/material";
+import React, {useRef, useState} from "react";
+import {useAnimationFrame} from "../hooks/useAnimationFrame";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import { getTransparentOverlay } from "../utils/transparentOverlay";
+import {AlphaListItem} from "../components/AlphaListItem";
 
 interface ICarouselButtonProps {
   direction: "left" | "right";
@@ -31,30 +23,6 @@ const CarouselButton = styled((props: ICarouselButtonProps & ButtonProps) => (
   "&:hover": {
     backgroundColor: "transparent",
   },
-}));
-
-export const AlphaListItem = styled(ListItem)(({ theme }) => ({
-  "&.active": {
-    transition: "opacity 250ms ease-in-out",
-    borderWidth: "1px",
-    borderStyle: "solid",
-    borderColor: alpha(theme.palette.text.secondary, 0.6),
-    "&::after": {
-      opacity: 0,
-    },
-  },
-  "&::after": {
-    ...getTransparentOverlay({
-      background: theme.palette.background.default,
-    }),
-  },
-}));
-
-export const ActiveListItem = styled(ListItem)(({ theme }) => ({
-  transition: "opacity 5s ease-in-out",
-  borderWidth: "1px",
-  borderStyle: "solid",
-  borderColor: alpha(theme.palette.text.secondary, 0.6),
 }));
 
 const GameCarousel: React.FC<{ data: any }> = ({ data }) => {

@@ -15,8 +15,8 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { AlphaContainer } from "../cart/Cart";
 import { pdfGenerator } from "./PdfGenerator";
+import {AlphaContainer} from "../components/AlphaContainer";
 
 const Report = () => {
   const [orders, setOrders] = useState<any>(null);

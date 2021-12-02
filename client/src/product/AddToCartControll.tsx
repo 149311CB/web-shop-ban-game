@@ -1,21 +1,35 @@
-import React, { useEffect } from "react";
-import { Box, Button, FormControl, Select, MenuItem } from "@mui/material";
-import { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import {
+  Alert,
+  Box,
+  FormControl,
+  MenuItem,
+  Select,
+  Snackbar,
+} from "@mui/material";
 import axios from "axios";
-import { useCookies } from "react-cookie";
+import { GlobalContext } from "../App";
+import { PrimaryButton } from "../components/PrimaryButton";
 
 const AddToCartControll: React.FC<{ data: any }> = ({ data }) => {
   const [qty, setQty] = useState<number>(1);
   const [keys, setKeys] = useState<any[]>([]);
-  const [cookies] = useCookies(["cookie-name"]);
+  const [open, setOpen] = useState<boolean>(false);
+  const [maxQuantity, setMaxQuantity] = useState<number>(0);
+  const [inCart, setInCart] = useState<number>(0);
+  const { loginToken, fetchCount } = useContext(GlobalContext);
 
   const changeQty = (e: any) => {
     const selectedQty = parseInt(e.target.value);
     setQty(selectedQty);
   };
 
+  const handleClose = () => {
+    setOpen(!open);
+  };
+
   const addToCart = async () => {
-    await axios.post(
+    const { data: reponseData } = await axios.post(
       "/api/carts/auth/add",
       {
         product: { _id: data._id, quantity: qty },
@@ -24,10 +38,23 @@ const AddToCartControll: React.FC<{ data: any }> = ({ data }) => {
         headers: {
           "Content-Type": "application/json",
           // @ts-ignore
-          Authorization: `Bearer ${cookies.login_token}`,
+          Authorization: `Bearer ${loginToken}`,
         },
       }
     );
+
+    if (reponseData.message === "exceed quantity") {
+      setMaxQuantity(reponseData.details.max);
+      setInCart(reponseData.details.in_cart);
+      setOpen(true);
+    } else {
+      if (fetchCount) {
+        fetchCount(loginToken, true, {
+          ...data,
+          quantity: reponseData.qty_in_cart,
+        });
+      }
+    }
   };
 
   useEffect(() => {
@@ -74,29 +101,36 @@ const AddToCartControll: React.FC<{ data: any }> = ({ data }) => {
           ))}
         </Select>
       </FormControl>
-      <Button
-        className={"checkout-btn"}
-        sx={{
-          color: "text.primary",
-          bgcolor: "info.main",
-          fontFamily: "brutal-medium",
-          fontSize: "0.75rem",
-          width: "100%",
-          padding: "0.9rem 0",
-          borderTopLeftRadius: "0",
-          borderBottomLeftRadius: "0",
-          "&:hover": {
-            backgroundColor: "info.main",
-          },
-        }}
+      <PrimaryButton
         onClick={() => {
           addToCart();
         }}
       >
-        ADD TO CART
-      </Button>
+        Add to cart
+      </PrimaryButton>
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        autoHideDuration={5000}
+        open={open}
+        onClose={handleClose}
+        message="I love snacks"
+      >
+        <Alert
+          onClose={handleClose}
+          severity="error"
+          sx={{
+            width: "100%",
+            backgroundColor: "error.main",
+            color: "background.default",
+          }}
+        >
+          Max quantity for this item is {maxQuantity} and your cart already have{" "}
+          {inCart}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };
 
 export default AddToCartControll;
+

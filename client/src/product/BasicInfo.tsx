@@ -1,41 +1,7 @@
 import React from "react";
-import {
-  Box,
-  Divider,
-  Typography,
-  Stack,
-  styled,
-  BoxProps,
-} from "@mui/material";
-import { AlphaTypo } from "../category/Category";
-import { getTransparentOverlay } from "../utils/transparentOverlay";
-
-export const StackItem = styled(
-  (
-    props: {
-      hover?: boolean;
-      radius?: string;
-    } & BoxProps
-  ) => <Box {...props} />
-)(({ theme, hover, radius }) => ({
-  color: theme.palette.text.secondary,
-  display: "flex",
-  justifyContent: "space-between",
-  fontSize: "0.875rem",
-  position: "relative",
-  "&::after": {
-    ...getTransparentOverlay({
-      alpha: 0,
-      background: "hsl(100, 100%, 100%)",
-      radius: radius,
-    }),
-  },
-  "&:hover": {
-    "&::after": {
-      opacity: hover ? "0.16" : "",
-    },
-  },
-}));
+import {Divider, Stack, Typography,} from "@mui/material";
+import {AlphaTypo} from "../components/AlphaTypo";
+import {StackItem} from "../components/StackItem";
 
 const BasicInfo: React.FC<{ data: any }> = ({ data }) => {
   return (

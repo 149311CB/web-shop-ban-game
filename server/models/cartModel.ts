@@ -4,6 +4,7 @@ import { IGame } from "../types/gameTypes";
 export interface IItem {
   product: IGame | string | null;
   quantity: number;
+  keys: [string] | [];
 }
 
 export interface ICart {
@@ -21,6 +22,10 @@ const itemSchema = new Schema<IItem>({
   quantity: {
     type: Number,
     required: true,
+  },
+  keys: {
+    type: [String],
+    required: false,
   },
 });
 

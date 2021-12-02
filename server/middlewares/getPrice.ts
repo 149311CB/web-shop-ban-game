@@ -2,7 +2,8 @@ import asyncHandler from "express-async-handler";
 import { Cart } from "../models/cartModel";
 
 const getPrice = asyncHandler(async (req, res, next) => {
-  const { user } = req.body;
+  const { user } = req;
+  if (!user) return res.status(401);
   const cart = await Cart.findOne({ user: user._id, status: true }).populate({
     path: "products.product",
     select: "sale_price",
@@ -12,8 +13,6 @@ const getPrice = asyncHandler(async (req, res, next) => {
 
   if (cart) {
     cart.products.forEach((item) => {
-      //@ts-ignore
-      console.log(item.product.sale_price)
       //@ts-ignore
       total = total + item.quantity * item.product.sale_price;
     });

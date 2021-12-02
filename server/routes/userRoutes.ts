@@ -29,9 +29,17 @@ router
   .route("/login/facebook/callback")
   .get(passport.authenticate("facebook"), login);
 
+router
+  .route("/login/google")
+  .get(passport.authenticate("google", { scope: ["profile", "email"] }));
+
+router
+  .route("/login/google/callback")
+  .get(passport.authenticate("google"), login);
+
 router.route("/login").post(passport.authenticate("local"), login);
 router.route("/token/refresh").post(refreshTokenController);
-router.route("/logout").post(verifyUser, logout);
+router.route("/logout").get(verifyUser, logout);
 router.route("/details").post(verifyUser, getUserDetails);
 
 export default router;

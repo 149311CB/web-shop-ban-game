@@ -7,7 +7,8 @@ const getAllCart = asyncHandler(async (_, res) => {
 });
 
 const authAddToCart = asyncHandler(async (req, res) => {
-  const { user, product } = req.body;
+  const { user } = req;
+  const { product } = req.body;
   try {
     let exist;
     if (user) {
@@ -19,22 +20,26 @@ const authAddToCart = asyncHandler(async (req, res) => {
         match: { _id: { $eq: product._id } },
         option: { limit: 1 },
       });
+    } else {
+      return res.status(401);
     }
 
     if (exist) {
       const existItem: any = exist.products.find((item: IItem) => {
         return item.product !== null;
       });
+      let quantityInCart = product.quantity;
 
       if (existItem) {
-        if (
-          existItem.quantity + product.quantity >
-          existItem.product.keys.length
-        ) {
-          return res.status(400).json({
-            message: `this item can only be bought up to ${existItem.product.keys.length}`,
+        const availabledKeys = existItem.product.keys.filter((key: any) => {
+          return key.status === false;
+        });
+
+        if (existItem.quantity + product.quantity > availabledKeys.length) {
+          return res.status(200).json({
+            message: `exceed quantity`,
             details: {
-              max: existItem.product.keys.length,
+              max: availabledKeys.length,
               in_cart: existItem.quantity,
               request: product.quantity,
             },
@@ -42,26 +47,18 @@ const authAddToCart = asyncHandler(async (req, res) => {
         }
 
         existItem.quantity = existItem.quantity + product.quantity;
+        quantityInCart = existItem.quantity;
       } else {
-        // if (product.quantity > existItem.product.keys.length) {
-        //   return res.status(400).json({
-        //     message: `this item can only be bought up to ${existItem.product.keys.length}`,
-        //     details: {
-        //       max: existItem.product.keys.length,
-        //       in_cart: 0,
-        //       request: product.quantity,
-        //     },
-        //   });
-        // }
         exist.products.push({
           product: product._id,
           quantity: product.quantity,
+          keys: [],
         });
       }
 
-      const cart = await exist.save();
+      await exist.save();
 
-      return res.status(201).json(cart);
+      return res.status(200).json({ qty_in_cart: quantityInCart });
     } else {
       const newCart = new Cart({
         user: user._id,
@@ -70,7 +67,7 @@ const authAddToCart = asyncHandler(async (req, res) => {
       });
 
       const cart = await newCart.save();
-      res.status(201).json(cart);
+      return res.status(201).json(cart);
     }
   } catch (error: any) {
     res.status(500).json({ message: error.message });
@@ -78,7 +75,8 @@ const authAddToCart = asyncHandler(async (req, res) => {
 });
 
 const authGetActiveCart = asyncHandler(async (req, res) => {
-  const { user, select } = req.body;
+  const { user } = req;
+  const { select } = req.body;
   let exist;
   if (user) {
     exist = await Cart.findOne({
@@ -95,7 +93,7 @@ const authGetActiveCart = asyncHandler(async (req, res) => {
     return res.status(404).json({ message: "not found" });
   }
 
-  return res.status(201).json({
+  return res.status(200).json({
     _id: exist._id,
     products: exist.products,
     status: exist.status,
@@ -104,8 +102,12 @@ const authGetActiveCart = asyncHandler(async (req, res) => {
 });
 
 const authUpdateQuantity = asyncHandler(async (req, res) => {
-  const { user, product } = req.body;
+  const { user } = req;
+  const { product } = req.body;
   try {
+    if (!user) {
+      return res.status(401);
+    }
     const exist = await Cart.findOne({
       user: user._id,
       status: true,
@@ -135,15 +137,19 @@ const authUpdateQuantity = asyncHandler(async (req, res) => {
     updateItem.quantity = product.quantity;
 
     const updatedCart = await exist.save();
-    res.status(201).json(updatedCart);
+    res.status(200).json(updatedCart);
   } catch (error: any) {
     res.status(500).json(error.message);
   }
 });
 
 const authRemoveFromCart = asyncHandler(async (req, res) => {
-  const { user, product } = req.body;
+  const { user } = req;
+  const { product } = req.body;
   try {
+    if (!user) {
+      return res.status(401);
+    }
     let exist;
     if (user) {
       exist = await Cart.findOne({
@@ -165,7 +171,7 @@ const authRemoveFromCart = asyncHandler(async (req, res) => {
         }
         // console.log(exist.products);
         const updatedCart = await exist.save();
-        return res.status(201).json(updatedCart);
+        return res.status(200).json(updatedCart);
       } else {
         return res.json({ message: "cart not found" });
       }
@@ -176,15 +182,20 @@ const authRemoveFromCart = asyncHandler(async (req, res) => {
 });
 
 const authCountItemInCart = asyncHandler(async (req, res) => {
-  const { user } = req.body;
+  const { user } = req;
   try {
-    const exist = await Cart.findOne({ user: user, status: true });
+    if (!user) return res.status(401);
+    const exist = await Cart.findOne({ user: user._id, status: true });
+    let totalItems = 0;
     if (exist) {
-      return res.json({ count: exist.products.length });
+      exist.products.forEach((product: any) => {
+        totalItems = totalItems + product.quantity;
+      });
+      return res.status(200).json({ count: exist.products.length, totalItems });
     }
-    return res.status(404);
+    return res.status(404).json({ message: "not cart found" });
   } catch (error) {
-    return res.status(500).json({ message: error });
+    res.status(500);
   }
 });
 

@@ -8,20 +8,21 @@ import React, { createContext, useCallback, useEffect, useState } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import Header from "./header/Header";
 import Page from "./page/Page";
-import { getTheme } from "./hooks/useTheme";
+import { getTheme } from "./utils/getTheme.ts/useTheme";
 import Homepage from "./homepage/Homepage";
 import Product from "./product/Product";
 import Cart from "./cart/Cart";
-import Checkout from "./checkout/Checkout";
 import Report from "./report/Report";
 import axios from "axios";
 import UserManager from "./user/manage/UserManager";
+import CheckoutSwitcher from "./checkout/CheckoutSwitcher";
 
 export const GlobalContext = createContext<any>(null);
 function App() {
   const [mode, setMode] = useState<PaletteMode>("dark");
 
   const [loginToken, setLoginToken] = useState<string | null>(null);
+
   // const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
 
   const colorMode = React.useMemo(
@@ -35,6 +36,7 @@ function App() {
     }),
     []
   );
+
   const theme = React.useMemo(() => createTheme(getTheme(mode)), [mode]);
 
   const verifyUser = useCallback(async () => {
@@ -60,7 +62,12 @@ function App() {
   return (
     <Router>
       <GlobalContext.Provider
-        value={{ colorMode, mode, loginToken, setLoginToken }}
+        value={{
+          colorMode,
+          mode,
+          loginToken,
+          setLoginToken,
+        }}
       >
         <ThemeProvider theme={theme}>
           {/* <Starter /> */}
@@ -76,7 +83,7 @@ function App() {
               <Cart />
             </Route>
             <Route path={"/checkout"}>
-              <Checkout />
+              <CheckoutSwitcher />
             </Route>
             <Route path={"/report"}>
               <Report />

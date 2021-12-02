@@ -26,7 +26,7 @@ passport.use(
           email: profile.emails![0].value,
           phone_number: "",
           password: "",
-          birthday: new Date(),
+          birthday: null,
           facebook_id: profile.id,
           avatar: profile.photos![0].value,
         });

@@ -1,8 +1,9 @@
 import jwt from "jsonwebtoken";
-import passport from "passport";
 const dev = process.env.NODE_ENV !== "production";
 
-const CookiesOptions = {
+const COOKIES_OPTIONS = {
+  path: "/",
+  domain:"localhost",
   httpOnly: true,
   secure: !dev,
   signed: true,
@@ -28,4 +29,4 @@ const generateRefreshToken = (payload: Object) => {
   }
 };
 
-export { generateToken, generateRefreshToken, CookiesOptions };
+export { generateToken, generateRefreshToken, COOKIES_OPTIONS };

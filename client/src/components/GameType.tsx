@@ -10,6 +10,7 @@ const GameType: React.FC<{ type: string }> = ({ type }) => {
         padding: "0.3rem 0.6rem",
         borderRadius: "0.3rem",
         fontSize: "0.875rem",
+        color:"hsl(0, 0%, 11%)"
       }}
     >
       {type}

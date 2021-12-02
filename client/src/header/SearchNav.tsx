@@ -8,16 +8,12 @@ import Typography from "@mui/material/Typography";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
 import PersonIcon from "@mui/icons-material/Person";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { GlobalContext } from "../App";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import AuthModal from "../user/auth/AuthModal";
 import { useState } from "react";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import { useClickOutside } from "../hooks/useClickOutside";
-import { Button, Stack } from "@mui/material";
-import { StackItem } from "../product/BasicInfo";
 import AccountMenu from "./AccountMenu";
+import ShoppingCartBadge from "./ShoppingCartBadge";
 
 interface styledProps {
   mode?: any;
@@ -32,13 +28,13 @@ const Search = styled(
   borderRadius: theme.shape.borderRadius,
   backgroundColor:
     mode === "light"
-      ? alpha(theme.palette.primary.dark, 0.15)
-      : alpha(theme.palette.primary.light, 0.15),
+      ? alpha(theme.palette.common.black, 0.15)
+      : alpha(theme.palette.common.white, 0.15),
   "&:hover": {
     backgroundColor:
       mode === "light"
-        ? alpha(theme.palette.primary.dark, 0.25)
-        : alpha(theme.palette.primary.light, 0.25),
+        ? alpha(theme.palette.common.black, 0.25)
+        : alpha(theme.palette.common.white, 0.25),
   },
   marginLeft: 0,
   width: "100%",
@@ -78,34 +74,34 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function SearchNav() {
   const [open, setOpen] = useState(false);
-  const { mode, loginToken } = React.useContext(GlobalContext);
-  const [visible, setVisible, dropdownRef] = useClickOutside(false);
-
+  const value = React.useContext(GlobalContext);
+  const { mode, loginToken } = value;
   const history = useHistory();
-
-  const handleCloseUserToolBar = () => {
-    setVisible((current: boolean) => !current);
-  };
 
   const handleClose = () => {
     setOpen(false);
   };
+
   return (
     <div className={"header"}>
-      <Box sx={{ flexGrow: 1, bgcolor: "primary.dark" }}>
+      <Box sx={{ flexGrow: 1, bgcolor: "common.black" }}>
         <AppBar
           position="static"
-          sx={{ bgcolor: "primary.dark", boxShadow: "none" }}
+          sx={{ bgcolor: "common.black", boxShadow: "none" }}
         >
-          <Toolbar sx={{ bgcolor: "primary.dark" }}>
-            <Typography
-              variant="h6"
-              noWrap
-              component="div"
-              sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
-            >
-              MUI
-            </Typography>
+          <Toolbar sx={{ bgcolor: "common.black" }}>
+            <Box sx={{ flexGrow: 1 }}>
+              <Box
+                sx={{
+                  width: "50px",
+                  height: "50px",
+                  borderRadius: "50%",
+                  bgcolor: "background.paper",
+                  cursor: "pointer",
+                }}
+                onClick={() => history.push("/")}
+              />
+            </Box>
             <Search mode={mode}>
               <SearchIconWrapper>
                 <SearchIcon fontSize={"small"} />
@@ -115,33 +111,23 @@ export default function SearchNav() {
                 inputProps={{ "aria-label": "search" }}
               />
             </Search>
-            <IconButton
-              size="small"
-              edge="start"
-              color="inherit"
-              aria-label="open drawer"
-              sx={{ ml: 2 }}
-              onClick={() => {
-                history.push("/cart");
-              }}
-            >
-              <ShoppingCartIcon fontSize={"small"} />
-            </IconButton>
-            <IconButton
-              size="small"
-              edge="start"
-              color="inherit"
-              aria-label="open drawer"
-              onClick={() => {
-                return !loginToken ? setOpen(true) : null;
-              }}
-            >
-              {loginToken ? (
-                <AccountMenu />
-              ) : (
+            <ShoppingCartBadge />
+            {loginToken ? (
+              <AccountMenu />
+            ) : (
+              <IconButton
+                size="small"
+                edge="start"
+                color="inherit"
+                aria-label="open drawer"
+                onClick={() => {
+                  return !loginToken ? setOpen(true) : null;
+                }}
+              >
                 <PersonIcon fontSize={"small"} />
-              )}
-            </IconButton>
+                <span style={{ fontFamily: "brutal-regular", fontSize:"0.875rem" }}>Login</span>
+              </IconButton>
+            )}
           </Toolbar>
         </AppBar>
       </Box>

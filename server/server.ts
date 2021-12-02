@@ -11,6 +11,7 @@ dotenv.config();
 
 import "./controllers/strategies/jwtStrategy";
 import "./controllers/strategies/facebookStrategy";
+import "./controllers/strategies/googleStrategy";
 import "./controllers/strategies/LocalStrategy";
 
 import sampleRoutes from "./routes/sampleRoutes";
@@ -29,11 +30,11 @@ app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(passport.initialize());
 app.use(
   cors({
-    origin: "*",
+    origin: "*", // will be changed later?
     methods: "GET,POST,PUT,DELETE",
     credentials: true,
   })
-); // will be changed later?
+);
 
 app.get("/", (_, res) => {
   res.send("API is running");

@@ -6,38 +6,61 @@ import MenuItem from "@mui/material/MenuItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
 import Tooltip from "@mui/material/Tooltip";
-import PersonAdd from "@mui/icons-material/PersonAdd";
 import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 import axios from "axios";
 import { GlobalContext } from "../App";
+import { useHistory } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
 
 export default function AccountMenu() {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const { loginToken } = React.useContext(GlobalContext);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [avatar, setAvater] = useState<any>(null);
+  const { loginToken } = useContext(GlobalContext);
+  const history = useHistory();
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
+
   const handleLogout = async () => {
-    await axios.post("/api/users/logout", null, {
+    await axios.get("/api/users/logout", {
       withCredentials: true,
       headers: {
         Authorization: `Bearer ${loginToken}`,
       },
     });
+    console.log("logged out")
+    window.location.reload()
   };
+
+  useEffect(() => {
+    if (!loginToken) {
+      return;
+    }
+
+    const fetchData = async () => {
+      const { data } = await axios.post("/api/users/details", null, {
+        headers: {
+          Authorization: `Bearer ${loginToken}`,
+        },
+      });
+      setAvater(data.avatar);
+    };
+    fetchData();
+  }, [loginToken]);
+
   return (
     <React.Fragment>
       <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
         <Tooltip title="Account settings">
           <IconButton onClick={handleClick} size="small">
-            <Avatar sx={{ width: 25, height: 25 }}>M</Avatar>
+            <Avatar sx={{ width: 25, height: 25 }} srcSet={avatar}></Avatar>
           </IconButton>
         </Tooltip>
       </Box>
@@ -75,7 +98,7 @@ export default function AccountMenu() {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem>
+        <MenuItem onClick={() => history.push("/user")}>
           <Avatar /> Profile
         </MenuItem>
         <MenuItem>

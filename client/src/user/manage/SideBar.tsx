@@ -1,10 +1,13 @@
 import { Box, Divider, Stack } from "@mui/material";
 import React from "react";
-import { Link } from "react-router-dom";
-import { AlphaContainer } from "../../cart/Cart";
-import { StackItem } from "../../product/BasicInfo";
+import { Link, useHistory } from "react-router-dom";
+import { AlphaContainer } from "../../components/AlphaContainer";
+import { StackItem } from "../../components/StackItem";
 
 const SideBar: React.FC<{ url: string }> = ({ url }) => {
+  const {
+    location: { pathname },
+  } = useHistory();
   return (
     <AlphaContainer
       sx={{
@@ -23,26 +26,33 @@ const SideBar: React.FC<{ url: string }> = ({ url }) => {
         sx={{
           ".custom-stack-item": {
             cursor: "pointer",
-            padding: "1.2rem",
             display: "flex",
             justifyContent: "center",
-            "a":{
-              zIndex:2
-            }
+            a: {
+              padding: "1.2rem",
+              zIndex: 2,
+            },
           },
         }}
       >
         <StackItem
+          active={pathname.includes("profile")}
           hover={true}
           radius={"0.3rem 0.3rem 0 0"}
           className={"custom-stack-item"}
         >
           <Link to={`${url}/profile`}>Account</Link>
         </StackItem>
-        <StackItem hover={true} radius={"0"} className={"custom-stack-item"}>
-          <Link to={`${url}/social`}>Social</Link>
+        <StackItem
+          active={pathname.includes("orders")}
+          hover={true}
+          radius={"0"}
+          className={"custom-stack-item"}
+        >
+          <Link to={`${url}/orders`}>Orders</Link>
         </StackItem>
         <StackItem
+          active={pathname.includes("social")}
           hover={true}
           radius={"0 0 0.3rem 0.3rem"}
           className={"custom-stack-item"}

@@ -3,7 +3,7 @@ import User from "../models/userModel";
 import {
   generateToken,
   generateRefreshToken,
-  CookiesOptions,
+  COOKIES_OPTIONS,
 } from "../utils/generateToken";
 import jwt from "jsonwebtoken";
 
@@ -24,11 +24,13 @@ const login = asyncHandler(async (req, res) => {
       const refreshToken = generateRefreshToken({ userId: _id });
       exist.refresh_token = refreshToken!;
       await exist.save();
-      res.cookie("refresh_token", refreshToken, CookiesOptions);
+      res.cookie("refresh_token", refreshToken, COOKIES_OPTIONS);
+      // res
+      //   .json({
+      //     login: "success",
+      //     token: generateToken({ userId: _id }),
+      //   })
       res.redirect("https://localhost:3000");
-      res.json({
-        token: generateToken({ userId: _id }),
-      });
     } catch (error: any) {
       return res.status(500).json({ message: error.message });
     }
@@ -82,7 +84,7 @@ const registerUser = asyncHandler(async (req, res) => {
     await user.save();
 
     if (user) {
-      res.cookie("refresh_token", refreshToken, CookiesOptions);
+      res.cookie("refresh_token", refreshToken, COOKIES_OPTIONS);
       res.status(201).json({
         token: token,
       });
@@ -124,8 +126,8 @@ const refreshTokenController = asyncHandler(async (req, res) => {
         const newRefreshToken = generateRefreshToken({ userId: user._id });
         user.refresh_token = newRefreshToken!;
         await user.save();
-        res.cookie("refresh_token", newRefreshToken, CookiesOptions);
-        return res.status(201).json({ token: token });
+        res.cookie("refresh_token", newRefreshToken, COOKIES_OPTIONS);
+        return res.status(200).json({ token: token });
       }
     } catch (error: any) {
       return res.status(500).json({ message: error.message });
@@ -134,11 +136,18 @@ const refreshTokenController = asyncHandler(async (req, res) => {
 });
 
 const getUserDetails = asyncHandler(async (req, res) => {
+  const query = req.query;
+  let select = Object.keys(query).join(" ");
+  if (!/\S/.test(select) || select === null || select === undefined) {
+    select = "-password -refresh_token";
+  }
+
   if (!req.user) {
     return res.status(401);
   }
+  const user = await User.findById(req.user._id).select(select);
   try {
-    return res.status(201).json(req.user);
+    return res.status(200).json(user);
   } catch (error: any) {
     return res.status(500).json({ message: error.message });
   }
@@ -161,9 +170,10 @@ const logout = asyncHandler(async (req, res) => {
     }
     user.refresh_token = "";
     await user.save();
-    res.clearCookie("refresh_token", CookiesOptions);
-    res.status(201);
+    res.clearCookie("refresh_token", COOKIES_OPTIONS);
+    res.status(200).json({message:"success logout"})
   } catch (error) {
+    console.log(error);
     return res.status(500);
   }
 });

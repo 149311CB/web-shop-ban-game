@@ -1,7 +1,6 @@
-import { alpha, Box, Button, styled, TextField } from "@mui/material";
+import { Box, Button, TextField } from "@mui/material";
 import axios from "axios";
 import { FormEvent, useContext, useEffect, useState } from "react";
-import { getTransparentOverlay } from "../../../../utils/transparentOverlay";
 import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
@@ -13,28 +12,6 @@ import { useInputValidation } from "../../../../hooks/useFormValidation";
 import PhoneNumber from "../../../../components/form/PhoneNumber";
 import Email from "../../../../components/form/Email";
 import { GlobalContext } from "../../../../App";
-
-const EmailRegPreview = styled(Button)(({ theme }) => ({
-  width: "100%",
-  color: theme.palette.text.primary,
-  fontFamily: "brutal-regular",
-  fontSize: "0.75rem",
-  position: "relative",
-  border: "1px",
-  borderStyle: "solid",
-  borderColor: alpha(theme.palette.text.primary, 0.23),
-  "&::after": {
-    ...getTransparentOverlay({ alpha: 0, background: "hsl(100, 100%, 100%)" }),
-  },
-  padding: "0.9rem 0",
-  backgroundColor: "hsl(0,0%,17%)",
-  "&:hover": {
-    backgroundColor: "transparent",
-    "&::after": {
-      opacity: "0.05",
-    },
-  },
-}));
 
 const EmailStrategy = () => {
   const [disabled, setDisabled] = useState(true);

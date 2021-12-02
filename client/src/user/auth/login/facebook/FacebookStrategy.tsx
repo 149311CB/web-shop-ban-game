@@ -1,17 +1,37 @@
-import { Button } from "@mui/material";
-import axios from "axios";
-import React from "react";
+import { AlphaButton } from "../../AlphaButton";
+import { ReactComponent as FacebookIcon } from "../../../../assets/facebook-rounded-logo.svg";
 
-const FacebookStrategy = () => {
-  const loginWithFacebook = async () => {
+const FacebookStrategy: React.FC<{ register?: boolean }> = ({
+  register = false,
+}) => {
+  const loginWithFacebook = () => {
     window.open("https://localhost:5000/api/users/login/facebook", "_self");
-    // const { data } = await axios.get(
-    //   "/api/users/login/facebook"
-    // );
-    // console.log(data);
   };
 
-  return <Button onClick={loginWithFacebook}>Login with facebook</Button>;
+  return (
+    <AlphaButton
+      onClick={loginWithFacebook}
+      sx={{
+        padding: "0.9rem 0",
+        bgcolor: "hsl(214, 89%, 52%)",
+        gap: "0.6rem",
+        "&:hover": {
+          bgcolor: "hsl(214, 89%, 52%)",
+          "&::after": {
+            opacity: "0.1",
+          },
+        },
+      }}
+    >
+      <span
+        className={"login-facebook-icon"}
+        style={{ display: "flex", alignItems: "center" }}
+      >
+        <FacebookIcon />
+      </span>
+      {!register ? "Login" : "Register"} with facebook
+    </AlphaButton>
+  );
 };
 
 export default FacebookStrategy;

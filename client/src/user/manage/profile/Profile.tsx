@@ -2,20 +2,28 @@ import { Box, TextField } from "@mui/material";
 import axios from "axios";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { GlobalContext } from "../../../App";
-import { AlphaContainer } from "../../../cart/Cart";
+import { AlphaContainer } from "../../../components/AlphaContainer";
 
 const Profile = () => {
   const [userDetails, setUserDetails] = useState<any>(null);
+  console.log(userDetails);
   const { loginToken } = useContext(GlobalContext);
   const emailRef = useRef<any>();
 
   useEffect(() => {
+    if (!loginToken) {
+      return;
+    }
     const fetchData = async () => {
-      const { data } = await axios.post("/api/users/details", null, {
-        headers: {
-          Authorization: `Bearer ${loginToken}`,
-        },
-      });
+      const { data } = await axios.post(
+        "/api/users/details",
+        null,
+        {
+          headers: {
+            Authorization: `Bearer ${loginToken}`,
+          },
+        }
+      );
       setUserDetails(data);
     };
     fetchData();

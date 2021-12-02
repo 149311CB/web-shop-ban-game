@@ -1,12 +1,9 @@
-import { alpha, Box, styled, Typography } from "@mui/material";
+import {Box, Typography} from "@mui/material";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
-
-export const AlphaTypo = styled("p")(({ theme }) => ({
-  color: alpha(theme.palette.text.secondary, 0.6),
-}));
+import React, {useEffect, useState} from "react";
+import {AlphaTypo} from "../components/AlphaTypo";
 
 const Category = () => {
   const [data, setData] = useState([]);

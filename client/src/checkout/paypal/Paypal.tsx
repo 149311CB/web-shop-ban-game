@@ -3,13 +3,12 @@ import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { CheckoutContext } from "../Checkout";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
-import { useCookies } from "react-cookie";
+import { GlobalContext } from "../../App";
 
 const Paypal = () => {
   const {
     cartId,
     processing,
-    success,
     cancelled,
     handleProcessing,
     handleError,
@@ -20,7 +19,7 @@ const Paypal = () => {
   const [clientId, setClientId] = useState("");
   const [amount, setAmount] = useState("");
   const history = useHistory();
-  const [cookies] = useCookies();
+  const { loginToken } = useContext(GlobalContext);
 
   const generateOrder: any = () => {
     const order = {
@@ -40,7 +39,7 @@ const Paypal = () => {
         headers: {
           "Content-Type": "application/json",
           //@ts-ignore
-          Authorization: `Bearer ${cookies.login_token}`,
+          Authorization: `Bearer ${loginToken}`,
         },
       });
       if (data?.status === 404) {
@@ -52,7 +51,7 @@ const Paypal = () => {
       }
     };
     fetchData();
-  }, [cartId, success, cancelled, history, cookies.login_token]);
+  }, [cartId, cancelled, history, loginToken]);
 
   return (
     <div className={"paypal"}>
@@ -95,7 +94,7 @@ const Paypal = () => {
               order.cancelledAt = new Date(Date.now());
               handleCancelled(order);
             }}
-            disabled={processing && !clientId ? true : false}
+            disabled={!!(processing && !clientId)}
           />
         </PayPalScriptProvider>
       )}
