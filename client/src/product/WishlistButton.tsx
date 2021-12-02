@@ -2,7 +2,7 @@ import { alpha, Button, styled } from "@mui/material";
 import { getTransparentOverlay } from "../utils/transparentOverlay";
 
 const WishlistButton = styled(Button)(({ theme }) => ({
-  width: "100%",
+  // width: "100%",
   color: theme.palette.text.primary,
   fontFamily: "brutal-regular",
   fontSize: "0.75rem",

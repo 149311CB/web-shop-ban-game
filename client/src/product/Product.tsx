@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { alpha, Box, Typography } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
@@ -8,6 +8,8 @@ import GameCarousel from "./GameCarousel";
 import AddToCartControll from "./AddToCartControll";
 import BasicInfo from "./BasicInfo";
 import WishlistButton from "./WishlistButton";
+import Description from "./Description";
+import GameCard from "./GameCard";
 
 const Product = () => {
   const {
@@ -15,6 +17,8 @@ const Product = () => {
   }: any = useHistory();
 
   const [data, setData] = useState<any>(null);
+  const [includes, setIncludes] = useState<any>(null);
+  const [includedIn, setIncludedIn] = useState<any>();
 
   useEffect(() => {
     let _id: string;
@@ -23,14 +27,14 @@ const Product = () => {
     }
 
     const fetchData = async () => {
-      const { data } = await axios.get(
-        `/api/products/games/${_id}`
-      );
-      setData(data);
+      const { data } = await axios.get(`/api/products/games/${_id}`);
+      const { includes, included_in, ...rest } = data;
+      setIncludes(includes);
+      setIncludedIn(included_in);
+      setData(rest);
     };
     fetchData();
   }, [state]);
-
 
   return (
     <>
@@ -50,8 +54,74 @@ const Product = () => {
             className={"game-content"}
             sx={{ display: "flex", gap: "2.8rem" }}
           >
-            <Box sx={{ width: "70%" }}>
+            <Box sx={{ width: "70%", display:"flex", flexDirection:"column", gap: "1.5rem" }}>
               <GameCarousel data={data} />
+              <Typography sx={{fontSize:"1.125rem !important"}}>{data.title}</Typography>
+              <Box
+                sx={{
+                  "& h1": {
+                    fontSize: "0.938rem !important",
+                    paddingBottom: 1,
+                  },
+                  "& h2, h3, h4": {
+                    fontSize: "0.938rem !important",
+                  },
+                  "& p, ul": {
+                    fontSize: "0.875rem",
+                    color: (theme) => alpha(theme.palette.text.secondary, 0.6),
+                    paddingBottom: 3,
+                  },
+                  "& ul": {
+                    ml: "15px",
+                  },
+                }}
+              >
+                <Description description={data.description} />
+              </Box>
+              {includedIn && includedIn.length > 0 && (
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "1.2rem",
+                    marginBottom: "3rem",
+                  }}
+                  
+                >
+                  <>
+                    <Typography
+                      variant={"h1"}
+                      sx={{ fontFamily: "brutal-regular" }}
+                    >
+                      Editions
+                    </Typography>
+                    {includedIn.map((game: any) => (
+                      <GameCard game={game} key={game._id}/>
+                    ))}
+                  </>
+                </Box>
+              )}
+              {includes && includes.length > 0 && (
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "1.2rem",
+                  }}
+                >
+                  <>
+                    <Typography
+                      variant={"h1"}
+                      sx={{ fontFamily: "brutal-regular" }}
+                    >
+                      Add-Ons
+                    </Typography>
+                    {includes.map((game: any) => (
+                      <GameCard game={game} key={game._id}/>
+                    ))}
+                  </>
+                </Box>
+              )}
             </Box>
             <Box
               className={"game-controls"}
@@ -83,7 +153,10 @@ const Product = () => {
                 <GameType type={"Base Game"} />
                 <Typography>${data.sale_price}</Typography>
                 <AddToCartControll data={data} />
-                <WishlistButton className={"wishlist-btn"}>
+                <WishlistButton
+                  className={"wishlist-btn"}
+                  sx={{ width: "100%" }}
+                >
                   <AddCircleOutlineIcon sx={{ paddingRight: "0.3rem" }} />
                   Add to wishlist
                 </WishlistButton>

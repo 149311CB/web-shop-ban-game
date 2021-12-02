@@ -8,7 +8,7 @@ const Page: React.FC<React.ReactNode> = ({ children }) => {
         width: { xs: "100%" },
         minHeight: { xs: "90vh" },
         bgcolor: "background.default",
-        border: "1px solid blue",
+        // border: "1px solid blue",
       }}
     >
       <Container
@@ -18,7 +18,6 @@ const Page: React.FC<React.ReactNode> = ({ children }) => {
           maxWidth: {
             lg: "80%",
           },
-          border: "1px solid red",
           paddingBottom: "1.8rem",
         }}
       >

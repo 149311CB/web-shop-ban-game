@@ -27,8 +27,8 @@ export const getTheme = (mode: PaletteMode) => {
               paper: "hsl(0, 0%, 20%)",
             },
             text: {
-              primary: "hsl(0, 0%, 100%)",
-              secondary: "hsl(0, 0%, 96%)",
+              // primary: "hsl(0, 0%, 100%)",
+              primary: "hsl(0, 0%, 96%)",
             },
             common: {
               black: "hsl(0, 0%, 16%)",

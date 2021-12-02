@@ -48,7 +48,7 @@ const Cart = () => {
       sx={{
         color: "text.primary",
         fontFamily: "brutal-regular",
-        border: "1px solid yellow",
+        // border: "1px solid yellow",
         width: "100%",
       }}
     >

@@ -4,6 +4,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link, useRouteMatch } from "react-router-dom";
 import { GlobalContext } from "../../../App";
 import { ReactComponent as VisaLogo } from "../../../assets/visa-black.svg";
+// import { ReactComponent as PaypalLogo } from "../../../assets/paypal.svg";
 import { getProductPrice } from "../../../utils/getProductPrice";
 import { AlphaTypo } from "../../../components/AlphaTypo";
 import KeyItem from "./KeyItem";
@@ -62,18 +63,24 @@ const OrderDetails: React.FC<any> = () => {
                     Total payment: ${getProductPrice({ products: products })}
                   </Typography>
                   <Typography>Method: {order.payment_method.method}</Typography>
-                  <Typography>
-                    Card: **** **** **** {order.payment_method.details.last4}
-                  </Typography>
-                  <Typography
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "1ch",
-                    }}
-                  >
-                    Brand:
-                    {order.payment_method.details.brand === "visa" && (
+                  {order.payment_method.method === "stripe" ? (
+                    <Typography>
+                      Card: **** **** **** {order.payment_method.details.last4}
+                    </Typography>
+                  ) : (
+                    <Typography>
+                      Payer: {order.payment_method.details.email}
+                    </Typography>
+                  )}
+                  {order.payment_method.details.brand === "visa" && (
+                    <Typography
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "1ch",
+                      }}
+                    >
+                      Brand:
                       <VisaLogo
                         style={{
                           width: "25px",
@@ -81,8 +88,8 @@ const OrderDetails: React.FC<any> = () => {
                           backgroundColor: "transparent",
                         }}
                       />
-                    )}
-                  </Typography>
+                    </Typography>
+                  )}
                 </Box>
               </Box>
             </AlphaStacicAccordion>

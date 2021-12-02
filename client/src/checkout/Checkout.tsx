@@ -111,7 +111,7 @@ const Checkout = () => {
       <Box
         className={"checkout"}
         sx={{
-          border: "1px solid blue",
+          // border: "1px solid blue",
           color: "text.primary",
           display: "flex",
           gap: "2.8rem",

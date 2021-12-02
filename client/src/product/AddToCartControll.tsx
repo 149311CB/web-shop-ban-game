@@ -102,6 +102,11 @@ const AddToCartControll: React.FC<{ data: any }> = ({ data }) => {
         </Select>
       </FormControl>
       <PrimaryButton
+        sx={{
+          width: "100%",
+          borderTopLeftRadius: 0,
+          borderBottomLeftRadius: 0,
+        }}
         onClick={() => {
           addToCart();
         }}
@@ -133,4 +138,3 @@ const AddToCartControll: React.FC<{ data: any }> = ({ data }) => {
 };
 
 export default AddToCartControll;
-

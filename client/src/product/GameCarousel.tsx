@@ -1,9 +1,9 @@
-import {Box, Button, ButtonProps, List, styled,} from "@mui/material";
-import React, {useRef, useState} from "react";
-import {useAnimationFrame} from "../hooks/useAnimationFrame";
+import { Box, Button, ButtonProps, List, styled } from "@mui/material";
+import React, { useRef, useState } from "react";
+import { useAnimationFrame } from "../hooks/useAnimationFrame";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import {AlphaListItem} from "../components/AlphaListItem";
+import { AlphaListItem } from "../components/AlphaListItem";
 
 interface ICarouselButtonProps {
   direction: "left" | "right";
@@ -55,7 +55,7 @@ const GameCarousel: React.FC<{ data: any }> = ({ data }) => {
   useAnimationFrame(transitionDelay, carouselTransition);
 
   return (
-    <Box>
+    <Box >
       <Box
         className={"game-carousel"}
         sx={{
