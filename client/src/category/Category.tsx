@@ -1,18 +1,16 @@
-import {Box, Typography} from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "axios";
-import React, {useEffect, useState} from "react";
-import {AlphaTypo} from "../components/AlphaTypo";
+import React, { useEffect, useState } from "react";
+import GameCard from "../product/GameCard";
 
 const Category = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const { data } = await axios.get(
-        "/api/products/games"
-      );
+      const { data } = await axios.get("/api/products/games");
       setData(data);
     };
     fetchData();
@@ -46,59 +44,7 @@ const Category = () => {
         }}
       >
         {data.map(
-          (item: any, index: number) =>
-            index < 5 && (
-              <Box
-                className={"category-item"}
-                sx={{
-                  width: "100%",
-                  height: "auto",
-                  borderRadius: "0.3rem",
-                  color: "text.primary",
-                }}
-                key={item._id}
-              >
-                <Link
-                  to={{
-                    pathname: `/product/${item.name
-                      .replace(/\s+/g, "-")
-                      .toLowerCase()}`,
-                    state: { _id: item._id },
-                  }}
-                >
-                  <Box className={"img-container"}>
-                    <img
-                      src={
-                        item.images.find((img: any) => {
-                          return img.type === "portrait";
-                        })?.url
-                      }
-                      style={{
-                        width: "100%",
-                        borderRadius: "0.3rem",
-                      }}
-                      alt={item.name + "portrait"}
-                      className={"game-thumnail"}
-                    />
-                  </Box>
-                  <Typography
-                    className={"game-title"}
-                    sx={{ paddingTop: "0.9rem", color: "text.primary" }}
-                  >
-                    {item.name}
-                  </Typography>
-                  <AlphaTypo className={"text-small game-developer"}>
-                    {item.developer}
-                  </AlphaTypo>
-                  <Box
-                    className={"game-price"}
-                    sx={{ paddingTop: "0.9rem", color: "text.primary" }}
-                  >
-                    ${item.sale_price}
-                  </Box>
-                </Link>
-              </Box>
-            )
+          (item: any, index: number) => index < 5 && <GameCard game={item} />
         )}
       </Box>
     </Box>

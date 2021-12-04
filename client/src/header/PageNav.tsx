@@ -1,4 +1,6 @@
-import { Container, Link, Typography } from "@mui/material";
+import { Container } from "@mui/material";
+import { Link } from "react-router-dom";
+import { AlphaTypo } from "../components/AlphaTypo";
 
 const PageNav = () => {
   return (
@@ -11,14 +13,30 @@ const PageNav = () => {
           lg: "80%",
         },
         padding: "1.2rem 0",
-        gap:"1.2rem",
+        gap: "1.2rem",
       }}
     >
-      <Link sx={{color:"text.primary"}}>
-        <Typography>Discover</Typography>
+      <Link to={"/discover"} style={{ cursor: "pointer" }}>
+        <AlphaTypo
+          sx={{
+            transition: "color 150ms ease-in-out",
+            "&:hover": {
+              color: "text.primary",
+            },
+          }}
+        >
+          Discover
+        </AlphaTypo>
       </Link>
-      <Link sx={{color:"text.primary"}}>
-        <Typography>Browse</Typography>
+      <Link to={"/browse"}>
+        <AlphaTypo
+          sx={{
+            transition: "color 150ms ease-in-out",
+            "&:hover": { color: "text.primary" },
+          }}
+        >
+          Browse
+        </AlphaTypo>
       </Link>
     </Container>
   );

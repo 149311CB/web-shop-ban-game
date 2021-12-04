@@ -16,6 +16,7 @@ import Report from "./report/Report";
 import axios from "axios";
 import UserManager from "./user/manage/UserManager";
 import CheckoutSwitcher from "./checkout/CheckoutSwitcher";
+import Browse from "./browse/Browse";
 
 export const GlobalContext = createContext<any>(null);
 function App() {
@@ -90,6 +91,9 @@ function App() {
             </Route>
             <Route path={"/user"}>
               <UserManager />
+            </Route>
+            <Route path={"/browse"}>
+              <Browse />
             </Route>
           </Page>
         </ThemeProvider>

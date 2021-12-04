@@ -7,7 +7,7 @@ import {
 
 const router = express.Router();
 
-router.route("/games").get(getAllGame);
+router.route("/games/all").get(getAllGame);
 router.route("/games/search").get(search);
 router.route("/games/:id").get(getGameById);
 

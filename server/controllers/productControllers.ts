@@ -1,9 +1,33 @@
 import asyncHandler from "express-async-handler";
 import { Game } from "../models/productModel";
 
-const getAllGame = asyncHandler(async (_, res) => {
-  const games = await Game.find({});
-  return res.json(games);
+const getAllGame = asyncHandler(async (req, res) => {
+  let { limit = 0, skip = 0 } = req.query;
+  try {
+    if (limit && typeof limit === "string") {
+      limit = parseInt(limit);
+    }
+    if (skip && typeof skip === "string") {
+      skip = parseInt(skip);
+    }
+    if (typeof limit === "number" && typeof skip === "number") {
+      const games = await Game.find({})
+        .select("name developer sale_price images")
+        .skip(limit * skip)
+        .limit(limit);
+      const total = await Game.countDocuments();
+      return res.status(200).json({
+        total_docs: total,
+        total_pages: Math.ceil(total / limit),
+        tail_docs: total - Math.floor(total / limit) * limit,
+        current_page: skip + 1,
+        data: games,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500);
+  }
 });
 
 const getGameById = asyncHandler(async (req, res) => {
