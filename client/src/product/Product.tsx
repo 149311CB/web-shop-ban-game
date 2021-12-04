@@ -1,7 +1,11 @@
 import { alpha, Box, Typography } from "@mui/material";
 import axios from "axios";
-import React, { useEffect, useRef, useState } from "react";
-import { useHistory } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import {
+  RouteComponentProps,
+  useHistory,
+  withRouter,
+} from "react-router-dom";
 import GameType from "../components/GameType";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import GameCarousel from "./GameCarousel";
@@ -12,7 +16,7 @@ import Description from "./Description";
 import GameCard from "./GameCard";
 import Review from "./Review";
 
-const Product = () => {
+const Product: React.FC<RouteComponentProps> = ({ match }) => {
   const {
     location: { state },
   }: any = useHistory();
@@ -20,9 +24,6 @@ const Product = () => {
   const [data, setData] = useState<any>(null);
   const [includes, setIncludes] = useState<any>(null);
   const [includedIn, setIncludedIn] = useState<any>();
-  const [containerWidth, setContainerWidth] = useState<number>(0);
-  const gameCarouselRef = useRef<any>(null);
-  console.log(gameCarouselRef);
 
   useEffect(() => {
     let _id: string;
@@ -38,13 +39,7 @@ const Product = () => {
       setData(rest);
     };
     fetchData();
-  }, [state]);
-
-  useEffect(() => {
-    if (gameCarouselRef.current) {
-      setContainerWidth(gameCarouselRef.current.offsetWidth);
-    }
-  }, [setContainerWidth, data]);
+  }, [state, match]);
 
   return (
     <>
@@ -76,7 +71,6 @@ const Product = () => {
                   flexDirection: "column",
                   gap: "1.5rem",
                 }}
-                ref={gameCarouselRef}
               >
                 <GameCarousel data={data} />
               </Box>
@@ -210,4 +204,4 @@ const Product = () => {
   );
 };
 
-export default React.memo(Product);
+export default withRouter(Product);

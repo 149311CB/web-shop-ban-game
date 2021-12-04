@@ -12,7 +12,7 @@ const ReviewClassifies: React.FC<{
         Object.keys(ratingSummary)
           .reverse()
           .map((key: any) => (
-            <Box sx={{ display: "flex" }}>
+            <Box sx={{ display: "flex" }} key={key}>
               <Typography sx={{ minWidth: "7ch" }}>
                 {key} {key === "1" ? "star" : "stars"}
               </Typography>

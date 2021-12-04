@@ -25,4 +25,26 @@ const getGameById = asyncHandler(async (req, res) => {
   }
 });
 
-export { getAllGame, getGameById };
+const search = asyncHandler(async (req, res) => {
+  const { keyword } = req.query;
+  if (!keyword || typeof keyword === "undefined") {
+    return res.status(400);
+  }
+  try {
+    const regex = {
+      $regex: keyword,
+      $options: "i",
+    };
+    const games = await Game.find({
+      //@ts-ignore
+      $or: [{ name: regex }, { short_name: regex }, { studio: regex }],
+    }).select("name sale_price type images");
+
+    return res.status(200).json(games);
+  } catch (error) {
+    console.log(error);
+    return res.status(500);
+  }
+});
+
+export { getAllGame, getGameById, search };

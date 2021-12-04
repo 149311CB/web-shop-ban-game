@@ -9,6 +9,7 @@ export const useClickOutside = (
   const handleClickOutside = (event: any) => {
     if (ref.current && !ref.current.contains(event.target)) setVisible(false);
   };
+
   useEffect(() => {
     document.addEventListener("click", handleClickOutside, true);
     return () => {
