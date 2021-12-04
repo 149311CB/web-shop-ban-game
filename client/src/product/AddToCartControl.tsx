@@ -11,7 +11,7 @@ import axios from "axios";
 import { GlobalContext } from "../App";
 import { PrimaryButton } from "../components/PrimaryButton";
 
-const AddToCartControll: React.FC<{ data: any }> = ({ data }) => {
+const AddToCartControl: React.FC<{ data: any }> = ({ data }) => {
   const [qty, setQty] = useState<number>(1);
   const [keys, setKeys] = useState<any[]>([]);
   const [open, setOpen] = useState<boolean>(false);
@@ -137,4 +137,4 @@ const AddToCartControll: React.FC<{ data: any }> = ({ data }) => {
   );
 };
 
-export default AddToCartControll;
+export default AddToCartControl;

@@ -78,16 +78,14 @@ const registerUser = asyncHandler(async (req, res) => {
       password,
       active: true,
     });
-    const token = generateToken({ userId: user._id });
+    // const token = generateToken({ userId: user._id });
     const refreshToken = generateRefreshToken({ userId: user._id });
     user.refresh_token = refreshToken!;
     await user.save();
 
     if (user) {
       res.cookie("refresh_token", refreshToken, COOKIES_OPTIONS);
-      res.status(201).json({
-        token: token,
-      });
+      res.redirect("https://localhost:3000")
     } else {
       res.status(400);
       throw new Error("Invalid user data");

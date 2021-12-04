@@ -16,12 +16,12 @@ export interface userTypes {
   google_id: string;
 }
 
-const sessionSchema = new Schema({
-  refresh_token: {
-    type: String,
-    default: "",
-  },
-});
+// const sessionSchema = new Schema({
+//   refresh_token: {
+//     type: String,
+//     default: "",
+//   },
+// });
 
 const userSchema = new Schema<userTypes>({
   first_name: {
@@ -66,6 +66,7 @@ const userSchema = new Schema<userTypes>({
   },
   avatar: {
     type: String,
+    default: "../upload/user.svg",
     required: false,
   },
   active: {

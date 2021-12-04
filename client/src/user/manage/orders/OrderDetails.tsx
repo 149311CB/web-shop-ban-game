@@ -130,7 +130,7 @@ const OrderDetails: React.FC<any> = () => {
                       />
                       <Link
                         to={{
-                          pathname: `product/${item.product.name}`,
+                          pathname: `/product/${item.product.name}`,
                           state: item.product._id,
                         }}
                       >

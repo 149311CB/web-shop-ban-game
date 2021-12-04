@@ -193,7 +193,7 @@ const authCountItemInCart = asyncHandler(async (req, res) => {
       });
       return res.status(200).json({ count: exist.products.length, totalItems });
     }
-    return res.status(404).json({ message: "not cart found" });
+    return res.status(200)
   } catch (error) {
     res.status(500);
   }
