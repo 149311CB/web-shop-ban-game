@@ -19,7 +19,8 @@ import axios from "axios";
 interface styledProps {
   mode?: any;
 }
-const Search = styled(
+
+export const Search = styled(
   (props: styledProps & React.HTMLAttributes<HTMLDivElement>) => (
     <div {...props} />
   )
@@ -44,7 +45,7 @@ const Search = styled(
   },
 }));
 
-const SearchIconWrapper = styled("div")(({ theme }) => ({
+export const SearchIconWrapper = styled("div")(({ theme }) => ({
   padding: theme.spacing(0, 2),
   height: "100%",
   position: "absolute",
@@ -54,7 +55,7 @@ const SearchIconWrapper = styled("div")(({ theme }) => ({
   justifyContent: "center",
 }));
 
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
+export const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: "inherit",
   "& .MuiInputBase-input": {
     padding: theme.spacing(1, 1, 1, 0),

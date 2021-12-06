@@ -92,7 +92,7 @@ function App() {
             <Route path={"/user"}>
               <UserManager />
             </Route>
-            <Route path={"/browse"}>
+            <Route path={[ "/browse/:name", "/browse" ]} >
               <Browse />
             </Route>
           </Page>

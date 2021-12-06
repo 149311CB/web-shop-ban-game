@@ -1,52 +1,77 @@
-import { Box, Typography } from "@mui/material";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import { Box, Typography, Grid } from "@mui/material";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import GameCard from "../product/GameCard";
+import { ChevronRightRounded } from "@mui/icons-material";
+import GameCard from "../components/GameCard";
+
+const getCollections = async () => {
+  const { data } = await axios.get("/api/collections/name", {
+    params: { names: ["top sale"] },
+  });
+  return data;
+};
 
 const Category = () => {
-  const [data, setData] = useState([]);
+  const [collections, setCollections] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const { data } = await axios.get("/api/products/games");
-      setData(data);
-    };
-    fetchData();
+    getCollections().then((data) => {
+      console.log(data);
+      setCollections(data);
+    });
   }, []);
 
   return (
-    <Box
-      className={"category"}
-      // sx={{ border: "1px solid yellow" }}
-    >
-      <Link to={"#"} className={"category-nav"}>
-        <Typography
-          variant={"h2"}
-          sx={{
-            paddingBottom: "0.6rem",
-            color: "text.primary",
-            display: "flex",
-            alignItems: "center",
-          }}
-        >
-          Category title
-          <ChevronRightIcon />
-        </Typography>
-      </Link>
-      <Box
-        className={"item-list"}
-        sx={{
-          display: "flex",
-          alignItems: "stretch",
-          gap: "0.9rem",
-        }}
-      >
-        {data.map(
-          (item: any, index: number) => index < 5 && <GameCard game={item} />
-        )}
-      </Box>
+    <Box>
+      {collections &&
+        collections.map((collection: any) => (
+          <Box key={collection._id}>
+            <Link
+              to={{
+                pathname: `/browse/${collection.name
+                  .replace(/\s+/g, "-")
+                  .toLowerCase()}`,
+                state: { _id: collection._id },
+              }}
+            >
+              <Typography
+                variant={"h2"}
+                sx={{
+                  pb: 2,
+                  color: "text.primary",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  cursor: "pointer",
+                  "& svg": {
+                    transition: "all 150ms ease-in-out",
+                  },
+                  "&:hover": {
+                    "& svg": {
+                      pl: 1,
+                      transform: "scale(1.5)",
+                    },
+                  },
+                }}
+              >
+                {collection.name[0].toUpperCase() + collection.name.slice(1)}
+                <ChevronRightRounded />
+              </Typography>
+            </Link>
+            <Grid
+              container
+              key={collection._id}
+              spacing={2}
+              columns={{ md: 10, xs: 12 }}
+            >
+              {collection.list_game.map((game: any) => (
+                <Grid item md={2} sm={3} xs={6} key={game._id}>
+                  <GameCard game={game} key={game._id} />
+                </Grid>
+              ))}
+            </Grid>
+          </Box>
+        ))}
     </Box>
   );
 };

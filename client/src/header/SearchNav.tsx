@@ -1,11 +1,8 @@
 import * as React from "react";
-import { styled, alpha } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import InputBase from "@mui/material/InputBase";
 import PersonIcon from "@mui/icons-material/Person";
 import { GlobalContext } from "../App";
 import { useHistory } from "react-router-dom";
@@ -14,9 +11,6 @@ import { useState } from "react";
 import AccountMenu from "./AccountMenu";
 import ShoppingCartBadge from "./ShoppingCartBadge";
 import SearchMenu from "./SearchMenu";
-
-
-
 
 export default function SearchNav() {
   const [open, setOpen] = useState(false);
@@ -49,7 +43,7 @@ export default function SearchNav() {
               />
             </Box>
             <SearchMenu />
-            
+
             <ShoppingCartBadge />
             {loginToken ? (
               <AccountMenu />

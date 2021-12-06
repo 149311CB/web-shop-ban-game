@@ -1,4 +1,3 @@
-use web-shop-ban-game
 db.games.insertMany([
     {
       "name": "Far Cry® 6",

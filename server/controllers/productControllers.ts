@@ -1,9 +1,50 @@
 import asyncHandler from "express-async-handler";
+import Collection from "../models/collectionSchema.js";
 import { Game } from "../models/productModel";
 
+const getOptionalQueries = (
+  filters: string[] | undefined,
+  keyword: string | undefined,
+  collectionFilter: string[] | undefined
+) => {
+  let optionalQueries = {};
+
+  if (collectionFilter) {
+    optionalQueries = {
+      ...optionalQueries,
+      ...{ _id: { $in: collectionFilter } },
+    };
+  }
+
+  if (filters) {
+    optionalQueries = { ...optionalQueries, ...{ tags: { $all: filters } } };
+  }
+
+  if (keyword) {
+    const regex = {
+      $regex: keyword,
+      $options: "i",
+    };
+    optionalQueries = {
+      ...optionalQueries,
+      ...{ $or: [{ name: regex }, { short_name: regex }, { studio: regex }] },
+    };
+  }
+
+  if (Object.keys(optionalQueries).length > 0) {
+    return { $and: [optionalQueries] };
+  }
+  return optionalQueries;
+};
+
 const getAllGame = asyncHandler(async (req, res) => {
-  let { limit = 0, skip = 0 } = req.query;
+  let { limit = 0, skip = 0, keyword = "", collection } = req.query;
   try {
+    let filters;
+    if (req.body) {
+      filters = req.body.filters;
+    }
+
     if (limit && typeof limit === "string") {
       limit = parseInt(limit);
     }
@@ -11,11 +52,24 @@ const getAllGame = asyncHandler(async (req, res) => {
       skip = parseInt(skip);
     }
     if (typeof limit === "number" && typeof skip === "number") {
-      const games = await Game.find({})
+      let collectionFilter;
+      let total;
+      if (collection) {
+        //@ts-ignore
+        const result = await Collection.findOne({ name: collection });
+        collectionFilter = result.list_game;
+        total = result.list_game.length;
+      }
+      const games = await Game.find(
+        //@ts-ignore
+        getOptionalQueries(filters, keyword, collectionFilter)
+      )
         .select("name developer sale_price images")
         .skip(limit * skip)
         .limit(limit);
-      const total = await Game.countDocuments();
+      if (!total || total === undefined) {
+        total = await Game.countDocuments();
+      }
       return res.status(200).json({
         total_docs: total,
         total_pages: Math.ceil(total / limit),
@@ -62,7 +116,9 @@ const search = asyncHandler(async (req, res) => {
     const games = await Game.find({
       //@ts-ignore
       $or: [{ name: regex }, { short_name: regex }, { studio: regex }],
-    }).select("name sale_price type images");
+    })
+      .limit(5)
+      .select("name sale_price type images");
 
     return res.status(200).json(games);
   } catch (error) {
