@@ -1,41 +1,37 @@
-import { Box, TextField } from "@mui/material";
+import { Box, TextField, Typography } from "@mui/material";
 import axios from "axios";
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { GlobalContext } from "../../../App";
 import { AlphaContainer } from "../../../components/AlphaContainer";
+import LabelWrapper from "../../../components/LabelWrapper";
+import AccountInfo from "./AccountInfo";
+import DeleteAccount from "./DeleteAccount";
+import PersonalDetails from "./PersonalDetails";
 
 const Profile = () => {
   const [userDetails, setUserDetails] = useState<any>(null);
+  const [accountInfo, setAccountInfo] = useState<any>(null);
+  const [personalDetails, setPersonalDetails] = useState<any>(null);
   console.log(userDetails);
   const { loginToken } = useContext(GlobalContext);
-  const emailRef = useRef<any>();
 
   useEffect(() => {
     if (!loginToken) {
       return;
     }
     const fetchData = async () => {
-      const { data } = await axios.post(
-        "/api/users/details",
-        null,
-        {
-          headers: {
-            Authorization: `Bearer ${loginToken}`,
-          },
-        }
-      );
+      const { data } = await axios.post("/api/users/details", null, {
+        headers: {
+          Authorization: `Bearer ${loginToken}`,
+        },
+      });
+      const { email, first_name, last_name, phone_number, birthday } = data;
+      setPersonalDetails({ first_name, last_name, phone_number, birthday });
+      setAccountInfo({ email });
       setUserDetails(data);
     };
     fetchData();
   }, [loginToken]);
-
-  useEffect(() => {
-    if (!userDetails) return;
-    if (emailRef && emailRef.current) {
-      console.log(emailRef.current.value.length);
-      emailRef.current.style.width = emailRef.current.value.length + "ch";
-    }
-  });
 
   return (
     <AlphaContainer
@@ -46,29 +42,19 @@ const Profile = () => {
         <Box
           component="form"
           sx={{
-            "& .MuiTextField-root": { m: 1 },
+            display: "flex",
+            flexDirection: "column",
+            gap: "2.4rem",
+            "& .MuiInputBase-input": { m: 0 },
+            "& label": {
+              fontFamily: "brutal-regular",
+            },
           }}
           autoComplete="off"
         >
-          <Box sx={{ display: "flex" }}>
-            <TextField
-              id="outlined-required"
-              label="First Name"
-              defaultValue={userDetails.first_name}
-            />
-            <TextField
-              id="outlined-required"
-              label="Last Name"
-              defaultValue={userDetails.last_name}
-            />
-          </Box>
-          <TextField
-            id="outlined-required"
-            type="email"
-            label="Email"
-            defaultValue={userDetails.email}
-            inputRef={emailRef}
-          />
+          <AccountInfo accountInfo={accountInfo} />
+          <PersonalDetails personalDetails={personalDetails}/>
+          <DeleteAccount/>
         </Box>
       )}
     </AlphaContainer>

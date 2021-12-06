@@ -15,17 +15,19 @@ const getAllOrderByUser = asyncHandler(async (req, res) => {
     return res.status(404);
   }
   try {
-    let { limit, start_page } = req.query;
+    let { limit, skip } = req.query;
     let lim = 0;
     let start = 0;
     try {
       if (typeof limit === "string") {
         lim = parseInt(limit);
       }
-      if (typeof start_page === "string") {
-        start = parseInt(start_page);
+      if (typeof skip === "string") {
+        start = parseInt(skip);
       }
-    } catch (error) {}
+    } catch (error) {
+      return res.status(500);
+    }
 
     const orders = await Order.find({ user: user._id })
       .skip(start * lim)
@@ -35,8 +37,17 @@ const getAllOrderByUser = asyncHandler(async (req, res) => {
         select: "products",
         populate: { path: "products.product", select: "name" },
       });
-    return res.status(200).json(orders);
-  } catch (error) {}
+    const total = await Order.countDocuments({ user: user._id });
+    return res.status(200).json({
+      total_docs: total,
+      total_pages: Math.ceil(total / lim),
+      tail_docs: total - Math.floor(total / lim) * lim,
+      current_page: start + 1,
+      data: orders,
+    });
+  } catch (error) {
+    return res.status(500);
+  }
 });
 
 const createOrder = asyncHandler(async (req, res) => {

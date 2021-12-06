@@ -85,7 +85,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
     if (user) {
       res.cookie("refresh_token", refreshToken, COOKIES_OPTIONS);
-      res.redirect("https://localhost:3000")
+      res.redirect("https://localhost:3000");
     } else {
       res.status(400);
       throw new Error("Invalid user data");
@@ -169,11 +169,78 @@ const logout = asyncHandler(async (req, res) => {
     user.refresh_token = "";
     await user.save();
     res.clearCookie("refresh_token", COOKIES_OPTIONS);
-    res.status(200).json({message:"success logout"})
+    res.status(200).json({ message: "success logout" });
   } catch (error) {
     console.log(error);
     return res.status(500);
   }
 });
 
-export { login, registerUser, logout, refreshTokenController, getUserDetails };
+const updateEmail = asyncHandler(async (req, res) => {
+  const { user } = req;
+  if (!user) {
+    return res.status(401);
+  }
+  try {
+    const { email, password } = req.body;
+    const exist = await User.findOne({ email: email });
+    if (exist) {
+      return res
+        .status(400)
+        .json({ message: "there is an account with this email" });
+    }
+
+    const currentUser = await User.findById(user._id);
+    if (!currentUser) {
+      return res.status(404);
+    }
+
+    // @ts-ignore
+    if (!(await currentUser.matchPassword(password))) {
+      return res.status(401).json({ message: "wrong password" });
+    }
+
+    currentUser.email = email;
+    await currentUser.save();
+    return res.status(200).json({ message: "success" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500);
+  }
+});
+
+const updatePassword = asyncHandler(async (req, res) => {
+  const { user } = req;
+  if (!user) {
+    return res.status(401);
+  }
+  try {
+    const { currentPassword, newPassword } = req.body;
+
+    const currentUser = await User.findById(user._id);
+    if (!currentUser) {
+      return res.status(404);
+    }
+    // @ts-ignore
+    if (!(await currentUser.matchPassword(currentPassword))) {
+      return res.status(401).json({ message: "wrong password" });
+    }
+
+    currentUser.password = newPassword;
+    await currentUser.save();
+    return res.status(200).json({ message: "success" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500);
+  }
+});
+
+export {
+  login,
+  registerUser,
+  logout,
+  refreshTokenController,
+  getUserDetails,
+  updateEmail,
+  updatePassword
+};

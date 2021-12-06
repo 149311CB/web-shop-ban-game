@@ -10,8 +10,8 @@ import {
   TableRow,
 } from "@mui/material";
 import axios from "axios";
-import React, { useContext, useEffect, useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { GlobalContext } from "../../../App";
 import PrimaryTypo from "../../../components/PrimaryTypo";
 
@@ -77,9 +77,10 @@ const createRow = (orders: any) => {
 const Orders = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [rows, setRows] = useState<any>([]);
+  const [totalDocs, setTotalDocs] = useState<number>(0);
   const { loginToken } = useContext(GlobalContext);
-  const history = useHistory();
-  const handleChangePage = (event: unknown, newPage: number) => {
+  const handleChangePage = (_: unknown, newPage: number) => {
+    console.log(newPage);
     setCurrentPage(newPage);
   };
 
@@ -89,14 +90,16 @@ const Orders = () => {
     }
     const fetchOrders = async () => {
       const { data } = await axios.get("/api/orders/user/all", {
+        params: { limit: 10, skip: currentPage },
         headers: {
           Authorization: `Bearer ${loginToken}`,
         },
       });
-      setRows(createRow(data));
+      setRows(createRow(data.data));
+      setTotalDocs(data.total_docs);
     };
     fetchOrders();
-  }, [loginToken]);
+  }, [loginToken, currentPage]);
 
   return (
     <Box>
@@ -140,7 +143,9 @@ const Orders = () => {
                           return (
                             <TableCell key={column.id} align={column.align}>
                               <Link to={`/user/orders/${row._id}`}>
-                                <PrimaryTypo sx={{ p: "0.1rem", borderRadius:"0.3rem" }}>
+                                <PrimaryTypo
+                                  sx={{ p: "0.1rem", borderRadius: "0.3rem" }}
+                                >
                                   View order
                                 </PrimaryTypo>
                               </Link>
@@ -164,7 +169,7 @@ const Orders = () => {
         <TablePagination
           rowsPerPageOptions={[10]}
           component="div"
-          count={rows.length}
+          count={totalDocs}
           rowsPerPage={10}
           page={currentPage}
           onPageChange={handleChangePage}
