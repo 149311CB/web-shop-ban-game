@@ -17,6 +17,8 @@ import axios from "axios";
 import UserManager from "./user/manage/UserManager";
 import CheckoutSwitcher from "./checkout/CheckoutSwitcher";
 import Browse from "./browse/Browse";
+import Success from "./user/auth/success/Success";
+import AuthComplete from "./user/auth/success/AuthComplete";
 
 export const GlobalContext = createContext<any>(null);
 function App() {
@@ -92,8 +94,14 @@ function App() {
             <Route path={"/user"}>
               <UserManager />
             </Route>
-            <Route path={[ "/browse/:name", "/browse" ]} >
+            <Route path={["/browse/:name", "/browse"]}>
               <Browse />
+            </Route>
+            <Route path={"/verification/create-pass"} exact>
+              <Success />
+            </Route>
+            <Route path={"/auth/complete"} exact>
+              <AuthComplete />
             </Route>
           </Page>
         </ThemeProvider>

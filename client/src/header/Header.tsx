@@ -14,8 +14,11 @@ const excludedPageNav = [
   "/cart",
   "/checkout",
   "/report",
-  "/user"
+  "/user",
+  "/verification",
+  "/auth"
 ];
+
 const Header: React.FC<{ match: any }> = ({ match }) => {
   const {
     location: { pathname },

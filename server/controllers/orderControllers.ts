@@ -2,6 +2,8 @@ import asyncHandler from "express-async-handler";
 import { Cart } from "../models/cartModel";
 import Order from "../models/orderModels";
 import { Game } from "../models/productModel";
+import { orderConfirmationBuilder } from "../utils/orderConfirmationBuilder";
+import sendgrid from "@sendgrid/mail";
 
 const getAllOrder = asyncHandler(async (_, res) => {
   const order = await Order.find({});
@@ -78,6 +80,7 @@ const createOrder = asyncHandler(async (req, res) => {
     });
 
     const existCart = await Cart.findOne({ _id: cartId });
+    const gameList = [];
 
     if (existCart) {
       existCart.status = false;
@@ -85,6 +88,8 @@ const createOrder = asyncHandler(async (req, res) => {
       for (let game of existCart.products) {
         const existGame = await Game.findById(game.product);
         if (existGame) {
+          //@ts-ignore
+          gameList.push({ ...existGame._doc, quantity: game.quantity });
           const limit = game.quantity;
           let index = 0;
           for (let key of existGame.keys) {
@@ -106,7 +111,27 @@ const createOrder = asyncHandler(async (req, res) => {
         }
       }
     }
+    sendgrid.setApiKey(process.env.SENDGRID_API_KEY!);
+    const msg = {
+      to: user.email,
+      from: "xstk2000@gmail.com",
+      subject: "Verify your email",
+      html: orderConfirmationBuilder(
+        createdOrder.paid_at,
+        user,
+        createdOrder.payment_method,
+        gameList
+      ),
+    };
+    await sendgrid.send(msg);
 
+    // const orderHtml = orderConfirmationBuilder(
+    //   createdOrder.paid_at,
+    //   user,
+    //   createdOrder.payment_method,
+    //   gameList
+    // );
+    // console.log(orderHtml);
     return res.status(201).json(createdOrder);
   } catch (error: any) {
     return res.status(500).json({ messsage: error.message });

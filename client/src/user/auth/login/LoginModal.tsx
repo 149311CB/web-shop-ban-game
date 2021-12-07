@@ -4,7 +4,9 @@ import EmailStrategy from "./email/EmailStrategy";
 import FacebookStrategy from "./facebook/FacebookStrategy";
 import GoogleStrategy from "./google/GoogleStrategy";
 
-const LoginModal: React.FC<{ setRegister: Function }> = ({ setRegister }) => {
+const LoginModal: React.FC<{
+  setRegister: Function;
+}> = ({ setRegister }) => {
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
       <EmailStrategy />

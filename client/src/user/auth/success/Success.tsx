@@ -1,23 +1,83 @@
-import { Box } from "@mui/material";
+import { Box, TextField } from "@mui/material";
 import axios from "axios";
-import React, { useEffect } from "react";
+import { FormEvent } from "react";
+import { useHistory } from "react-router-dom";
+import { PrimaryButton } from "../../../components/PrimaryButton";
+import { useInputValidation } from "../../../hooks/useFormValidation";
 
 const Success = () => {
-  useEffect(() => {
-    const fetchData = async () => {
-      const { data } = await axios.get("/api/users/login/success", {
-        withCredentials: true,
-        // headers: {
-        //   Accept: "application/json",
-        //   "Content-Type": "application/json",
-        //   "Access-Control-Allow-Credentials": true,
-        // },
+  const history = useHistory();
+  const token = new URLSearchParams(history.location.search).get("token");
+  const [password, setPassword, validation] = useInputValidation(null, {
+    securePass: true,
+  });
+  const [confirmPass, setConfirmPass, confirmPassValidation] =
+    useInputValidation(null, { match: password });
+  const fetchData = async (e: FormEvent) => {
+    e.preventDefault();
+    await axios
+      .post(
+        "/api/users/create-pass",
+        { password, confirm_pass: confirmPass },
+        {
+          params: {
+            email_verification_token: token,
+          },
+        }
+      )
+      .then(({ status }) => {
+        if (status === 201) {
+          window.location.href = "https://localhost:3000";
+        }
+      })
+      .catch((error) => {
+        console.log(error.message);
       });
-      console.log(data);
-    };
-    fetchData();
-  }, []);
-  return <Box>Login Success</Box>;
+  };
+  return (
+    <Box sx={{ display: "flex", justifyContent: "center" }}>
+      <Box
+        component={"form"}
+        onSubmit={fetchData}
+        sx={{
+          color: "text.primary",
+          pt: "2.4rem",
+          width: "50%",
+          display: "flex",
+          flexDirection: "column",
+          gap: "0.9rem",
+        }}
+      >
+        <TextField
+          error={validation.false}
+          helperText={validation.message}
+          id="password"
+          label="Password"
+          variant="outlined"
+          type="password"
+          sx={{ width: "100%" }}
+          onChange={(e) => {
+            setPassword(e.target.value);
+          }}
+        />
+        <TextField
+          error={confirmPassValidation.false}
+          helperText={confirmPassValidation.message}
+          id="password"
+          label="Confirm Password"
+          variant="outlined"
+          type="password"
+          sx={{ width: "100%" }}
+          onChange={(e) => {
+            setConfirmPass(e.target.value);
+          }}
+        />
+        <PrimaryButton type={"submit"} sx={{ width: "100%" }}>
+          Submit
+        </PrimaryButton>
+      </Box>
+    </Box>
+  );
 };
 
 export default Success;

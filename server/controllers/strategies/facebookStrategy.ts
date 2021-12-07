@@ -16,22 +16,31 @@ passport.use(
         "photos",
         "email",
       ],
+      passReqToCallback: true,
     },
-    async (_, __, profile, cb) => {
-      const user = await User.findOne({ facebook_id: profile.id });
+    async (req, _, __, profile, cb) => {
+      const { emails } = profile;
+      const email = emails![0];
+      const user = await User.findOne({
+        $or: [{ facebook_id: profile.id }, { email: email.value }],
+      });
       if (!user) {
         const user = await User.create({
           first_name: profile.name!.familyName,
           last_name: profile.name!.givenName,
           email: profile.emails![0].value,
           phone_number: "",
-          password: "",
           birthday: null,
           facebook_id: profile.id,
           avatar: profile.photos![0].value,
         });
+        req.register = true;
         cb(null, user);
       } else {
+        if (user.facebook_id || user.facebook_id === undefined) {
+          user.facebook_id = profile.id;
+          await user.save();
+        }
         cb(null, user);
       }
     }

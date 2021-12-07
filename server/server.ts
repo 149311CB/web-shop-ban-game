@@ -38,10 +38,6 @@ app.use(
   })
 );
 
-app.get("/", (_, res) => {
-  res.send("API is running");
-});
-
 app.use("/api/sample", sampleRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/carts", cartRoutes);

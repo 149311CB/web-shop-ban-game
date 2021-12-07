@@ -11,8 +11,6 @@ import ConfirmPassword from "../../../../components/form/ConfirmPassword";
 import { useInputValidation } from "../../../../hooks/useFormValidation";
 import PhoneNumber from "../../../../components/form/PhoneNumber";
 import Email from "../../../../components/form/Email";
-// import { GlobalContext } from "../../../../App";
-import { useHistory } from "react-router-dom";
 
 const EmailStrategy = () => {
   const [disabled, setDisabled] = useState(true);
@@ -37,8 +35,6 @@ const EmailStrategy = () => {
   const [phoneNumber, setPhoneNumber, phoneNumberValidation] =
     useInputValidation(null, { isEmpty: false });
 
-  const history = useHistory()
-
   const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (disabled) {
@@ -55,7 +51,7 @@ const EmailStrategy = () => {
       birthday,
     });
     if (status === 201) {
-      history.push("/");
+      window.location.href = "/auth/complete";
     }
   };
 

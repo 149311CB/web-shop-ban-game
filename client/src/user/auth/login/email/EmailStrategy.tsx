@@ -1,11 +1,10 @@
-import {Box, Button} from "@mui/material";
+import { Box, Button } from "@mui/material";
 import axios from "axios";
-import React, {FormEvent, useContext, useEffect, useState} from "react";
+import React, { FormEvent, useContext, useEffect, useState } from "react";
 import Email from "../../../../components/form/Email";
 import Password from "../../../../components/form/Password";
-import {useInputValidation} from "../../../../hooks/useFormValidation";
-import {GlobalContext} from "../../../../App";
-import {AlphaButton} from "../../AlphaButton";
+import { useInputValidation } from "../../../../hooks/useFormValidation";
+import { AlphaButton } from "../../AlphaButton";
 
 const EmailStrategy: React.FC<{ preview?: boolean }> = ({
   preview = false,
@@ -15,21 +14,27 @@ const EmailStrategy: React.FC<{ preview?: boolean }> = ({
     isEmail: true,
   });
   const [password, setPassword, passwordValidation] = useInputValidation();
-  const values = useContext(GlobalContext);
 
   const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (disabled) {
       return;
     }
-    const { data } = await axios.post("/api/users/login", {
-      email,
-      password,
-    });
-    const { token } = data;
-    if (token && values.setLoginToken) {
-      values.setLoginToken(token);
-    }
+
+    await axios
+      .post("/api/users/login", {
+        email,
+        password,
+      })
+      .then(({status}) => {
+        if(status === 200){
+          window.location.href="https://localhost:3000"
+        }
+      });
+    // const { token } = data;
+    // if (token && values.setLoginToken) {
+    //   values.setLoginToken(token);
+    // }
   };
 
   useEffect(() => {

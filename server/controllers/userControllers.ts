@@ -17,7 +17,7 @@ const login = asyncHandler(async (req, res) => {
 
   const { _id } = req.user;
 
-  const exist = await User.findById(_id);
+  const exist = await User.findById(_id)
 
   if (exist) {
     try {
@@ -25,12 +25,10 @@ const login = asyncHandler(async (req, res) => {
       exist.refresh_token = refreshToken!;
       await exist.save();
       res.cookie("refresh_token", refreshToken, COOKIES_OPTIONS);
-      // res
-      //   .json({
-      //     login: "success",
-      //     token: generateToken({ userId: _id }),
-      //   })
-      res.redirect("https://localhost:3000");
+      if(req.register){
+        return res.redirect("https://localhost:3000/auth/complete")
+      }
+      return res.redirect("https://localhost:3000");
     } catch (error: any) {
       return res.status(500).json({ message: error.message });
     }
@@ -43,7 +41,7 @@ const login = asyncHandler(async (req, res) => {
 // @desc    Register a new user
 // @route   POST /api/users
 // @access  Public
-const registerUser = asyncHandler(async (req, res) => {
+const registerUser = asyncHandler(async (req, res, next) => {
   try {
     const {
       first_name,
@@ -54,6 +52,9 @@ const registerUser = asyncHandler(async (req, res) => {
       confirm_pass,
       phone_number,
     } = req.body;
+    if (!password || password === undefined) {
+      return res.status(400).json({ message: "required password" });
+    }
 
     if (password !== confirm_pass) {
       return res
@@ -68,7 +69,7 @@ const registerUser = asyncHandler(async (req, res) => {
       throw new Error("User already exists");
     }
 
-    const user = await User.create({
+    const user = {
       first_name,
       middle_name: "",
       birthday,
@@ -77,22 +78,35 @@ const registerUser = asyncHandler(async (req, res) => {
       phone_number,
       password,
       active: true,
-    });
-    // const token = generateToken({ userId: user._id });
-    const refreshToken = generateRefreshToken({ userId: user._id });
-    user.refresh_token = refreshToken!;
-    await user.save();
+      email_verification: false,
+    };
 
-    if (user) {
-      res.cookie("refresh_token", refreshToken, COOKIES_OPTIONS);
-      res.redirect("https://localhost:3000");
-    } else {
-      res.status(400);
-      throw new Error("Invalid user data");
-    }
+    const newUser = await User.create(user);
+    req.register = true;
+    req.user = newUser;
+
+    return next();
   } catch (error: any) {
+    console.log(error);
     res.status(500).json({ message: error.message });
   }
+});
+
+const createCredential = asyncHandler(async (req, res) => {
+  const { user } = req;
+  if (!user) {
+    return res.status(401);
+  }
+  const exist = await User.findById(user._id);
+  if (!exist) {
+    return res.status(401);
+  }
+  const refreshToken = generateRefreshToken({ userId: exist._id });
+  exist.refresh_token = refreshToken!;
+  await exist.save();
+
+  res.cookie("refresh_token", refreshToken, COOKIES_OPTIONS);
+  res.status(201).json({ message: "successful" });
 });
 
 const refreshTokenController = asyncHandler(async (req, res) => {
@@ -235,6 +249,107 @@ const updatePassword = asyncHandler(async (req, res) => {
   }
 });
 
+const verifyEmail = asyncHandler(async (req, res) => {
+  const { user, authInfo } = req;
+  console.log(authInfo)
+  if (!user) {
+    return res.status(401);
+  }
+
+  const exist = await User.findById(user._id);
+  if (!exist) {
+    return res.status(401);
+  }
+  // Redirect to create password page if no password found and is register
+  if (
+    exist.password === "" ||
+    !exist.password ||
+    (exist.password === undefined && authInfo?.register)
+  ) {
+    // Generate short live token to create password
+    const emailVerificationToken = generateToken({
+      userId: user._id,
+      noPass: true,
+      isRegistered: true,
+    });
+    exist.email_verification = true;
+    await exist.save();
+
+    // res.cookie("email_verification_token", emailVerificationToken, {
+    //   ...COOKIES_OPTIONS,
+    //   maxAge: eval(process.env.SESSION_EXPIRY!),
+    // });
+
+    res.redirect(
+      `https://localhost:3000/verification/create-pass?token=${emailVerificationToken}`
+    );
+  } else if (exist.password && authInfo?.register) {
+    // Generate rf token and redirect to homepage if password found and is register
+    const refreshToken = generateRefreshToken({ userId: user._id });
+    exist.refresh_token = refreshToken;
+    exist.email_verification = true;
+    await exist.save();
+    res.cookie("refresh_token", refreshToken, COOKIES_OPTIONS);
+    return res.redirect("https://localhost:3000");
+  } else if (authInfo?.register) {
+    return res.redirect("https://localhost:3000");
+  }
+});
+
+const createPassword = asyncHandler(async (req, res) => {
+  const { password, confirm_pass } = req.body;
+  const { email_verification_token: emailVerificationToken } = req.query;
+  if (!emailVerificationToken || typeof emailVerificationToken !== "string") {
+    return res.status(401).json({ message: "token failed" });
+  }
+  if (
+    !password ||
+    !confirm_pass ||
+    typeof password !== "string" ||
+    typeof confirm_pass !== "string"
+  ) {
+    return res.status(400).json({ message: "invalid password" });
+  }
+  // const { signedCookies = {} } = req;
+  // const { email_verification_token: emailVerificationToken } = signedCookies;
+  const decoded = jwt.verify(emailVerificationToken, process.env.JWT_SECRET!);
+  if (typeof decoded === "string") {
+    return res.status(401).json({ message: "token failed" });
+  }
+  const { userId, noPass } = decoded;
+  if (!noPass) {
+    return res.status(200).json({ message: "password is created already" });
+  }
+  const exist = await User.findById({
+    _id: userId,
+    email_verification: false,
+  });
+
+  if (!exist) {
+    return res.status(200).json({ message: "email has been verified" });
+  }
+
+  try {
+    const refreshToken = generateRefreshToken({ userId: exist._id });
+    exist.refresh_token = refreshToken!;
+    exist.password = password;
+    await exist.save();
+    res.cookie("refresh_token", refreshToken, COOKIES_OPTIONS);
+    // res.clearCookie("email_verification_token", {
+    //   COOKIES_OPTIONS,
+    //   maxAge: eval(process.env.SESSION_EXPIRY!),
+    // });
+    return res.status(201).json({message:"successful"})
+  } catch (error: any) {
+    return res.status(500).json({ message: error.message });
+  }
+});
+
+const getAllUser = asyncHandler(async (req, res) => {
+  const users = await User.find({});
+  return res.status(200).json(users);
+});
+
 export {
   login,
   registerUser,
@@ -242,5 +357,9 @@ export {
   refreshTokenController,
   getUserDetails,
   updateEmail,
-  updatePassword
+  updatePassword,
+  verifyEmail,
+  createPassword,
+  createCredential,
+  getAllUser,
 };

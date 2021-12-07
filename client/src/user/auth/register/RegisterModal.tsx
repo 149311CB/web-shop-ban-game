@@ -35,8 +35,8 @@ const RegisterModal: React.FC<{ setRegister: Function }> = ({
       >
         Or
       </Divider>
-      <FacebookStrategy register={true}/>
-      <GoogleStrategy register={true}/>
+      <FacebookStrategy register={true} />
+      <GoogleStrategy register={true} />
     </Box>
   );
 };
