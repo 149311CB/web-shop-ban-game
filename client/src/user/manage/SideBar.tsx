@@ -36,7 +36,7 @@ const SideBar: React.FC<{ url: string }> = ({ url }) => {
         }}
       >
         <StackItem
-          active={pathname.includes("profile")}
+          active={pathname === "/user" || pathname === "/user/profile"}
           hover={true}
           radius={"0.3rem 0.3rem 0 0"}
           className={"custom-stack-item"}

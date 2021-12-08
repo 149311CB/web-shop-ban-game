@@ -16,6 +16,7 @@ import {
   createCredential,
   getAllUser,
   createPassword,
+  updatePersonalDetails,
 } from "../controllers/userControllers";
 import { sendVerificationEmail } from "../middlewares/verifyEmail";
 
@@ -57,5 +58,8 @@ router.route("/details").post(verifyUser, getUserDetails);
 router.route("/profile/update/email").post(verifyUser, updateEmail);
 router.route("/profile/update/password").post(verifyUser, updatePassword);
 router.route("/all").get(getAllUser);
+router
+  .route("/profile/personal-details/update")
+  .post(verifyUser, updatePersonalDetails);
 
 export default router;

@@ -17,7 +17,7 @@ const login = asyncHandler(async (req, res) => {
 
   const { _id } = req.user;
 
-  const exist = await User.findById(_id)
+  const exist = await User.findById(_id);
 
   if (exist) {
     try {
@@ -25,8 +25,8 @@ const login = asyncHandler(async (req, res) => {
       exist.refresh_token = refreshToken!;
       await exist.save();
       res.cookie("refresh_token", refreshToken, COOKIES_OPTIONS);
-      if(req.register){
-        return res.redirect("https://localhost:3000/auth/complete")
+      if (req.register) {
+        return res.redirect("https://localhost:3000/auth/complete");
       }
       return res.redirect("https://localhost:3000");
     } catch (error: any) {
@@ -251,7 +251,7 @@ const updatePassword = asyncHandler(async (req, res) => {
 
 const verifyEmail = asyncHandler(async (req, res) => {
   const { user, authInfo } = req;
-  console.log(authInfo)
+  console.log(authInfo);
   if (!user) {
     return res.status(401);
   }
@@ -339,9 +339,33 @@ const createPassword = asyncHandler(async (req, res) => {
     //   COOKIES_OPTIONS,
     //   maxAge: eval(process.env.SESSION_EXPIRY!),
     // });
-    return res.status(201).json({message:"successful"})
+    return res.status(201).json({ message: "successful" });
   } catch (error: any) {
     return res.status(500).json({ message: error.message });
+  }
+});
+
+const updatePersonalDetails = asyncHandler(async (req, res) => {
+  const { user } = req;
+  if (!user) {
+    return res.status(401);
+  }
+  try {
+    const { firstName, lastName, phoneNumber, birthday, password } = req.body;
+    const exist = await User.findById(user._id);
+    // @ts-ignore
+    if (!exist || !(await user.matchPassword(password))) {
+      return res.status(401);
+    }
+    exist.first_name = firstName;
+    exist.last_name = lastName;
+    exist.phone_number = phoneNumber;
+    exist.birthday = new Date(birthday).toISOString();
+    await exist.save();
+    return res.status(200).json({ message: "successful" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500);
   }
 });
 
@@ -362,4 +386,5 @@ export {
   createPassword,
   createCredential,
   getAllUser,
+  updatePersonalDetails
 };
