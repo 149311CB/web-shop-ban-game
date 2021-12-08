@@ -32,6 +32,7 @@ const itemSchema = new Schema<IItem>({
 const cartSchema = new Schema<ICart>({
   user: {
     type: Schema.Types.ObjectId,
+    required: false,
   },
   products: [itemSchema],
   status: {

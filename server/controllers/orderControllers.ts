@@ -115,7 +115,7 @@ const createOrder = asyncHandler(async (req, res) => {
     const msg = {
       to: user.email,
       from: "xstk2000@gmail.com",
-      subject: "Verify your email",
+      subject: "Order details",
       html: orderConfirmationBuilder(
         createdOrder.paid_at,
         user,

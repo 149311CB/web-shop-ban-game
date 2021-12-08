@@ -1,15 +1,17 @@
-import {useContext, useEffect, useState} from "react";
-import {Box, Button, Divider, Stack, Typography,} from "@mui/material";
+import { useContext, useEffect, useState } from "react";
+import { Box, Button, Divider, Stack, Typography } from "@mui/material";
 import axios from "axios";
-import {GlobalContext} from "../App";
+import { GlobalContext } from "../App";
 import CartItem from "./CartItem";
-import {useHistory} from "react-router-dom";
-import {AlphaContainer} from "../components/AlphaContainer";
-import {getProductPrice} from "../utils/getProductPrice";
-import {GoldenPriceTag} from "../components/GoldenPriceTag";
-import {StackItem} from "../components/StackItem";
+import { useHistory } from "react-router-dom";
+import { AlphaContainer } from "../components/AlphaContainer";
+import { getProductPrice } from "../utils/getProductPrice";
+import { GoldenPriceTag } from "../components/GoldenPriceTag";
+import { StackItem } from "../components/StackItem";
+import AuthModal from "../user/auth/AuthModal";
 
 const Cart = () => {
+  const [open, setOpen] = useState(false);
   const [data, setData] = useState<any>(null);
   const [updating, setUpdating] = useState(false);
   const { mode } = useContext(GlobalContext);
@@ -17,20 +19,29 @@ const Cart = () => {
   const { loginToken } = useContext(GlobalContext);
 
   useEffect(() => {
-    if (updating || !loginToken) return;
+    if (updating) return;
     const fetchData = async () => {
-      const { data: cart } = await axios.post(
-        "/api/carts/auth/active",
-        {},
-        {
-          headers: {
-            "Content-Type": "application/json",
-            // @ts-ignore
-            Authorization: `Bearer ${loginToken}`,
-          },
-        }
-      );
-      setData(cart);
+      const route = loginToken ? "/api/carts/auth/active" : "/api/carts/active";
+      await axios
+        .post(
+          route,
+          {},
+          {
+            withCredentials: true,
+            headers: {
+              "Content-Type": "application/json",
+              // @ts-ignore
+              Authorization: `Bearer ${loginToken}`,
+            },
+          }
+        )
+        .then(({ data: cart }) => {
+          setData(cart);
+        })
+        .catch((error: any) => {
+          console.log(error.message);
+          return;
+        });
     };
     fetchData();
   }, [updating, loginToken]);
@@ -97,7 +108,6 @@ const Cart = () => {
                       mode={mode}
                       updating={updating}
                       setUpdating={setUpdating}
-                      setData={setData}
                     />
                   </StackItem>
                 ))
@@ -176,11 +186,17 @@ const Cart = () => {
             }}
             disabled={updating}
             onClick={() => {
-              history.push(`/checkout`);
+              return loginToken ? history.push(`/checkout`) : setOpen(true);
             }}
           >
             Proceed to checkout
           </Button>
+          <AuthModal
+            open={open}
+            handleClose={() => {
+              setOpen(false);
+            }}
+          />
         </Box>
       </Box>
     </Box>

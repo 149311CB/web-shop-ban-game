@@ -30,13 +30,21 @@ const ShoppingCartBadge = () => {
       if (product) {
         setAddedProduct(product);
       }
-      const { data } = await axios.get("/api/carts/auth/count", {
-        headers: {
-          // @ts-ignore
-          Authorization: `Bearer ${loginToken}`,
-        },
-      });
-      setCount(data.count);
+      const route = loginToken ? "/api/carts/auth/count" : "/api/carts/count"
+      await axios
+        .get(route, {
+          withCredentials: true,
+          headers: {
+            // @ts-ignore
+            Authorization: `Bearer ${loginToken}`,
+          },
+        })
+        .then(({ data }) => {
+          setCount(data.count);
+        })
+        .catch((error) => {
+          return;
+        });
       if (openDialog) {
         setVisible(true);
       }
@@ -48,11 +56,11 @@ const ShoppingCartBadge = () => {
   value.fetchCount = fetchCount;
 
   useEffect(() => {
-    if (!loginToken) {
-      return;
-    }
+    // if (!loginToken) {
+    //   return;
+    // }
     fetchCount(loginToken);
-  }, [fetchCount, value, loginToken]);
+  }, [fetchCount, loginToken]);
 
   useEffect(() => {
     const {

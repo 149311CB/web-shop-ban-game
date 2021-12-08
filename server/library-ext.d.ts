@@ -2,6 +2,7 @@ import { userTypes } from "./models/userModel";
 
 interface IRegister {
   register: boolean;
+  cartId: string;
 }
 
 declare global {

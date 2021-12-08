@@ -1,4 +1,5 @@
 import passport from "passport";
+import jwt from "jsonwebtoken";
 import { Strategy, ExtractJwt, StrategyOptions } from "passport-jwt";
 import User from "../../models/userModel";
 
@@ -34,8 +35,8 @@ passport.use(
     try {
       const { userId, ...rest } = jwt_payload;
       console.log(userId);
-      const user = await User.findById(userId)
-      console.log(user)
+      const user = await User.findById(userId);
+      console.log(user);
       if (user) {
         if (!user.email_verification) {
           return done(null, user, { ...rest });

@@ -13,8 +13,8 @@ const CartItem: React.FC<{
   mode: any;
   updating: boolean;
   setUpdating: Function;
-  setData: Function;
-}> = ({ item, mode, updating, setUpdating, setData }) => {
+  // setData: Function;
+}> = ({ item, mode, updating, setUpdating }) => {
   const [qty, setQty] = useState(item.quantity ? item.quantity : 0);
   const [keys, setKeys] = useState<any[]>([]);
   const { loginToken, fetchCount } = useContext(GlobalContext);
@@ -34,9 +34,11 @@ const CartItem: React.FC<{
       setQty((current: number) => current - 1);
       quantity = qty - 1;
     }
-
+    const route = loginToken
+      ? "/api/carts/auth/qty/update"
+      : "/api/carts/qty/update";
     await axios.post(
-      "/api/carts/auth/qty/update",
+      route,
       {
         product: { ...item, quantity: quantity },
       },
@@ -52,9 +54,10 @@ const CartItem: React.FC<{
   };
 
   const removeFromCart = async () => {
+    const route = loginToken ? "/api/carts/auth/remove" : "/api/carts/remove";
     setUpdating(true);
     await axios.post(
-      "/api/carts/auth/remove",
+      route,
       {
         product: { _id: item.product._id },
       },
@@ -115,7 +118,7 @@ const CartItem: React.FC<{
                   fontSize: "1rem !important",
                   paddingBottom: "0.6rem",
                   fontFamily: "brutal-medium  !important",
-                  color:"text.primary"
+                  color: "text.primary",
                 }}
               >
                 {item.product.name}

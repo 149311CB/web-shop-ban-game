@@ -29,8 +29,9 @@ const AddToCartControl: React.FC<{ data: any }> = ({ data }) => {
   };
 
   const addToCart = async () => {
+    const route = loginToken ? "/api/carts/auth/add" : "/api/carts/add";
     const { data: reponseData } = await axios.post(
-      "/api/carts/auth/add",
+      route,
       {
         product: { _id: data._id, quantity: qty },
       },
