@@ -3,6 +3,9 @@ import React from "react";
 import { AlphaTypo } from "../../components/AlphaTypo";
 
 const UserReview: React.FC<{ review: any }> = ({ review }) => {
+  if(!review.user){
+    return null
+  }
   return (
     <Box
       sx={{
@@ -15,16 +18,20 @@ const UserReview: React.FC<{ review: any }> = ({ review }) => {
       key={review.user._id}
     >
       <Box sx={{ width: "10%" }}>
-        <img
-          src={review.user.avatar}
-          alt={review.user.last_name + review.user.first_name + "avatar"}
-          style={{ borderRadius: "100%", width: "100%" }}
-        />
+        {review.user && (
+          <img
+            src={review.user.avatar}
+            alt={review.user.first_name + review.user.last_name + "avatar"}
+            style={{ borderRadius: "100%", width: "100%" }}
+          />
+        )}
       </Box>
-      <Box>
-        <Typography>
-          {review.user.last_name + " " + review.user.first_name}
-        </Typography>
+      <Box sx={{width:"60%"}}>
+        {review.user && (
+          <Typography>
+            {review.user.last_name + " " + review.user.first_name}
+          </Typography>
+        )}
         <Rating
           value={review.rating}
           size={"small"}

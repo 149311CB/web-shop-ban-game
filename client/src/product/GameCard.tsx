@@ -109,7 +109,9 @@ const GameCard: React.FC<{ game: any }> = ({ game }) => {
           sx={{ p: "0.6rem 3.0rem" }}
           onClick={() =>
             history.push({
-              pathname: `/product/${game.name}`,
+              pathname: `/product/${game.name
+                .replace(/\s+/g, "-")
+                .toLowerCase()}`,
               state: { _id: game._id },
             })
           }

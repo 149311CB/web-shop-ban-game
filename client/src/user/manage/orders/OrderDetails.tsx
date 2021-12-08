@@ -128,10 +128,13 @@ const OrderDetails: React.FC<any> = () => {
                         alt={item.product.name + "portrait"}
                         className={"game-thumnail"}
                       />
+                      {console.log(item)}
                       <Link
                         to={{
-                          pathname: `/product/${item.product.name}`,
-                          state: item.product._id,
+                          pathname: `/product/${item.product.name
+                            .replace(/\s+/g, "-")
+                            .toLowerCase()}`,
+                          state: { _id: item.product._id, section: "review" },
                         }}
                       >
                         <Typography

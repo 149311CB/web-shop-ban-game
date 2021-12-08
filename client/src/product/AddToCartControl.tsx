@@ -94,11 +94,17 @@ const AddToCartControl: React.FC<{ data: any }> = ({ data }) => {
             changeQty(e);
           }}
         >
-          {keys.map((_, index: number) => (
-            <MenuItem value={index + 1} key={`${index}`}>
-              {index + 1}
+          {keys.length === 0 ? (
+            <MenuItem value={0} key={`${0}`}>
+              0
             </MenuItem>
-          ))}
+          ) : (
+            keys.map((_, index: number) => (
+              <MenuItem value={index + 1} key={`${index}`}>
+                {index + 1}
+              </MenuItem>
+            ))
+          )}
         </Select>
       </FormControl>
       <PrimaryButton
@@ -110,6 +116,7 @@ const AddToCartControl: React.FC<{ data: any }> = ({ data }) => {
         onClick={() => {
           addToCart();
         }}
+        disabled={keys.length <= 0}
       >
         Add to cart
       </PrimaryButton>

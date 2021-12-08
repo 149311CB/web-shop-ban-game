@@ -92,7 +92,7 @@ const Review: React.FC<{ gameId: string }> = ({ gameId }) => {
         route,
         { gameId, rating, comment, images },
         {
-          params: { commentId: userReview._id },
+          params: { commentId: userReview && userReview._id },
           headers: {
             Authorization: `Bearer ${loginToken}`,
           },
@@ -162,7 +162,7 @@ const Review: React.FC<{ gameId: string }> = ({ gameId }) => {
   }, [gameId, loginToken]);
 
   return (
-    <Box>
+    <Box id={"review"}>
       <Typography variant={"h1"} sx={{ p: "2.4rem 0 1.2rem 0" }}>
         Reviews
       </Typography>
@@ -198,7 +198,9 @@ const Review: React.FC<{ gameId: string }> = ({ gameId }) => {
             <Box sx={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
               <Typography sx={{ pt: "4px" }}>
                 {ratingSummary
-                  ? (ratingTotal(ratingSummary) / reviews.length).toFixed(1)
+                  ? isNaN(ratingSummary / reviews.length)
+                    ? 0
+                    : (ratingTotal(ratingSummary) / reviews.length).toFixed(1)
                   : 0}
                 /5
               </Typography>

@@ -18,7 +18,7 @@ var collectionSchema = new mongoose.Schema(
 const Collection = mongoose.model(
   "Collection",
   collectionSchema,
-  "collections"
+  "test_collection"
 );
 
 export default Collection;

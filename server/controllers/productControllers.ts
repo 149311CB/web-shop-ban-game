@@ -1,40 +1,38 @@
 import asyncHandler from "express-async-handler";
 import Collection from "../models/collectionSchema.js";
 import { Game } from "../models/productModel";
+import util from "util";
 
 const getOptionalQueries = (
   filters: string[] | undefined,
   keyword: string | undefined,
   collectionFilter: string[] | undefined
 ) => {
-  let optionalQueries = {};
+  let optionalQueries = [];
 
   if (collectionFilter) {
-    optionalQueries = {
-      ...optionalQueries,
-      ...{ _id: { $in: collectionFilter } },
-    };
+    optionalQueries.push({ _id: { $in: collectionFilter } });
   }
 
   if (filters) {
-    optionalQueries = { ...optionalQueries, ...{ tags: { $all: filters } } };
+    optionalQueries.push({ tag: { $all: filters } });
   }
 
-  if (keyword) {
+  if (keyword && keyword !== "") {
     const regex = {
       $regex: keyword,
       $options: "i",
     };
-    optionalQueries = {
-      ...optionalQueries,
-      ...{ $or: [{ name: regex }, { short_name: regex }, { studio: regex }] },
-    };
+    optionalQueries.push({
+      $or: [{ name: regex }, { short_name: regex }, { studio: regex }],
+    });
   }
 
   if (Object.keys(optionalQueries).length > 0) {
-    return { $and: [optionalQueries] };
+    // @ts-ignore
+    return { $and: optionalQueries };
   }
-  return optionalQueries;
+  return {};
 };
 
 const getAllGame = asyncHandler(async (req, res) => {
@@ -60,6 +58,15 @@ const getAllGame = asyncHandler(async (req, res) => {
         collectionFilter = result.list_game;
         total = result.list_game.length;
       }
+      console.log(
+        util.inspect(
+          //@ts-ignore
+          getOptionalQueries(filters, keyword, collectionFilter),
+          false,
+          null,
+          true
+        )
+      );
       const games = await Game.find(
         //@ts-ignore
         getOptionalQueries(filters, keyword, collectionFilter)

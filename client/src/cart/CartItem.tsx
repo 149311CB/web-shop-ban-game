@@ -1,12 +1,12 @@
-import {Box, Button, OutlinedInput, Stack, Typography,} from "@mui/material";
+import { Box, Button, OutlinedInput, Stack, Typography } from "@mui/material";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
-import React, {useContext, useEffect, useState} from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
-import {useHistory} from "react-router-dom";
-import {GlobalContext} from "../App";
-import {GoldenPriceTag} from "../components/GoldenPriceTag";
-import {AlphaTypo} from "../components/AlphaTypo";
+import { Link, useHistory } from "react-router-dom";
+import { GlobalContext } from "../App";
+import { GoldenPriceTag } from "../components/GoldenPriceTag";
+import { AlphaTypo } from "../components/AlphaTypo";
 
 const CartItem: React.FC<{
   item: any;
@@ -67,7 +67,7 @@ const CartItem: React.FC<{
       }
     );
     setUpdating(false);
-    fetchCount(loginToken)
+    fetchCount(loginToken);
   };
 
   useEffect(() => {
@@ -102,15 +102,25 @@ const CartItem: React.FC<{
           }}
         >
           <Box>
-            <Typography
-              sx={{
-                fontSize: "1rem !important",
-                paddingBottom: "0.6rem",
-                fontFamily: "brutal-medium  !important",
+            <Link
+              to={{
+                pathname: `/product/${item.product.name
+                  .replace(/\s+/g, "-")
+                  .toLowerCase()}`,
+                state: { _id: item.product._id },
               }}
             >
-              {item.product.name}
-            </Typography>
+              <Typography
+                sx={{
+                  fontSize: "1rem !important",
+                  paddingBottom: "0.6rem",
+                  fontFamily: "brutal-medium  !important",
+                  color:"text.primary"
+                }}
+              >
+                {item.product.name}
+              </Typography>
+            </Link>
             <AlphaTypo sx={{ paddingBottom: "0.6rem" }}>
               {item.product.developer}
             </AlphaTypo>

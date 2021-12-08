@@ -29,11 +29,7 @@ const GameCarousel: React.FC<{ data: any }> = ({ data }) => {
   const gameCarouselRef = useRef<HTMLUListElement>(null);
   const [transitionDelay, setTransitionDelay] = useState(5000);
   const [currentItem, setCurrentItem] = useState(1);
-  const [allowCarousel, setAllowCarousel] = useState([
-    "landscape",
-    "template",
-    "logo",
-  ]);
+  const [allowCarousel, setAllowCarousel] = useState(["landscape"]);
 
   const carouselTransition = () => {
     if (gameCarouselRef.current) {
@@ -55,13 +51,12 @@ const GameCarousel: React.FC<{ data: any }> = ({ data }) => {
   useAnimationFrame(transitionDelay, carouselTransition);
 
   return (
-    <Box >
+    <Box>
       <Box
         className={"game-carousel"}
         sx={{
           overflow: "hidden",
           position: "relative",
-          // border: "1px solid purple",
         }}
       >
         <Box
@@ -130,7 +125,7 @@ const GameCarousel: React.FC<{ data: any }> = ({ data }) => {
           return allowCarousel.includes(img.type) ? (
             <AlphaListItem
               key={"small-img" + index}
-              className={index === currentItem ? "active" : ""}
+              className={index === currentItem - 1 ? "active" : ""}
               sx={{
                 width: "100px",
                 padding: "0",

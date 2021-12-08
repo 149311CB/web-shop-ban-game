@@ -69,6 +69,6 @@ const gameSchema = new Schema({
   },
 });
 
-const Game = model<IGame>("Game", gameSchema, "games");
+const Game = model<IGame>("Game", gameSchema, "test_games");
 
 export { Game };

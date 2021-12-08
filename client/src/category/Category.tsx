@@ -1,13 +1,13 @@
 import { Box, Typography, Grid } from "@mui/material";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { ChevronRightRounded } from "@mui/icons-material";
 import GameCard from "../components/GameCard";
 
-const getCollections = async () => {
+export const getCollections = async (names: string[]) => {
   const { data } = await axios.get("/api/collections/name", {
-    params: { names: ["top sale"] },
+    params: {names},
   });
   return data;
 };
@@ -16,8 +16,15 @@ const Category = () => {
   const [collections, setCollections] = useState([]);
 
   useEffect(() => {
-    getCollections().then((data) => {
-      console.log(data);
+    getCollections([
+      "top sale",
+      "new release",
+      "most popular",
+      "recently update",
+    ]).then((data) => {
+      const index = data.indexOf("top sale");
+      const top_sale = data.splice(index, 1);
+      data.unshift(...top_sale);
       setCollections(data);
     });
   }, []);
@@ -26,7 +33,7 @@ const Category = () => {
     <Box>
       {collections &&
         collections.map((collection: any) => (
-          <Box key={collection._id}>
+          <Box key={collection._id} sx={{ pb: 10 }}>
             <Link
               to={{
                 pathname: `/browse/${collection.name
@@ -64,11 +71,15 @@ const Category = () => {
               spacing={2}
               columns={{ md: 10, xs: 12 }}
             >
-              {collection.list_game.map((game: any) => (
-                <Grid item md={2} sm={3} xs={6} key={game._id}>
-                  <GameCard game={game} key={game._id} />
-                </Grid>
-              ))}
+              {collection.list_game.map((game: any, index: number) => {
+                return (
+                  index < 5 && (
+                    <Grid item md={2} sm={3} xs={6} key={game._id}>
+                      <GameCard game={game} key={game._id} />
+                    </Grid>
+                  )
+                );
+              })}
             </Grid>
           </Box>
         ))}

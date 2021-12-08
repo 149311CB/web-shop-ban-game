@@ -51,7 +51,6 @@ const ShoppingCartBadge = () => {
     if (!loginToken) {
       return;
     }
-
     fetchCount(loginToken);
   }, [fetchCount, value, loginToken]);
 

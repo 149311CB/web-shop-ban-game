@@ -7,7 +7,7 @@ const ReviewClassifies: React.FC<{
   ratingSummary: any;
 }> = ({ reviewsLength, ratingSummary }) => {
   return (
-    <Box sx={{ width: "100%"}}>
+    <Box sx={{ width: "100%" }}>
       {ratingSummary &&
         Object.keys(ratingSummary)
           .reverse()
@@ -18,7 +18,11 @@ const ReviewClassifies: React.FC<{
               </Typography>
               <LinearProgressWithLabel
                 key={key}
-                value={(ratingSummary[key] / reviewsLength) * 100}
+                value={
+                  isNaN(ratingSummary[key] / reviewsLength)
+                    ? 0
+                    : (ratingSummary[key] / reviewsLength) * 100
+                }
                 sx={{ width: { lg: "150px" } }}
               />
             </Box>

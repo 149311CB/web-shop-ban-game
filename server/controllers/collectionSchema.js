@@ -29,7 +29,7 @@ const deleteCollection = asyncHandler(async (req, res) => {
 });
 
 const getCollectionByName = asyncHandler(async (req, res) => {
-  const { names, limit = 0, skip = 0 } = req.query;
+  const { names } = req.query;
   if (!names) {
     return res.status(400).json({ message: "required collection names" });
   }
@@ -37,13 +37,12 @@ const getCollectionByName = asyncHandler(async (req, res) => {
     return res.status(400).json({ message: "name must be an array" });
   }
   try {
-    const collections = await Collection.find({ name: { $in: names } })
-      // .skip(limit * skip)
-      // .limit(limit)
-      .populate({
-        path: "list_game",
-        select: "name developer images sale_price",
-      });
+    const collections = await Collection.find({
+      name: { $in: names },
+    }).populate({
+      path: "list_game",
+      select: "name developer images sale_price",
+    });
     return res.status(200).json(collections);
   } catch (error) {
     console.log(error);
@@ -58,4 +57,3 @@ export {
   deleteCollection,
   getCollectionByName,
 };
-
