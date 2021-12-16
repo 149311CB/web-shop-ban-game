@@ -31,6 +31,7 @@ const GameCard: React.FC<{ game: any }> = ({ game }) => {
               width: "100%",
               borderRadius: "0.3rem",
             }}
+            loading="lazy"
             alt={game.name + "portrait"}
             className={"game-thumnail"}
           />

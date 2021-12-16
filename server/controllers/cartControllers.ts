@@ -119,7 +119,6 @@ const guestAddToCart = asyncHandler(async (req, res) => {
       match: { _id: { $eq: product._id } },
       option: { limit: 1 },
     });
-    console.log(exist);
     const quantityInCart = await addToCart(exist, product, res);
     return res.status(200).json({ qty_in_cart: quantityInCart });
   }

@@ -1,14 +1,22 @@
 import { Box, Container } from "@mui/material";
-import React from "react";
+import { SxProps } from "@mui/system";
+import React, { useEffect, useState } from "react";
+import ScrollToTopButton from "../components/ScrollToTopButton";
 
-const Page: React.FC<React.ReactNode> = ({ children }) => {
+const Page: React.FC<{ sx?: SxProps }> = ({ sx, children }) => {
+  const [scrollY, setScollY] = useState(0);
+  useEffect(() => {
+    window.addEventListener("scroll", () => {
+      setScollY(window.scrollY);
+    });
+  });
   return (
     <Box
       sx={{
+        ...sx,
         width: { xs: "100%" },
         minHeight: { xs: "90vh" },
         bgcolor: "background.default",
-        // border: "1px solid blue",
       }}
     >
       <Container
@@ -23,6 +31,7 @@ const Page: React.FC<React.ReactNode> = ({ children }) => {
       >
         {children}
       </Container>
+      {scrollY >= 350 && <ScrollToTopButton />}
     </Box>
   );
 };

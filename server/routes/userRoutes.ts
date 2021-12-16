@@ -17,17 +17,22 @@ import {
   getAllUser,
   createPassword,
   updatePersonalDetails,
+  resetPasswordRequest,
+  resetPassword,
 } from "../controllers/userControllers";
 import { sendVerificationEmail } from "../middlewares/verifyEmail";
 
 const router = express.Router();
 
+router.route("/reset-pass-request").post(resetPasswordRequest);
+router.route("/reset-pass").post(resetPassword);
 router.route("/login/failed").get((_, res) => {
   res.status(401).json({
     success: false,
     message: "failure",
   });
 });
+
 router
   .route("/login/facebook")
   .get(

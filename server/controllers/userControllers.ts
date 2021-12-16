@@ -1,4 +1,5 @@
 import asyncHandler from "express-async-handler";
+import sendgrid from "@sendgrid/mail";
 import User from "../models/userModel";
 import {
   generateToken,
@@ -251,7 +252,6 @@ const updatePassword = asyncHandler(async (req, res) => {
 
 const verifyEmail = asyncHandler(async (req, res) => {
   const { user, authInfo } = req;
-  console.log(authInfo);
   if (!user) {
     return res.status(401);
   }
@@ -298,7 +298,7 @@ const verifyEmail = asyncHandler(async (req, res) => {
 
 const createPassword = asyncHandler(async (req, res) => {
   const { password, confirm_pass } = req.body;
-  const { email_verification_token: emailVerificationToken } = req.query;
+  const { token: emailVerificationToken } = req.query;
   if (!emailVerificationToken || typeof emailVerificationToken !== "string") {
     return res.status(401).json({ message: "token failed" });
   }
@@ -369,9 +369,56 @@ const updatePersonalDetails = asyncHandler(async (req, res) => {
   }
 });
 
-const getAllUser = asyncHandler(async (req, res) => {
+const getAllUser = asyncHandler(async (_, res) => {
   const users = await User.find({});
   return res.status(200).json(users);
+});
+
+const resetPasswordRequest = asyncHandler(async (req, res) => {
+  const { email } = req.body;
+  const exist = await User.findOne({ email: email });
+  if (!exist) {
+    return res.status(200).json({ message: "user not found" });
+  }
+  sendgrid.setApiKey(process.env.SENDGRID_API_KEY!);
+  const resetPassToken = generateToken({ userId: exist._id, resetPass: true });
+  const msg = {
+    to: exist.email,
+    from: "xstk2000@gmail.com",
+    subject: "Reset password",
+    templateId: "d-2617efa26a114566a2de3f66264a7e64",
+    dynamicTemplateData: {
+      link: `https://localhost:3000/password/reset?token=${resetPassToken}`,
+    },
+  };
+
+  await sendgrid.send(msg);
+
+  return res.status(200).json(exist);
+});
+
+const resetPassword = asyncHandler(async (req, res) => {
+  try {
+    const { token } = req.query;
+    const { password } = req.body;
+    if (!token || typeof token !== "string") {
+      return res.redirect("https://localhost:3000");
+    }
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!);
+    if (typeof decoded === "string" || !decoded.userId) {
+      return res.redirect("https://localhost:3000");
+    }
+    const exist = await User.findById(decoded.userId);
+    if (!exist) {
+      return res.redirect("https://localhost:3000");
+    }
+    exist.password = password;
+    await exist.save();
+    return res.status(200).json({ message: "success" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500);
+  }
 });
 
 export {
@@ -386,5 +433,7 @@ export {
   createPassword,
   createCredential,
   getAllUser,
-  updatePersonalDetails
+  updatePersonalDetails,
+  resetPasswordRequest,
+  resetPassword,
 };

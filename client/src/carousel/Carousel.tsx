@@ -24,11 +24,11 @@ const Carousel = () => {
 
   useEffect(() => {
     if (stackRef.current) {
+      if (stackRef.current.style.flexDirection === "row") return;
       const stackItems = stackRef.current.querySelectorAll(
         ".carousel-stack-item"
       );
       const stackItemArr = Array.from(stackItems);
-      console.log(stackItemArr);
       stackItemArr.forEach((item: any) => {
         item.style.height = `${100 / stackItemArr.length}%`;
       });
@@ -111,7 +111,7 @@ const Carousel = () => {
       sx={{
         display: "flex",
         gap: "0.9rem",
-        // minHeight: "80vh",
+        flexDirection: { xs: "column", md: "row" },
         padding: "1.5rem 0",
         marginBottom: "0.9rem",
         position: "relative",
@@ -147,7 +147,6 @@ const Carousel = () => {
                       width: "100%",
                       height: "100%",
                       borderRadius: "0.6rem",
-                      // border: "1px solid blue",
                     }}
                   />
                 </li>
@@ -157,9 +156,11 @@ const Carousel = () => {
       </Box>
       <Stack
         ref={stackRef}
-        maxWidth={"15%"}
         gap={"0.6rem"}
-        // border={"1px solid red"}
+        sx={{
+          flexDirection: { xs: "row", md: "column" },
+          maxWidth: { sm: "100%", md: "15%" },
+        }}
       >
         {topsale &&
           topsale.map((game: any, index: number) => (
@@ -172,21 +173,25 @@ const Carousel = () => {
                 borderRadius: "0.6rem",
                 position: "relative",
                 overflow: "hidden",
-                bgcolor:
-                  currentItem === index + 1
-                    ? "background.paper"
-                    : "background.default",
+                bgcolor: {
+                  md:
+                    currentItem === index + 1
+                      ? "background.paper"
+                      : "background.default",
+                },
                 display: "flex",
-                alignItems: "center",
+                alignItems: { sx: "stretch", md: "center" },
                 gap: "0.6rem",
+                width: { xs: "100%", md: "unset" },
               }}
             >
-              <div
+              <Box
                 className="stack-img-container"
-                style={{
-                  width: "25%",
+                sx={{
+                  width: { xs: "100%", md: "25%" },
                   height: "100%",
                   borderRadius: "0.6rem",
+                  display: { xs: "none", md: "block" },
                 }}
               >
                 <img
@@ -199,10 +204,11 @@ const Carousel = () => {
                     borderRadius: "0.6rem",
                   }}
                 />
-              </div>
+              </Box>
               <Typography
                 sx={{
-                  width: "70%",
+                  display: { xs: "none", md: "block" },
+                  width: { xs: "0%", md: "70%" },
                   fontSize: "0.75rem !important",
                 }}
               >
@@ -216,7 +222,6 @@ const Carousel = () => {
                   position: "absolute",
                   top: 0,
                   left: 0,
-                  // borderRadius: "0.6rem",
                   backgroundColor: (theme) =>
                     alpha(
                       theme.palette.text.primary,

@@ -58,15 +58,6 @@ const getAllGame = asyncHandler(async (req, res) => {
         collectionFilter = result.list_game;
         total = result.list_game.length;
       }
-      console.log(
-        util.inspect(
-          //@ts-ignore
-          getOptionalQueries(filters, keyword, collectionFilter),
-          false,
-          null,
-          true
-        )
-      );
       const games = await Game.find(
         //@ts-ignore
         getOptionalQueries(filters, keyword, collectionFilter)

@@ -170,7 +170,6 @@ const getOrderById = asyncHandler(async (req, res) => {
     if (!order) {
       return res.status(404);
     }
-    console.log(order._id);
 
     res.json(order);
   } catch (error) {

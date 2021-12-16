@@ -4,9 +4,10 @@ import FacebookStrategy from "../login/facebook/FacebookStrategy";
 import GoogleStrategy from "../login/google/GoogleStrategy";
 import Email from "./email/EmailStrategy";
 
-const RegisterModal: React.FC<{ setRegister: Function }> = ({
-  setRegister,
-}) => {
+const RegisterModal: React.FC<{
+  setRegister: Function;
+  setResetPass: Function;
+}> = ({ setRegister, setResetPass }) => {
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
       <Email />
@@ -30,11 +31,27 @@ const RegisterModal: React.FC<{ setRegister: Function }> = ({
         sx={{
           fontFamily: "brutal-regular",
           fontSize: "0.813rem",
-          padding: "0.9rem 0",
+          paddingTop: "0.9rem",
         }}
       >
         Or
       </Divider>
+      <Button
+        sx={{
+          fontFamily: "brutal-regular",
+          textTransform: "none",
+          width: "100%",
+          justifyContent: "right",
+          padding: 0,
+          "&:hover": { bgcolor: "transparent" },
+          marginBottom: "0.9rem",
+        }}
+        onClick={() => {
+          setResetPass(true);
+        }}
+      >
+        Reset password
+      </Button>
       <FacebookStrategy register={true} />
       <GoogleStrategy register={true} />
     </Box>

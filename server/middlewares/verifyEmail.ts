@@ -1,4 +1,4 @@
-import sendgrid, { MailDataRequired } from "@sendgrid/mail";
+import sendgrid from "@sendgrid/mail";
 import asyncHandler from "express-async-handler";
 import { generateToken } from "../utils/generateToken";
 
@@ -34,4 +34,3 @@ export const sendVerificationEmail = asyncHandler(async (req, res, next) => {
       next();
     });
 });
-

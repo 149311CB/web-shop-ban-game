@@ -15,13 +15,20 @@ const Success = () => {
     useInputValidation(null, { match: password });
   const fetchData = async (e: FormEvent) => {
     e.preventDefault();
+    const {
+      location: { pathname },
+    } = history;
+    let route = "/api/users/create-pass";
+    if (pathname.includes("/reset")) {
+      route = "/api/users/reset-pass";
+    }
     await axios
       .post(
-        "/api/users/create-pass",
+        route,
         { password, confirm_pass: confirmPass },
         {
           params: {
-            email_verification_token: token,
+            token: token,
           },
         }
       )

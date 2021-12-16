@@ -34,9 +34,7 @@ passport.use(
   new Strategy(emailOpts, async (jwt_payload, done) => {
     try {
       const { userId, ...rest } = jwt_payload;
-      console.log(userId);
       const user = await User.findById(userId);
-      console.log(user);
       if (user) {
         if (!user.email_verification) {
           return done(null, user, { ...rest });

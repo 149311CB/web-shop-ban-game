@@ -9,6 +9,7 @@ import { getProductPrice } from "../utils/getProductPrice";
 import { GoldenPriceTag } from "../components/GoldenPriceTag";
 import { StackItem } from "../components/StackItem";
 import AuthModal from "../user/auth/AuthModal";
+import { PrimaryButton } from "../components/PrimaryButton";
 
 const Cart = () => {
   const [open, setOpen] = useState(false);
@@ -171,26 +172,15 @@ const Cart = () => {
               </GoldenPriceTag>
             </Box>
           </AlphaContainer>
-          <Button
-            sx={{
-              color: "text.primary",
-              bgcolor: "info.main",
-              fontFamily: "brutal-medium",
-              fontSize: "0.75rem",
-              width: "100%",
-              padding: "0.9rem 0",
-              borderRadius: "0.6rem",
-              "&:hover": {
-                backgroundColor: "info.main",
-              },
-            }}
+          <PrimaryButton
+            sx={{ borderRadius: "0.6rem" }}
             disabled={updating}
             onClick={() => {
               return loginToken ? history.push(`/checkout`) : setOpen(true);
             }}
           >
             Proceed to checkout
-          </Button>
+          </PrimaryButton>
           <AuthModal
             open={open}
             handleClose={() => {

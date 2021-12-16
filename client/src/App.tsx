@@ -19,11 +19,11 @@ import CheckoutSwitcher from "./checkout/CheckoutSwitcher";
 import Browse from "./browse/Browse";
 import Success from "./user/auth/success/Success";
 import AuthComplete from "./user/auth/success/AuthComplete";
+import ScrollToTopButton from "./components/ScrollToTopButton";
 
 export const GlobalContext = createContext<any>(null);
 function App() {
   const [mode, setMode] = useState<PaletteMode>("dark");
-
   const [loginToken, setLoginToken] = useState<string | null>(null);
 
   // const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
@@ -63,50 +63,54 @@ function App() {
   }, [verifyUser]);
 
   return (
-    <Router>
-      <GlobalContext.Provider
-        value={{
-          colorMode,
-          mode,
-          loginToken,
-          setLoginToken,
-        }}
-      >
-        <ThemeProvider theme={theme}>
-          {/* <Starter /> */}
-          <Route component={Header} exact={false} />
-          <Page>
-            <Route path={"/"} exact>
-              <Homepage />
-            </Route>
-            <Route path={"/product/:name"} exact>
-              <Product />
-            </Route>
-            <Route path={"/cart"}>
-              <Cart />
-            </Route>
-            <Route path={"/checkout"}>
-              <CheckoutSwitcher />
-            </Route>
-            <Route path={"/report"}>
-              <Report />
-            </Route>
-            <Route path={"/user"}>
-              <UserManager />
-            </Route>
-            <Route path={["/browse/:name", "/browse"]}>
-              <Browse />
-            </Route>
-            <Route path={"/verification/create-pass"} exact>
-              <Success />
-            </Route>
-            <Route path={"/auth/complete"} exact>
-              <AuthComplete />
-            </Route>
-          </Page>
-        </ThemeProvider>
-      </GlobalContext.Provider>
-    </Router>
+    <>
+      <Router>
+        <GlobalContext.Provider
+          value={{
+            colorMode,
+            mode,
+            loginToken,
+            setLoginToken,
+          }}
+        >
+          <ThemeProvider theme={theme}>
+            <Route component={Header} exact={false} />
+            <Page>
+              <Route path={"/"} exact>
+                <Homepage />
+              </Route>
+              <Route path={"/product/:name"} exact>
+                <Product />
+              </Route>
+              <Route path={"/cart"}>
+                <Cart />
+              </Route>
+              <Route path={"/checkout"}>
+                <CheckoutSwitcher />
+              </Route>
+              <Route path={"/report"}>
+                <Report />
+              </Route>
+              <Route path={"/user"}>
+                <UserManager />
+              </Route>
+              <Route path={["/browse/:name", "/browse"]}>
+                <Browse />
+              </Route>
+              <Route path={"/verification/create-pass"} exact>
+                <Success />
+              </Route>
+              <Route path={"/auth/complete"} exact>
+                <AuthComplete />
+              </Route>
+              <Route path={"/password/reset"} exact>
+                <Success />
+              </Route>
+            </Page>
+          </ThemeProvider>
+        </GlobalContext.Provider>
+      </Router>
+    </>
   );
 }
 

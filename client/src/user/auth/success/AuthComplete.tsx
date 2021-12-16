@@ -20,6 +20,7 @@ const AuthComplete = () => {
   const [countDown, setCountDown] = useState(10);
   const history = useHistory();
   const { loginToken } = useContext(GlobalContext);
+
   useEffect(() => {
     if(!loginToken) return
     const fetchData = async () => {
