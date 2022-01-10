@@ -1,9 +1,8 @@
-import { Box, TextField, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import axios from "axios";
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { GlobalContext } from "../../../App";
 import { AlphaContainer } from "../../../components/AlphaContainer";
-import LabelWrapper from "../../../components/LabelWrapper";
 import AccountInfo from "./AccountInfo";
 import DeleteAccount from "./DeleteAccount";
 import PersonalDetails from "./PersonalDetails";

@@ -2,8 +2,6 @@ import {
   alpha,
   Box,
   InputBase,
-  Menu,
-  MenuItem,
   Stack,
   styled,
   Typography,
@@ -11,7 +9,7 @@ import {
 import React, { useContext, useEffect, useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import { GlobalContext } from "../App";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useClickOutside } from "../hooks/useClickOutside";
 import { StackItem } from "../components/StackItem";
 import axios from "axios";

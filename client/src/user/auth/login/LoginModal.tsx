@@ -1,4 +1,4 @@
-import { Box, Button, Divider, Link, Typography } from "@mui/material";
+import { Box, Button, Divider } from "@mui/material";
 import React from "react";
 import EmailStrategy from "./email/EmailStrategy";
 import FacebookStrategy from "./facebook/FacebookStrategy";

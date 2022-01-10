@@ -23,8 +23,7 @@ const PersonalDetails: React.FC<{ personalDetails: any }> = ({
   const [lastName, setLastName, lastNameValidation] = useInputValidation();
   const [birthday, setBirthday] = useState(personalDetails.birth_day);
   const [password, setPassword, passValidation] = useInputValidation();
-  const [phoneNumber, setPhoneNumber, phoneNumberValidation] =
-    useInputValidation("");
+  const [phoneNumber] = useInputValidation("");
 
   const handleClose = (e: any) => {
     e.stopPropagation();

@@ -22,6 +22,8 @@ import userRoutes from "./routes/userRoutes";
 import paymentRoutes from "./routes/paymentRoutes";
 import reviewRoutes from "./routes/reviewRoutes";
 import collectionRoutes from "./routes/collectionRoutes";
+import adminGameRoutes from "./routes/adminGameRoutes";
+import vocherRoutes from "./routes/vocherRoutes";
 
 connectDB();
 
@@ -46,6 +48,8 @@ app.use("/api/users", userRoutes);
 app.use("/api/payments", paymentRoutes);
 app.use("/api/reviews", reviewRoutes);
 app.use("/api/collections", collectionRoutes);
+app.use("/api/games", adminGameRoutes);
+app.use("/api/vochers", vocherRoutes);
 
 const PORT = process.env.PORT || 5000;
 

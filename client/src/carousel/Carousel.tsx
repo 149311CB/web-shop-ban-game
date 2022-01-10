@@ -1,5 +1,5 @@
 import { alpha, Box, Paper, Stack, Typography } from "@mui/material";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getCollections } from "../category/Category";
 import { useAnimationFrame } from "../hooks/useAnimationFrame";
 
@@ -7,7 +7,7 @@ const Carousel = () => {
   const stackRef = useRef<any>(null);
   const gameCarouselRef = useRef<HTMLUListElement>(null);
   const [topsale, setTopsale] = useState<any[] | null>(null);
-  const [transitionDelay, setTransitionDelay] = useState(5000);
+  const transitionDelay = 5000;
   const [currentItem, setCurrentItem] = useState(1);
 
   useEffect(() => {
@@ -41,12 +41,14 @@ const Carousel = () => {
         ".carousel-stack-item"
       );
       const stackItemArr = Array.from(stackItems);
-      const cover =
-        // @ts-ignore
-        stackItemArr[currentItem - 1]?.querySelector(".cover");
-      if (cover) {
-        cover.style.transition = `width 5s cubic-bezier(0.17, 0.17, 0.23, 1.00)`;
-        cover.style.width = "100%";
+      if (stackItemArr) {
+        const cover =
+          // @ts-ignore
+          stackItemArr[currentItem - 1]?.querySelector(".cover");
+        if (cover) {
+          cover.style.transition = `width 5s cubic-bezier(0.17, 0.17, 0.23, 1.00)`;
+          cover.style.width = "100%";
+        }
       }
     }
   }, [currentItem]);

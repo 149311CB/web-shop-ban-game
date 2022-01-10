@@ -3,6 +3,20 @@ import { Cart, ICart, IItem } from "../models/cartModel";
 import jwt from "jsonwebtoken";
 import { COOKIES_OPTIONS, generateRefreshToken } from "../utils/generateToken";
 
+const getCarts = asyncHandler(async (req, res) => {
+    const carts = await Cart.find({})
+        .populate("user")
+        .populate("products.product")
+    res.json(carts);
+});
+
+const getCart = asyncHandler(async (req, res) => {
+    const cart = await Cart.findById(req.params.Id)
+        .populate("user")
+        .populate("products.product")
+    res.json(cart);
+});
+
 const getAllCart = asyncHandler(async (_, res) => {
   const carts = await Cart.find({});
   return res.json(carts);
@@ -329,4 +343,6 @@ export {
   removeFromCart,
   authCountItemInCart,
   countItemInCart,
+  getCarts,
+  getCart
 };

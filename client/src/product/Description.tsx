@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { marked } from "marked";
 
 const Description: React.FC<{ description: string }> = ({ description }) => {

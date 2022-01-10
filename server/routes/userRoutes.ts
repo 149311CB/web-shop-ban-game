@@ -19,6 +19,8 @@ import {
   updatePersonalDetails,
   resetPasswordRequest,
   resetPassword,
+  getUsers,
+  getUser,
 } from "../controllers/userControllers";
 import { sendVerificationEmail } from "../middlewares/verifyEmail";
 
@@ -66,5 +68,7 @@ router.route("/all").get(getAllUser);
 router
   .route("/profile/personal-details/update")
   .post(verifyUser, updatePersonalDetails);
+router.get("/", getUsers)
+router.get('/:Id', getUser)
 
 export default router;

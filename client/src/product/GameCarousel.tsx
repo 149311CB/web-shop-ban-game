@@ -27,9 +27,9 @@ const CarouselButton = styled((props: ICarouselButtonProps & ButtonProps) => (
 
 const GameCarousel: React.FC<{ data: any }> = ({ data }) => {
   const gameCarouselRef = useRef<HTMLUListElement>(null);
-  const [transitionDelay, setTransitionDelay] = useState(5000);
+  const transitionDelay = 5000;
   const [currentItem, setCurrentItem] = useState(1);
-  const [allowCarousel, setAllowCarousel] = useState(["landscape"]);
+  const allowCarousel = ["landscape"];
 
   const carouselTransition = () => {
     if (gameCarouselRef.current) {

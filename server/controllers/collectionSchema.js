@@ -1,16 +1,16 @@
 import asyncHandler from "express-async-handler";
 import Collection from "../models/collectionSchema.js";
 
-const getColections = asyncHandler(async (req, res) => {
-  const collections = await Collection.find({}).populate({
-    path: "list_game",
-  });
+const getCollections = asyncHandler(async (_, res) => {
+  const collections = await Collection.find({});
   res.json(collections);
 });
 
 // getCollection => getCollectionById
-const getCollectionById = asyncHandler(async (req, res) => {
-  const collection = await Collection.findById(req.params.Id);
+const getCollection = asyncHandler(async (req, res) => {
+  const collection = await Collection.findById(req.params.Id).populate({
+    path: "list_game",
+  });
   res.json(collection);
 });
 
@@ -51,8 +51,8 @@ const getCollectionByName = asyncHandler(async (req, res) => {
 });
 
 export {
-  getColections,
-  getCollectionById,
+  getCollections,
+  getCollection,
   addCollection,
   deleteCollection,
   getCollectionByName,

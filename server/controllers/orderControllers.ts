@@ -11,6 +11,20 @@ const getAllOrder = asyncHandler(async (_, res) => {
   res.json(order);
 });
 
+const getOrders = asyncHandler(async (_, res) => {
+    const orders = await Order.find({})
+        .populate("cart")
+        .populate("user")
+    res.json(orders);
+});
+
+const getOrder = asyncHandler(async (req, res) => {
+    const order = await Order.findById(req.params.Id)
+        .populate("cart")
+        .populate("user")
+    res.json(order);
+});
+
 const getAllOrderByUser = asyncHandler(async (req, res) => {
   const { user } = req;
   if (!user) {
@@ -163,7 +177,6 @@ const getOrderById = asyncHandler(async (req, res) => {
   try {
     const order = await Order.findById(id).populate({
       path: "cart user",
-      select: "products first_name last_name email",
       populate: { path: "products.product" },
     });
 
@@ -184,4 +197,6 @@ export {
   getAllOrder,
   getOrderById,
   getAllOrderByUser,
+  getOrders,
+  getOrder
 };

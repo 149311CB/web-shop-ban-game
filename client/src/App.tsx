@@ -2,7 +2,6 @@ import {
   createTheme,
   PaletteMode,
   ThemeProvider,
-  useMediaQuery,
 } from "@mui/material";
 import React, { createContext, useCallback, useEffect, useState } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
@@ -12,14 +11,12 @@ import { getTheme } from "./utils/getTheme.ts/useTheme";
 import Homepage from "./homepage/Homepage";
 import Product from "./product/Product";
 import Cart from "./cart/Cart";
-import Report from "./report/Report";
 import axios from "axios";
 import UserManager from "./user/manage/UserManager";
 import CheckoutSwitcher from "./checkout/CheckoutSwitcher";
 import Browse from "./browse/Browse";
 import Success from "./user/auth/success/Success";
 import AuthComplete from "./user/auth/success/AuthComplete";
-import ScrollToTopButton from "./components/ScrollToTopButton";
 
 export const GlobalContext = createContext<any>(null);
 function App() {
@@ -87,9 +84,6 @@ function App() {
               </Route>
               <Route path={"/checkout"}>
                 <CheckoutSwitcher />
-              </Route>
-              <Route path={"/report"}>
-                <Report />
               </Route>
               <Route path={"/user"}>
                 <UserManager />

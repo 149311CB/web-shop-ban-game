@@ -20,9 +20,7 @@ const OrderDetails: React.FC<any> = () => {
   const { params }: any = useRouteMatch();
   const [products, setProducts] = useState<any>(null);
   const [order, setOrder] = useState<any>(null);
-  const [user, setUser] = useState<any>(null);
   const { loginToken } = useContext(GlobalContext);
-  console.log(products);
 
   useEffect(() => {
     if (!params || !params.id || !loginToken) {
@@ -41,7 +39,6 @@ const OrderDetails: React.FC<any> = () => {
       } = data;
 
       setProducts(products);
-      setUser(user);
       setOrder(rest);
     };
     fetchData();

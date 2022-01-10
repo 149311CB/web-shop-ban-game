@@ -1,4 +1,4 @@
-import { Box, Divider, Stack } from "@mui/material";
+import { Divider, Stack } from "@mui/material";
 import React from "react";
 import { Link, useHistory } from "react-router-dom";
 import { AlphaContainer } from "../../components/AlphaContainer";

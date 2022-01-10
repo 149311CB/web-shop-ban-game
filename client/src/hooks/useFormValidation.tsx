@@ -43,7 +43,7 @@ export const useInputValidation = (
 
   const isEmail = (input: string | null) => {
     if (input) {
-      return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(input);
+      return /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(input);
     }
   };
 

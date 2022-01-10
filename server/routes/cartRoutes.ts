@@ -8,8 +8,9 @@ import {
   authUpdateQuantity,
   countItemInCart,
   getActiveCart,
-  getAllCart,
+  getCart,
   getCartId,
+  getCarts,
   guestAddToCart,
   removeFromCart,
   updateQuantity,
@@ -17,7 +18,7 @@ import {
 
 const router = express.Router();
 
-router.route("/").get(getAllCart);
+router.route("/").get(getCarts);
 router.route("/auth/add").post(passport.authenticate("jwt"), authAddToCart);
 router.route("/add").post(getCartId, guestAddToCart);
 router
@@ -38,5 +39,6 @@ router
   .route("/auth/count")
   .get(passport.authenticate("jwt"), authCountItemInCart);
 router.route("/count").get(getCartId, countItemInCart);
+router.route(":id").get(getCart)
 
 export default router;

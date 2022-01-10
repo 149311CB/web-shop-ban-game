@@ -1,4 +1,4 @@
-import { Button, Fab, IconButton, lighten } from "@mui/material";
+import { Fab, lighten } from "@mui/material";
 import ArrowCircleUpIcon from "@mui/icons-material/ArrowCircleUp";
 
 const ScrollToTopButton = () => {

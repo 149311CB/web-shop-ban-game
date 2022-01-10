@@ -15,11 +15,22 @@ const ResetPassword: React.FC<{
 
   const submitHandler = async (e: FormEvent) => {
     e.preventDefault();
-    console.log("run")
-    const response = await axios.post("/api/users/reset-pass-request", {
+    const { data } = await axios.post("/api/users/reset-pass-request", {
       email,
     });
-    console.log(response);
+    if (data.message === "success") {
+      setSnackBarMess({
+        isShown: true,
+        type: "success",
+        message: "We had send you an instruction email",
+      });
+    } else {
+      setSnackBarMess({
+        isShown: true,
+        type: "error",
+        message: "Sorry! Something has went wrong",
+      });
+    }
   };
 
   return (

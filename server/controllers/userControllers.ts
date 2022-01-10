@@ -421,6 +421,17 @@ const resetPassword = asyncHandler(async (req, res) => {
   }
 });
 
+const getUsers = asyncHandler(async (_, res) => {
+    const users = await User.find({})
+    res.json(users);
+});
+
+const getUser = asyncHandler(async (req, res) => {
+    const user = await User.findById(req.params.Id)
+    res.json(user);
+});
+
+
 export {
   login,
   registerUser,
@@ -436,4 +447,6 @@ export {
   updatePersonalDetails,
   resetPasswordRequest,
   resetPassword,
+  getUsers,
+  getUser
 };

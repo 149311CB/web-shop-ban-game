@@ -1,7 +1,6 @@
 import asyncHandler from "express-async-handler";
 import Collection from "../models/collectionSchema.js";
 import { Game } from "../models/productModel";
-import util from "util";
 
 const getOptionalQueries = (
   filters: string[] | undefined,
@@ -125,4 +124,38 @@ const search = asyncHandler(async (req, res) => {
   }
 });
 
-export { getAllGame, getGameById, search };
+const getGameList = asyncHandler(async (_, res) => {
+  const games = await Game.find({});
+  res.json(games);
+});
+
+const addGame = asyncHandler(async (req, res) => {
+  const game = await Game.create(req.body);
+  res.json(game);
+});
+
+const deleteGame = asyncHandler(async (req, res) => {
+  const game = await Game.findByIdAndDelete(req.params.id);
+  if (game) {
+    res.status(200).json({ message: "Delete success" });
+  } else {
+    res.status(404).json({ message: "Game not found" });
+  }
+});
+
+const getGame = asyncHandler(async (req, res) => {
+  const game = await Game.findById(req.params.Id)
+    .populate("included_in")
+    .populate("includes");
+  res.json(game);
+});
+
+export {
+  getAllGame,
+  getGameById,
+  search,
+  getGameList,
+  addGame,
+  deleteGame,
+  getGame,
+};

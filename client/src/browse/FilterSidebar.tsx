@@ -1,12 +1,10 @@
 import {
   Box,
-  darken,
   Divider,
   lighten,
   Stack,
-  Typography,
 } from "@mui/material";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { AlphaTypo } from "../components/AlphaTypo";
 import { StackItem } from "../components/StackItem";
 import { categories } from "./placeHolderCategories";

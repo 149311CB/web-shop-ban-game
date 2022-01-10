@@ -1,12 +1,16 @@
-import express from 'express'
-import {getColections, addCollection, deleteCollection, getColection, getCollectionByName } from '../controllers/collectionSchema.js'
+import express from "express";
+import {
+  getCollections,
+  getCollection,
+  addCollection,
+  getCollectionByName,
+} from "../controllers/collectionSchema.js";
 
-const router = express.Router()
+const router = express.Router();
 
-router.get("/", getColections)
-router.post("/add", addCollection)
-// router.route("/delete/:id").get(getColection).delete(deleteCollection)
-router.route("/name").get(getCollectionByName)
+router.get("/", getCollections);
+router.post("/add", addCollection);
+router.route("/name").get(getCollectionByName);
+router.get("/:Id", getCollection);
 
-
-export default router
+export default router;

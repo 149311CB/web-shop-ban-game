@@ -1,12 +1,7 @@
 import { Container } from "@mui/material";
-import { useEffect, useState } from "react";
 import {
   Link,
-  RouteComponentProps,
-  useHistory,
   useLocation,
-  useRouteMatch,
-  withRouter,
 } from "react-router-dom";
 import { AlphaTypo } from "../components/AlphaTypo";
 
