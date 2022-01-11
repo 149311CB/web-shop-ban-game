@@ -22,13 +22,13 @@ const EmailStrategy: React.FC<{ preview?: boolean }> = ({
     }
 
     await axios
-      .post("/api/users/login", {
+      .post("https://web-shop-ban-game.herokuapp.com/api/users/login", {
         email,
         password,
       })
       .then(({status}) => {
         if(status === 200){
-          window.location.href="https://localhost:3000"
+          window.location.href="/"
         }
       });
     // const { token } = data;

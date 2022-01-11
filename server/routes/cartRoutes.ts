@@ -13,12 +13,16 @@ import {
   getCarts,
   guestAddToCart,
   removeFromCart,
+  updateCart,
   updateQuantity,
 } from "../controllers/cartControllers";
 
 const router = express.Router();
 
 router.route("/").get(getCarts);
+router
+  .route("/auth/update")
+  .get(passport.authenticate("jwt"), getCartId, updateCart);
 router.route("/auth/add").post(passport.authenticate("jwt"), authAddToCart);
 router.route("/add").post(getCartId, guestAddToCart);
 router
@@ -28,9 +32,7 @@ router.route("/active").post(getCartId, getActiveCart);
 router
   .route("/auth/qty/update")
   .post(passport.authenticate("jwt"), authUpdateQuantity);
-router
-  .route("/qty/update")
-  .post(getCartId, updateQuantity);
+router.route("/qty/update").post(getCartId, updateQuantity);
 router
   .route("/auth/remove")
   .post(passport.authenticate("jwt"), authRemoveFromCart);
@@ -39,6 +41,6 @@ router
   .route("/auth/count")
   .get(passport.authenticate("jwt"), authCountItemInCart);
 router.route("/count").get(getCartId, countItemInCart);
-router.route(":id").get(getCart)
+router.route(":id").get(getCart);
 
 export default router;

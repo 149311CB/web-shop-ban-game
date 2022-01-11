@@ -12,17 +12,15 @@ const getAllOrder = asyncHandler(async (_, res) => {
 });
 
 const getOrders = asyncHandler(async (_, res) => {
-    const orders = await Order.find({})
-        .populate("cart")
-        .populate("user")
-    res.json(orders);
+  const orders = await Order.find({}).populate("cart").populate("user");
+  res.json(orders);
 });
 
 const getOrder = asyncHandler(async (req, res) => {
-    const order = await Order.findById(req.params.Id)
-        .populate("cart")
-        .populate("user")
-    res.json(order);
+  const order = await Order.findById(req.params.Id)
+    .populate("cart")
+    .populate("user");
+  res.json(order);
 });
 
 const getAllOrderByUser = asyncHandler(async (req, res) => {
@@ -99,53 +97,48 @@ const createOrder = asyncHandler(async (req, res) => {
     if (existCart) {
       existCart.status = false;
       await existCart.save();
-      for (let game of existCart.products) {
-        const existGame = await Game.findById(game.product);
-        if (existGame) {
-          //@ts-ignore
-          gameList.push({ ...existGame._doc, quantity: game.quantity });
-          const limit = game.quantity;
-          let index = 0;
-          for (let key of existGame.keys) {
-            if (index === limit) {
-              break;
-            }
+      if (createdOrder.status === "succeeded") {
+        for (let game of existCart.products) {
+          const existGame = await Game.findById(game.product);
+          if (existGame) {
             //@ts-ignore
-            if (!key.status) {
+            gameList.push({ ...existGame._doc, quantity: game.quantity });
+            const limit = game.quantity;
+            let index = 0;
+            for (let key of existGame.keys) {
+              if (index === limit) {
+                break;
+              }
               //@ts-ignore
-              key.status = true;
-              //@ts-ignore
-              game.keys.push(key.code);
-              index = index + 1;
+              if (!key.status) {
+                //@ts-ignore
+                key.status = true;
+                //@ts-ignore
+                game.keys.push(key.code);
+                index = index + 1;
+              }
             }
+            existGame.markModified("keys");
+            await existGame.save();
+            await existCart.save();
           }
-          existGame.markModified("keys");
-          await existGame.save();
-          await existCart.save();
         }
+        sendgrid.setApiKey(process.env.SENDGRID_API_KEY!);
+        const msg = {
+          to: user.email,
+          from: "xstk2000@gmail.com",
+          subject: "Order details",
+          html: orderConfirmationBuilder(
+            createdOrder.paid_at,
+            user,
+            createdOrder.payment_method,
+            gameList
+          ),
+        };
+        await sendgrid.send(msg);
       }
     }
-    sendgrid.setApiKey(process.env.SENDGRID_API_KEY!);
-    const msg = {
-      to: user.email,
-      from: "xstk2000@gmail.com",
-      subject: "Order details",
-      html: orderConfirmationBuilder(
-        createdOrder.paid_at,
-        user,
-        createdOrder.payment_method,
-        gameList
-      ),
-    };
-    await sendgrid.send(msg);
 
-    // const orderHtml = orderConfirmationBuilder(
-    //   createdOrder.paid_at,
-    //   user,
-    //   createdOrder.payment_method,
-    //   gameList
-    // );
-    // console.log(orderHtml);
     return res.status(201).json(createdOrder);
   } catch (error: any) {
     return res.status(500).json({ messsage: error.message });
@@ -198,5 +191,5 @@ export {
   getOrderById,
   getAllOrderByUser,
   getOrders,
-  getOrder
+  getOrder,
 };

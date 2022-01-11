@@ -1,14 +1,15 @@
+import { CookieOptions } from "express";
 import jwt from "jsonwebtoken";
 const dev = process.env.NODE_ENV !== "production";
 
-const COOKIES_OPTIONS = {
+const COOKIES_OPTIONS:CookieOptions = {
   path: "/",
-  domain:"localhost",
+  domain:"web-shop-ban-game.herokuapp.com",
   httpOnly: true,
-  secure: !dev,
+  secure: true,
   signed: true,
   maxAge: eval(process.env.REFRESH_TOKEN_EXPIRY!) * 1000,
-  samesite: "none",
+  sameSite: "none",
 };
 
 const generateToken = (payload: Object) => {

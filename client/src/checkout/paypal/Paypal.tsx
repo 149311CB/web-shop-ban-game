@@ -35,7 +35,7 @@ const Paypal = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const { data } = await axios.get(`/api/payments/paypal`, {
+      const { data } = await axios.get(`https://web-shop-ban-game.herokuapp.com/api/payments/paypal`, {
         headers: {
           "Content-Type": "application/json",
           //@ts-ignore

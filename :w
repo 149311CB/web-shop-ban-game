@@ -2,7 +2,6 @@ import { alpha, Box, Paper, Skeleton, Stack, Typography } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { getCollections } from "../category/Category";
 import { useAnimationFrame } from "../hooks/useAnimationFrame";
-import StackSkeleton from "./skeletons/StackSkeleton";
 
 const Carousel = () => {
   const stackRef = useRef<any>(null);
@@ -19,7 +18,7 @@ const Carousel = () => {
           return img.type === "landscape";
         });
       });
-      setTopsale(spliced);
+      // setTopsale(spliced);
     });
   }, []);
 
@@ -123,7 +122,7 @@ const Carousel = () => {
       }}
     >
       {topsale ? (
-        <Box borderRadius={"0.6rem"} sx={{ overflow: "hidden", width: "85%" }}>
+        <Box borderRadius={"0.6rem"} sx={{ overflow: "hidden" }}>
           <ul
             ref={gameCarouselRef}
             style={{
@@ -160,23 +159,64 @@ const Carousel = () => {
           </ul>
         </Box>
       ) : (
-        <Skeleton
-          variant="rectangular"
-          sx={{ bgcolor: "background.paper" }}
-          width="85%"
-          height={480}
-        />
+        <Box sx={{ width: "100%" }}>
+          <Skeleton
+            variant="rectangular"
+            sx={{ bgcolor: "background.paper" }}
+            width={"75%"}
+            height={400}
+          />
+          <ul>
+            <li>
+              <Skeleton
+                variant="rectangular"
+                sx={{ bgcolor: "background.paper" }}
+                width={"75%"}
+                height={400}
+              />
+              <Skeleton
+                variant="rectangular"
+                sx={{ bgcolor: "background.paper" }}
+                width={"75%"}
+                height={400}
+              />
+              <Skeleton
+                variant="rectangular"
+                sx={{ bgcolor: "background.paper" }}
+                width={"75%"}
+                height={400}
+              />
+              <Skeleton
+                variant="rectangular"
+                sx={{ bgcolor: "background.paper" }}
+                width={"75%"}
+                height={400}
+              />
+              <Skeleton
+                variant="rectangular"
+                sx={{ bgcolor: "background.paper" }}
+                width={"75%"}
+                height={400}
+              />
+              <Skeleton
+                variant="rectangular"
+                sx={{ bgcolor: "background.paper" }}
+                width={"75%"}
+                height={400}
+              />
+            </li>
+          </ul>
+        </Box>
       )}
       <Stack
         ref={stackRef}
         gap={"0.6rem"}
         sx={{
           flexDirection: { xs: "row", md: "column" },
-          width: { sm: "100%", md: "15%" },
-          listStyle: "none",
+          maxWidth: { sm: "100%", md: "15%" },
         }}
       >
-        {topsale ? (
+        {topsale &&
           topsale.map((game: any, index: number) => (
             <Paper
               key={index}
@@ -244,10 +284,7 @@ const Carousel = () => {
                 }}
               />
             </Paper>
-          ))
-        ) : (
-          <StackSkeleton />
-        )}
+          ))}
       </Stack>
     </Box>
   );

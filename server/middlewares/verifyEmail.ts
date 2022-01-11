@@ -21,7 +21,7 @@ export const sendVerificationEmail = asyncHandler(async (req, res, next) => {
     subject: "Verify your email",
     templateId: "d-6dc798c7de9a43fdbb52548b6c498203",
     dynamicTemplateData: {
-      link: `https://localhost:5000/api/users/email/verify?token=${registerToken}`,
+      link: `https://web-shop-ban-game.herokuapp.com/api/users/email/verify?token=${registerToken}`,
     },
   };
   sendgrid

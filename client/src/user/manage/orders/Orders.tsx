@@ -89,7 +89,7 @@ const Orders = () => {
       return;
     }
     const fetchOrders = async () => {
-      const { data } = await axios.get("/api/orders/user/all", {
+      const { data } = await axios.get("https://web-shop-ban-game.herokuapp.com/api/orders/user/all", {
         params: { limit: 10, skip: currentPage },
         headers: {
           Authorization: `Bearer ${loginToken}`,

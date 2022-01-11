@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { AlphaTypo } from "./AlphaTypo";
 
 const GameCard: React.FC<{ game: any }> = ({ game }) => {
+  console.log(game.discount_price)
   return (
     <Box
       sx={{
@@ -47,7 +48,12 @@ const GameCard: React.FC<{ game: any }> = ({ game }) => {
         </AlphaTypo>
         <Typography
           className={"game-price"}
-          sx={{ paddingTop: "0.6rem", color: "text.primary" }}
+          sx={{
+            paddingTop: "0.6rem",
+            color: "text.primary",
+            textDecoration:
+              game.discount_price && game.discount_price > 0 && "line-through",
+          }}
         >
           ${game.sale_price}
         </Typography>

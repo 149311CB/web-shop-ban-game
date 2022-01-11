@@ -1,4 +1,12 @@
-import { Box, Divider, Paper, Stack, styled, Typography } from "@mui/material";
+import {
+  Box,
+  Divider,
+  Paper,
+  Skeleton,
+  Stack,
+  styled,
+  Typography,
+} from "@mui/material";
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useRouteMatch } from "react-router-dom";
@@ -27,11 +35,14 @@ const OrderDetails: React.FC<any> = () => {
       return;
     }
     const fetchData = async () => {
-      const { data } = await axios.get(`/api/orders/${params.id}`, {
-        headers: {
-          Authorization: `Bearer ${loginToken}`,
-        },
-      });
+      const { data } = await axios.get(
+        `https://web-shop-ban-game.herokuapp.com/api/orders/${params.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${loginToken}`,
+          },
+        }
+      );
       const {
         cart: { products },
         user,
@@ -47,7 +58,7 @@ const OrderDetails: React.FC<any> = () => {
   return (
     <Box>
       <Box className={"payment-details"}>
-        {order && (
+        {order ? (
           <Box sx={{ display: "flex", flexDirection: "column", gap: "0.9rem" }}>
             <AlphaStacicAccordion sx={{ borderRadius: "0.6rem" }}>
               <Box sx={{ p: 1 }} className={"alpha-static-accordion-header"}>
@@ -194,6 +205,11 @@ const OrderDetails: React.FC<any> = () => {
                 ))}
               </Stack>
             </AlphaStacicAccordion>
+          </Box>
+        ) : (
+          <Box sx={{ display: "flex", flexDirection: "column", gap: "0.9rem" }}>
+            <Skeleton variant={"rectangular"} width={"100%"} height={"100px"} />
+            <Skeleton variant={"rectangular"} width={"100%"} height={"300px"} />
           </Box>
         )}
       </Box>

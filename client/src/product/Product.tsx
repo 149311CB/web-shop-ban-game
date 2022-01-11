@@ -12,6 +12,7 @@ import Description from "./Description";
 import GameCard from "./GameCard";
 import Review from "./Review";
 import { AlphaTypo } from "../components/AlphaTypo";
+import ProductSkeleton from "./skeletons/ProductSkeleton";
 
 const Product: React.FC<RouteComponentProps> = ({ match }) => {
   const {
@@ -29,7 +30,7 @@ const Product: React.FC<RouteComponentProps> = ({ match }) => {
     }
 
     const fetchData = async () => {
-      const { data } = await axios.get(`/api/products/games/${_id}`);
+      const { data } = await axios.get(`https://web-shop-ban-game.herokuapp.com/api/products/games/${_id}`);
       const { includes, included_in, ...rest } = data;
       setIncludes(includes);
       setIncludedIn(included_in);
@@ -259,7 +260,7 @@ const Product: React.FC<RouteComponentProps> = ({ match }) => {
           </Box>
         </Box>
       ) : (
-        <div>Nothing here</div>
+        <ProductSkeleton />
       )}
     </>
   );

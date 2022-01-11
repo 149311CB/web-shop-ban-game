@@ -5,7 +5,7 @@ const FacebookStrategy: React.FC<{ register?: boolean }> = ({
   register = false,
 }) => {
   const loginWithFacebook = () => {
-    window.open("https://localhost:5000/api/users/login/facebook", "_self");
+    window.open("https://web-shop-ban-game.herokuapp.com/api/users/login/facebook", "_self");
   };
 
   return (

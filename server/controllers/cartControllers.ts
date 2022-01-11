@@ -4,17 +4,17 @@ import jwt from "jsonwebtoken";
 import { COOKIES_OPTIONS, generateRefreshToken } from "../utils/generateToken";
 
 const getCarts = asyncHandler(async (req, res) => {
-    const carts = await Cart.find({})
-        .populate("user")
-        .populate("products.product")
-    res.json(carts);
+  const carts = await Cart.find({})
+    .populate("user")
+    .populate("products.product");
+  res.json(carts);
 });
 
 const getCart = asyncHandler(async (req, res) => {
-    const cart = await Cart.findById(req.params.Id)
-        .populate("user")
-        .populate("products.product")
-    res.json(cart);
+  const cart = await Cart.findById(req.params.Id)
+    .populate("user")
+    .populate("products.product");
+  res.json(cart);
 });
 
 const getAllCart = asyncHandler(async (_, res) => {
@@ -111,10 +111,9 @@ export const getCartId = asyncHandler(async (req, res, next) => {
 
 const guestAddToCart = asyncHandler(async (req, res) => {
   const { cartId } = req;
-  // const { signedCookies = {} } = req;
-  // const { cart_token: cartToken } = signedCookies;
   const { product } = req.body;
   if (!cartId) {
+    console.log("new cart")
     const newCart = new Cart({
       user: null,
       products: [{ product: product._id, quantity: product.quantity }],
@@ -186,6 +185,7 @@ const getActiveCart = asyncHandler(async (req, res) => {
     });
   } catch (error) {
     console.log(error);
+
     return res.status(500);
   }
 });
@@ -331,6 +331,28 @@ const countItemInCart = asyncHandler(async (req, res) => {
   }
 });
 
+const updateCart = asyncHandler(async (req, res) => {
+  const { user } = req;
+  const { cartId } = req;
+  try {
+    const current = await Cart.findOne({ user: user?._id, status: true });
+    if (current) {
+      current.status = false;
+      await current.save();
+    }
+    const newCart = await Cart.findById(cartId);
+    if (newCart) {
+      newCart.user = user!._id!;
+      await newCart.save();
+    }
+    res.clearCookie("cart_token", COOKIES_OPTIONS);
+    return res.status(200).json({ message: "success" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "error" });
+  }
+});
+
 export {
   getAllCart,
   authAddToCart,
@@ -344,5 +366,6 @@ export {
   authCountItemInCart,
   countItemInCart,
   getCarts,
-  getCart
+  getCart,
+  updateCart,
 };

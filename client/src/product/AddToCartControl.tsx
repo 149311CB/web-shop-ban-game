@@ -2,8 +2,10 @@ import React, { useContext, useEffect, useState } from "react";
 import {
   Alert,
   Box,
+  CircularProgress,
   FormControl,
   MenuItem,
+  Modal,
   Select,
   Snackbar,
 } from "@mui/material";
@@ -12,6 +14,7 @@ import { GlobalContext } from "../App";
 import { PrimaryButton } from "../components/PrimaryButton";
 
 const AddToCartControl: React.FC<{ data: any }> = ({ data }) => {
+  const [processing, setProcessing] = useState(false);
   const [qty, setQty] = useState<number>(1);
   const [keys, setKeys] = useState<any[]>([]);
   const [open, setOpen] = useState<boolean>(false);
@@ -29,16 +32,19 @@ const AddToCartControl: React.FC<{ data: any }> = ({ data }) => {
   };
 
   const addToCart = async () => {
-    const route = loginToken ? "/api/carts/auth/add" : "/api/carts/add";
+    setProcessing(true);
+    const route = loginToken
+      ? "https://web-shop-ban-game.herokuapp.com/api/carts/auth/add"
+      : "https://web-shop-ban-game.herokuapp.com/api/carts/add";
     const { data: reponseData } = await axios.post(
       route,
       {
         product: { _id: data._id, quantity: qty },
       },
       {
+        withCredentials: true,
         headers: {
           "Content-Type": "application/json",
-          // @ts-ignore
           Authorization: `Bearer ${loginToken}`,
         },
       }
@@ -56,6 +62,11 @@ const AddToCartControl: React.FC<{ data: any }> = ({ data }) => {
         });
       }
     }
+    await new Promise(() => {
+      setTimeout(() => {
+        setProcessing(false);
+      }, 1000);
+    });
   };
 
   useEffect(() => {
@@ -141,6 +152,20 @@ const AddToCartControl: React.FC<{ data: any }> = ({ data }) => {
           {inCart}
         </Alert>
       </Snackbar>
+      <Modal open={processing} onClose={() => {}}>
+        <Box
+          sx={{
+            margin: "0 auto",
+            display: "flex",
+            // alignItem: "center",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      </Modal>
     </Box>
   );
 };

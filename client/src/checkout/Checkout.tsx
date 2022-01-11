@@ -2,8 +2,13 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Alert,
   Box,
+  CircularProgress,
   Divider,
+  Modal,
+  Skeleton,
+  Snackbar,
   Stack,
   Typography,
 } from "@mui/material";
@@ -32,23 +37,23 @@ const Checkout = () => {
   const history = useHistory();
   const { loginToken, fetchCount } = useContext(GlobalContext);
 
-  const createOrder = (order: any) => {
-    const fetchData = async () => {
-      const { data } = await axios.post("/api/orders/create", order, {
+  const createOrder = async (order: any) => {
+    const { data } = await axios.post(
+      "https://web-shop-ban-game.herokuapp.com/api/orders/create",
+      order,
+      {
         headers: {
           "Content-Type": "application/json",
-          // @ts-ignore
           Authorization: `Bearer ${loginToken}`,
         },
-      });
-      if (order.state === "cancelled") {
-        setCancelled(true);
-      } else {
-        fetchCount(loginToken);
-        history.push("/checkout/success", { createdOrder: data });
       }
-    };
-    fetchData();
+    );
+    if (order.state === "cancelled") {
+      setCancelled(true);
+    } else {
+      history.push("/checkout/success", { createdOrder: data });
+      fetchCount(loginToken);
+    }
   };
 
   const handleProcessing = (state: boolean) => {
@@ -61,8 +66,9 @@ const Checkout = () => {
   };
 
   const handleSuccess = (order: any) => {
-    handleError("");
-    createOrder({ ...order, total: getProductPrice(cart) });
+    createOrder({ ...order, total: getProductPrice(cart) }).then(() =>
+      handleError("")
+    );
   };
 
   const handleCancelled = (order: any) => {
@@ -88,12 +94,11 @@ const Checkout = () => {
     const fetchData = async () => {
       try {
         const { data } = await axios.post(
-          "/api/carts/auth/active",
+          "https://web-shop-ban-game.herokuapp.com/api/carts/auth/active",
           {},
           {
             headers: {
               "Content-Type": "application/json",
-              // @ts-ignore
               Authorization: `Bearer ${loginToken}`,
             },
           }
@@ -136,7 +141,7 @@ const Checkout = () => {
               divider={<Divider orientation="horizontal" flexItem />}
               spacing={1}
             >
-              {cart &&
+              {cart ? (
                 cart.products.map((item: any) => (
                   <Box
                     className={"category-item"}
@@ -183,7 +188,36 @@ const Checkout = () => {
                       </Box>
                     </Box>
                   </Box>
-                ))}
+                ))
+              ) : (
+                <Box sx={{ display: "flex", gap: "0.3rem" }}>
+                  <Skeleton
+                    variant={"rectangular"}
+                    width={"70%"}
+                    height={"200px"}
+                  />
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      width: "30%",
+                    }}
+                  >
+                    <Skeleton
+                      variant={"text"}
+                      sx={{ padding: "0.1rem", mb: "0.1rem" }}
+                    />
+                    <Skeleton
+                      variant={"text"}
+                      sx={{ padding: "0.1rem", mb: "0.1rem" }}
+                    />
+                    <Skeleton
+                      variant={"text"}
+                      sx={{ padding: "0.1rem", mb: "0.1rem" }}
+                    />
+                  </Box>
+                </Box>
+              )}
             </Stack>
           </AlphaContainer>
         </Box>
@@ -240,7 +274,41 @@ const Checkout = () => {
             </Accordion>
           </AlphaContainer>
         </Box>
+        <Modal open={processing} onClose={() => {}}>
+          <Box
+            sx={{
+              margin: "0 auto",
+              display: "flex",
+              // alignItem: "center",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "100vh",
+            }}
+          >
+            <CircularProgress />
+          </Box>
+        </Modal>
       </Box>
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        autoHideDuration={3000}
+        open={error !== ""}
+        onClose={() => {
+          setError("");
+        }}
+      >
+        <Alert
+          onClose={() => setError("")}
+          severity={"error"}
+          sx={{
+            width: "100%",
+            backgroundColor: "error.main",
+            color: "background.default",
+          }}
+        >
+          {error}
+        </Alert>
+      </Snackbar>
     </CheckoutContext.Provider>
   );
 };

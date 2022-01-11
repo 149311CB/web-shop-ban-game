@@ -96,7 +96,7 @@ const getTableRow = (game: any) => {
             <div class="inline-row" style="width:100%;display: flex;align-items: flex-start;gap: 0.9rem;">
               <div class="img-container" style="width: 15%;">
                 <img
-                  src="https://cdn1.epicgames.com/b4565296c22549e4830c13bc7506642d/offer/TETRA_PREORDER_STANDARD%20EDITION_EPIC_Store_Portrait_1200x1600-1200x1600-ca8b802ff13813c37a44ebf68d0946a2.png"
+                  src="${game.images[0]}"
                   style="width:100%;"
                 />
               </div>

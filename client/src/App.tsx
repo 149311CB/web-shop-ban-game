@@ -1,8 +1,4 @@
-import {
-  createTheme,
-  PaletteMode,
-  ThemeProvider,
-} from "@mui/material";
+import { createTheme, PaletteMode, ThemeProvider } from "@mui/material";
 import React, { createContext, useCallback, useEffect, useState } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import Header from "./header/Header";
@@ -40,9 +36,13 @@ function App() {
   const theme = React.useMemo(() => createTheme(getTheme(mode)), [mode]);
 
   const verifyUser = useCallback(async () => {
-    const { data } = await axios.post("/api/users/token/refresh", null, {
-      withCredentials: true,
-    });
+    const { data } = await axios.post(
+      "https://web-shop-ban-game.herokuapp.com/api/users/token/refresh",
+      null,
+      {
+        withCredentials: true,
+      }
+    );
     if (data && data.token) {
       setLoginToken(data.token);
     } else {

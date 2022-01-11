@@ -1,5 +1,5 @@
 import { Badge, Box, IconButton, styled } from "@mui/material";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { CartPopover } from "./CartPopover";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useHistory } from "react-router-dom";
@@ -16,7 +16,25 @@ export const CartBadge = styled(Badge)(({ theme }) => ({
   },
 }));
 
+const getCart = async (route: string, loginToken: string): Promise<any> => {
+  return await axios
+    .get(route, {
+      withCredentials: true,
+      headers: {
+        Authorization: `Bearer ${loginToken}`,
+      },
+    })
+    .then(({ data }) => {
+      return data;
+      // setCount(data.count);
+    })
+    .catch((error) => {
+      return null;
+    });
+};
+
 const ShoppingCartBadge = () => {
+  const guestCart = useRef(false);
   const [count, setCount] = useState(0);
   const [addedProduct, setAddedProduct] = useState(null);
   const [visible, setVisible, cartPopRef] = useClickOutside(false);
@@ -30,21 +48,26 @@ const ShoppingCartBadge = () => {
       if (product) {
         setAddedProduct(product);
       }
-      const route = loginToken ? "/api/carts/auth/count" : "/api/carts/count"
-      await axios
-        .get(route, {
-          withCredentials: true,
-          headers: {
-            // @ts-ignore
-            Authorization: `Bearer ${loginToken}`,
-          },
-        })
-        .then(({ data }) => {
-          setCount(data.count);
-        })
-        .catch((error) => {
-          return;
-        });
+      let localCount: number | null = null;
+      console.log(guestCart.current)
+      if (loginToken && !guestCart.current) {
+        const userCount = await getCart(
+          "https://web-shop-ban-game.herokuapp.com/api/carts/auth/count",
+          loginToken
+        );
+
+        localCount = userCount.count;
+      } else {
+        const data = await getCart(
+          "https://web-shop-ban-game.herokuapp.com/api/carts/count",
+          ""
+        ).catch((error) => error);
+        if (data && data.count) {
+          guestCart.current = true;
+          localCount = data.count;
+        }
+      }
+      setCount(localCount!);
       if (openDialog) {
         setVisible(true);
       }
@@ -56,12 +79,21 @@ const ShoppingCartBadge = () => {
   value.fetchCount = fetchCount;
 
   useEffect(() => {
-    // if (!loginToken) {
-    //   return;
-    // }
-    fetchCount(loginToken);
+    (async () => {
+      if (loginToken && guestCart.current) {
+        await axios.get(
+          "https://web-shop-ban-game.herokuapp.com/api/carts/auth/update",
+          {
+            withCredentials: true,
+            headers: { Authorization: `Bearer ${loginToken}` },
+          }
+        );
+        guestCart.current = false;
+      }
+    })().then(() => {
+      fetchCount(loginToken);
+    });
   }, [fetchCount, loginToken]);
-
   useEffect(() => {
     const {
       location: { pathname },

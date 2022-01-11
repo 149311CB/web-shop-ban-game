@@ -13,8 +13,9 @@ const CartItem: React.FC<{
   mode: any;
   updating: boolean;
   setUpdating: Function;
+  setFetching:Function
   // setData: Function;
-}> = ({ item, mode, updating, setUpdating }) => {
+}> = ({ item, mode, updating, setUpdating, setFetching }) => {
   const [qty, setQty] = useState(item.quantity ? item.quantity : 0);
   const [keys, setKeys] = useState<any[]>([]);
   const { loginToken, fetchCount } = useContext(GlobalContext);
@@ -35,14 +36,15 @@ const CartItem: React.FC<{
       quantity = qty - 1;
     }
     const route = loginToken
-      ? "/api/carts/auth/qty/update"
-      : "/api/carts/qty/update";
+      ? "https://web-shop-ban-game.herokuapp.com/api/carts/auth/qty/update"
+      : "https://web-shop-ban-game.herokuapp.com/api/carts/qty/update";
     await axios.post(
       route,
       {
         product: { ...item, quantity: quantity },
       },
       {
+        withCredentials: true,
         headers: {
           "Content-Type": "application/json",
           // @ts-ignore
@@ -54,7 +56,9 @@ const CartItem: React.FC<{
   };
 
   const removeFromCart = async () => {
-    const route = loginToken ? "/api/carts/auth/remove" : "/api/carts/remove";
+    const route = loginToken
+      ? "https://web-shop-ban-game.herokuapp.com/api/carts/auth/remove"
+      : "https://web-shop-ban-game.herokuapp.com/api/carts/remove";
     setUpdating(true);
     await axios.post(
       route,
@@ -62,6 +66,7 @@ const CartItem: React.FC<{
         product: { _id: item.product._id },
       },
       {
+        withCredentials:true,
         headers: {
           "Content-Type": "application/json",
           // @ts-ignore
@@ -70,6 +75,7 @@ const CartItem: React.FC<{
       }
     );
     setUpdating(false);
+    setFetching(true);
     fetchCount(loginToken);
   };
 

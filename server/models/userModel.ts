@@ -18,13 +18,6 @@ export interface userTypes {
   email_verification: boolean;
 }
 
-// const sessionSchema = new Schema({
-//   refresh_token: {
-//     type: String,
-//     default: "",
-//   },
-// });
-
 const userSchema = new Schema<userTypes>({
   first_name: {
     type: String,

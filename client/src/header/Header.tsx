@@ -64,7 +64,7 @@ const Header: React.FC<{ match: any }> = ({ match }) => {
           width: {
             xs: "100%",
           },
-          // border: "1px solid blue",
+          bgcolor:"common.black",
           zIndex: "1000",
         }}
         ref={headerRef}

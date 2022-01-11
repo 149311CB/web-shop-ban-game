@@ -27,9 +27,9 @@ const login = asyncHandler(async (req, res) => {
       await exist.save();
       res.cookie("refresh_token", refreshToken, COOKIES_OPTIONS);
       if (req.register) {
-        return res.redirect("https://localhost:3000/auth/complete");
+        return res.redirect("https://149311cb.tech/auth/complete");
       }
-      return res.redirect("https://localhost:3000");
+      return res.redirect("https://149311cb.tech");
     } catch (error: any) {
       return res.status(500).json({ message: error.message });
     }
@@ -263,8 +263,7 @@ const verifyEmail = asyncHandler(async (req, res) => {
   // Redirect to create password page if no password found and is register
   if (
     exist.password === "" ||
-    !exist.password ||
-    (exist.password === undefined && authInfo?.register)
+      !exist.password
   ) {
     // Generate short live token to create password
     const emailVerificationToken = generateToken({
@@ -281,7 +280,7 @@ const verifyEmail = asyncHandler(async (req, res) => {
     // });
 
     res.redirect(
-      `https://localhost:3000/verification/create-pass?token=${emailVerificationToken}`
+      `https://149311cb.tech/verification/create-pass?token=${emailVerificationToken}`
     );
   } else if (exist.password && authInfo?.register) {
     // Generate rf token and redirect to homepage if password found and is register
@@ -290,9 +289,9 @@ const verifyEmail = asyncHandler(async (req, res) => {
     exist.email_verification = true;
     await exist.save();
     res.cookie("refresh_token", refreshToken, COOKIES_OPTIONS);
-    return res.redirect("https://localhost:3000");
+    return res.redirect("https://149311cb.tech");
   } else if (authInfo?.register) {
-    return res.redirect("https://localhost:3000");
+    return res.redirect("https://149311cb.tech");
   }
 });
 
@@ -388,7 +387,7 @@ const resetPasswordRequest = asyncHandler(async (req, res) => {
     subject: "Reset password",
     templateId: "d-2617efa26a114566a2de3f66264a7e64",
     dynamicTemplateData: {
-      link: `https://localhost:3000/password/reset?token=${resetPassToken}`,
+      link: `https://149311cb.tech/password/reset?token=${resetPassToken}`,
     },
   };
 
@@ -402,15 +401,15 @@ const resetPassword = asyncHandler(async (req, res) => {
     const { token } = req.query;
     const { password } = req.body;
     if (!token || typeof token !== "string") {
-      return res.redirect("https://localhost:3000");
+      return res.redirect("https://149311cb.tech");
     }
     const decoded = jwt.verify(token, process.env.JWT_SECRET!);
     if (typeof decoded === "string" || !decoded.userId) {
-      return res.redirect("https://localhost:3000");
+      return res.redirect("https://149311cb.tech");
     }
     const exist = await User.findById(decoded.userId);
     if (!exist) {
-      return res.redirect("https://localhost:3000");
+      return res.redirect("https://149311cb.tech");
     }
     exist.password = password;
     await exist.save();

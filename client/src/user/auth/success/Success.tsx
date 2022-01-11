@@ -18,9 +18,9 @@ const Success = () => {
     const {
       location: { pathname },
     } = history;
-    let route = "/api/users/create-pass";
+    let route = "https://web-shop-ban-game.herokuapp.com/api/users/create-pass";
     if (pathname.includes("/reset")) {
-      route = "/api/users/reset-pass";
+      route = "https://web-shop-ban-game.herokuapp.com/api/users/reset-pass";
     }
     await axios
       .post(
@@ -34,7 +34,7 @@ const Success = () => {
       )
       .then(({ status }) => {
         if (status === 201) {
-          window.location.href = "https://localhost:3000";
+          window.location.href = "/";
         }
       })
       .catch((error) => {

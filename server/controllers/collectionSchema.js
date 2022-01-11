@@ -37,6 +37,8 @@ const getCollectionByName = asyncHandler(async (req, res) => {
     return res.status(400).json({ message: "name must be an array" });
   }
   try {
+    const testDb = await Collection.find({})
+    console.log(testDb)
     const collections = await Collection.find({
       name: { $in: names },
     }).populate({

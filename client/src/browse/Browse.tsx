@@ -1,4 +1,4 @@
-import { Box, Grid, Pagination, Stack } from "@mui/material";
+import { Box, Grid, Pagination, Skeleton, Stack } from "@mui/material";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
@@ -13,9 +13,13 @@ const getGames = async (
 ) => {
   const limit = 20;
   const body = filters.length > 0 ? { filters } : {};
-  const { data } = await axios.post("/api/products/games/all", body, {
-    params: { limit, skip: currentPage, keyword, collection },
-  });
+  const { data } = await axios.post(
+    "https://web-shop-ban-game.herokuapp.com/api/products/games/all",
+    body,
+    {
+      params: { limit, skip: currentPage, keyword, collection },
+    }
+  );
   return data;
 };
 
@@ -50,12 +54,40 @@ const Browse: React.FC<RouteComponentProps> = ({ match }) => {
         }}
       >
         <Grid container columnSpacing={2} rowSpacing={5} sx={{ py: 2 }}>
-          {games &&
+          {games ? (
             games.map((game: any) => (
               <Grid item xs={12} sm={4} md={3} key={game._id}>
                 <GameCard game={game} />
               </Grid>
-            ))}
+            ))
+          ) : (
+            <>
+              <Grid item xs={12} sm={4} md={3}>
+                <Skeleton variant={"rectangular"} height={"250px"} />
+              </Grid>
+              <Grid item xs={12} sm={4} md={3}>
+                <Skeleton variant={"rectangular"} height={"250px"} />
+              </Grid>
+              <Grid item xs={12} sm={4} md={3}>
+                <Skeleton variant={"rectangular"} height={"250px"} />
+              </Grid>
+              <Grid item xs={12} sm={4} md={3}>
+                <Skeleton variant={"rectangular"} height={"250px"} />
+              </Grid>
+              <Grid item xs={12} sm={4} md={3}>
+                <Skeleton variant={"rectangular"} height={"250px"} />
+              </Grid>
+              <Grid item xs={12} sm={4} md={3}>
+                <Skeleton variant={"rectangular"} height={"250px"} />
+              </Grid>
+              <Grid item xs={12} sm={4} md={3}>
+                <Skeleton variant={"rectangular"} height={"250px"} />
+              </Grid>
+              <Grid item xs={12} sm={4} md={3}>
+                <Skeleton variant={"rectangular"} height={"250px"} />
+              </Grid>
+            </>
+          )}
         </Grid>
         <Stack spacing={2}>
           <Pagination

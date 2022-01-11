@@ -72,7 +72,7 @@ export const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const fetchData = async (keyword: string) => {
-  const { data } = await axios.get("/api/products/games/search", {
+  const { data } = await axios.get("https://web-shop-ban-game.herokuapp.com/api/products/games/search", {
     params: { keyword },
   });
   return data;

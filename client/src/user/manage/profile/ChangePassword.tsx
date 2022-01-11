@@ -22,7 +22,7 @@ const ChangePassword: React.FC<{
     e.preventDefault();
     await axios
       .post(
-        "/api/users/profile/update/password",
+        "https://web-shop-ban-game.herokuapp.com/api/users/profile/update/password",
         {
           currentPassword: password,
           newPassword,

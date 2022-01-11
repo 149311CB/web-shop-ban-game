@@ -1,4 +1,4 @@
-import { Box, Typography, Grid } from "@mui/material";
+import { Box, Typography, Grid, Skeleton } from "@mui/material";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -6,14 +6,17 @@ import { ChevronRightRounded } from "@mui/icons-material";
 import GameCard from "../components/GameCard";
 
 export const getCollections = async (names: string[]) => {
-  const { data } = await axios.get("/api/collections/name", {
-    params: {names},
-  });
+  const { data } = await axios.get(
+    "https://web-shop-ban-game.herokuapp.com/api/collections/name",
+    {
+      params: { names },
+    }
+  );
   return data;
 };
 
 const Category = () => {
-  const [collections, setCollections] = useState([]);
+  const [collections, setCollections] = useState<any[]>();
 
   useEffect(() => {
     getCollections([
@@ -31,7 +34,7 @@ const Category = () => {
 
   return (
     <Box>
-      {collections &&
+      {collections ? (
         collections.map((collection: any) => (
           <Box key={collection._id} sx={{ pb: 10 }}>
             <Link
@@ -82,7 +85,63 @@ const Category = () => {
               })}
             </Grid>
           </Box>
-        ))}
+        ))
+      ) : (
+        <>
+          <Skeleton variant="text" sx={{width:190, pb:2, mb:1}}/>
+          <Grid
+            container
+            spacing={2}
+            columns={{ md: 10, xs: 12 }}
+          >
+            <Grid item md={2} sm={3} xs={6}>
+              <Skeleton
+                variant="rectangular"
+                sx={{
+                  bgcolor: "background.paper",
+                  height: 250,
+                }}
+              />
+            </Grid>
+            <Grid item md={2} sm={3} xs={6}>
+              <Skeleton
+                variant="rectangular"
+                sx={{
+                  bgcolor: "background.paper",
+                  height: 250,
+                }}
+              />
+            </Grid>
+            <Grid item md={2} sm={3} xs={6}>
+              <Skeleton
+                variant="rectangular"
+                sx={{
+                  bgcolor: "background.paper",
+                  height: 250,
+                }}
+              />
+            </Grid>
+            <Grid item md={2} sm={3} xs={6}>
+              <Skeleton
+                variant="rectangular"
+                sx={{
+                  bgcolor: "background.paper",
+                  height: 250,
+                }}
+              />
+            </Grid>
+            <Grid item md={2} sm={3} xs={6}>
+              <Skeleton
+                variant="rectangular"
+                sx={{
+                  bgcolor: "background.paper",
+                  height: 250,
+                }}
+              />
+            </Grid>
+          </Grid>
+        </>
+      )}
     </Box>
   );
 };

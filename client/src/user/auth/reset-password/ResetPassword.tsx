@@ -15,7 +15,7 @@ const ResetPassword: React.FC<{
 
   const submitHandler = async (e: FormEvent) => {
     e.preventDefault();
-    const { data } = await axios.post("/api/users/reset-pass-request", {
+    const { data } = await axios.post("https://web-shop-ban-game.herokuapp.com/api/users/reset-pass-request", {
       email,
     });
     if (data.message === "success") {

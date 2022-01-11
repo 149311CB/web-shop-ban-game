@@ -7,7 +7,6 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
-import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 import axios from "axios";
 import { GlobalContext } from "../App";
@@ -29,7 +28,7 @@ export default function AccountMenu() {
   };
 
   const handleLogout = async () => {
-    await axios.get("/api/users/logout", {
+    await axios.get("https://web-shop-ban-game.herokuapp.com/api/users/logout", {
       withCredentials: true,
       headers: {
         Authorization: `Bearer ${loginToken}`,
@@ -45,7 +44,7 @@ export default function AccountMenu() {
     }
 
     const fetchData = async () => {
-      const { data } = await axios.post("/api/users/details", null, {
+      const { data } = await axios.post("https://web-shop-ban-game.herokuapp.com/api/users/details", null, {
         headers: {
           Authorization: `Bearer ${loginToken}`,
         },
@@ -101,16 +100,7 @@ export default function AccountMenu() {
         <MenuItem onClick={() => history.push("/user")}>
           <Avatar /> Profile
         </MenuItem>
-        <MenuItem>
-          <Avatar /> My account
-        </MenuItem>
         <Divider />
-        <MenuItem>
-          <ListItemIcon>
-            <Settings fontSize="small" />
-          </ListItemIcon>
-          Settings
-        </MenuItem>
         <MenuItem onClick={handleLogout}>
           <ListItemIcon>
             <Logout fontSize="small" />

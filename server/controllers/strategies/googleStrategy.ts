@@ -7,7 +7,8 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-      callbackURL: "/api/users/login/google/callback",
+      callbackURL:
+        "https://web-shop-ban-game.herokuapp.com/api/users/login/google/callback",
       passReqToCallback: true,
     },
     async (req, _, __, profile, cb) => {

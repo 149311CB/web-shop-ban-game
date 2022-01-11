@@ -25,7 +25,7 @@ const AuthComplete = () => {
     if(!loginToken) return
     const fetchData = async () => {
       const { data } = await axios.post(
-        "/api/users/details",
+        "https://web-shop-ban-game.herokuapp.com/api/users/details",
         {},
         {
           params: { email: true },

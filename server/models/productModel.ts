@@ -67,8 +67,12 @@ const gameSchema = new Schema({
     type: [Schema.Types.ObjectId],
     required: false,
   },
+  discount_price: {
+    type: Number,
+    required: false,
+  },
 });
 
-const Game = model<IGame>("Game", gameSchema, "test_games");
+const Game = model<IGame>("Game", gameSchema, "games");
 
 export { Game };

@@ -4,7 +4,7 @@ import { golfInterface } from "../types/golfType";
 import "./stater.scss";
 
 const Starter = () => {
-  const { data, loading, error } = useFetch("/api/sample");
+  const { data, loading, error } = useFetch("https://web-shop-ban-game.herokuapp.com/api/sample");
 
   if (data) {
     console.log(data);

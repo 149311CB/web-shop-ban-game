@@ -1,5 +1,13 @@
 import { useContext, useEffect, useState } from "react";
-import { Box, Divider, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  Divider,
+  Modal,
+  Skeleton,
+  Stack,
+  Typography,
+} from "@mui/material";
 import axios from "axios";
 import { GlobalContext } from "../App";
 import CartItem from "./CartItem";
@@ -14,6 +22,7 @@ import { PrimaryButton } from "../components/PrimaryButton";
 const Cart = () => {
   const [open, setOpen] = useState(false);
   const [data, setData] = useState<any>(null);
+  const [fetching,setFetching] = useState(false)
   const [updating, setUpdating] = useState(false);
   const { mode } = useContext(GlobalContext);
   const history = useHistory();
@@ -22,7 +31,9 @@ const Cart = () => {
   useEffect(() => {
     if (updating) return;
     const fetchData = async () => {
-      const route = loginToken ? "/api/carts/auth/active" : "/api/carts/active";
+      const route = loginToken
+        ? "https://web-shop-ban-game.herokuapp.com/api/carts/auth/active"
+        : "https://web-shop-ban-game.herokuapp.com/api/carts/active";
       await axios
         .post(
           route,
@@ -43,16 +54,10 @@ const Cart = () => {
           console.log(error.message);
           return;
         });
+    setFetching(false);
     };
     fetchData();
   }, [updating, loginToken]);
-
-  // useEffect(()=>{
-  //   window.addEventListener("wheel", (e)=>{
-  //     console.log(e)
-  //     // document.querySelector(".cart-main")?.scroll()
-  //   })
-  // },[])
 
   return (
     <Box
@@ -94,25 +99,76 @@ const Cart = () => {
             spacing={2}
             sx={{ backgroundColor: "background.paper" }}
           >
-            {data
-              ? data.products.map((item: any) => (
-                  <StackItem
-                    sx={{
-                      display: "flex",
-                      gap: "0.9rem",
-                      backgroundColor: "background.paper",
-                    }}
-                    key={item._id}
-                  >
-                    <CartItem
-                      item={item}
-                      mode={mode}
-                      updating={updating}
-                      setUpdating={setUpdating}
+            {data ? (
+              data.products.map((item: any) => (
+                <StackItem
+                  sx={{
+                    display: "flex",
+                    gap: "0.9rem",
+                    backgroundColor: "background.paper",
+                  }}
+                  key={item._id}
+                >
+                  <CartItem
+                    item={item}
+                    mode={mode}
+                    updating={updating}
+                    setUpdating={setUpdating}
+                    setFetching={setFetching}
+                  />
+                </StackItem>
+              ))
+            ) : (
+              <StackItem
+                sx={{
+                  display: "flex",
+                  gap: "0.9rem",
+                  backgroundColor: "background.paper",
+                }}
+              >
+                <Box className={"img-container"} sx={{ width: "25%" }}>
+                  <Skeleton
+                    variant={"rectangular"}
+                    width={"100%"}
+                    height={"200px"}
+                  />
+                </Box>
+                <Box
+                  // className={"item-controls"}
+                  sx={{
+                    width: "70%",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Box>
+                    <Skeleton
+                      variant={"text"}
+                      sx={{ padding: "0.3rem", width: "200px", mb: "0.6rem" }}
                     />
-                  </StackItem>
-                ))
-              : null}
+                    <Skeleton
+                      variant={"text"}
+                      sx={{ padding: "0.1rem", width: "50px", mb: "0.3rem" }}
+                    />
+                    <Skeleton
+                      variant={"text"}
+                      sx={{ padding: "0.6rem", width: "50px", mb: "0.6rem" }}
+                    />
+                  </Box>
+                  <Box sx={{ display: "flex", gap: "0.9rem" }}>
+                    <Skeleton
+                      variant="rectangular"
+                      sx={{ padding: "1.2rem", width: "100px" }}
+                    />
+                    <Skeleton
+                      variant="rectangular"
+                      sx={{ padding: "1.2rem", width: "100px" }}
+                    />
+                  </Box>
+                </Box>
+              </StackItem>
+            )}
           </Stack>
         </AlphaContainer>
         <Box
@@ -189,6 +245,20 @@ const Cart = () => {
           />
         </Box>
       </Box>
+      <Modal open={updating || fetching} onClose={() => {}}>
+        <Box
+          sx={{
+            margin: "0 auto",
+            display: "flex",
+            // alignItem: "center",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      </Modal>
     </Box>
   );
 };

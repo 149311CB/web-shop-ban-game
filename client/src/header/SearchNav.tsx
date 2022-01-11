@@ -27,20 +27,24 @@ export default function SearchNav() {
       <Box sx={{ flexGrow: 1, bgcolor: "common.black" }}>
         <AppBar
           position="static"
-          sx={{ bgcolor: "common.black", boxShadow: "none" }}
+          sx={{ bgcolor: "common.black", boxShadow: "none", backgroundImage:"none" }}
         >
-          <Toolbar sx={{ bgcolor: "common.black" }}>
+          <Toolbar sx={{ bgcolor: "common.black", width:"80%", margin:"0 auto" }}>
             <Box sx={{ flexGrow: 1 }}>
               <Box
                 sx={{
                   width: "50px",
-                  height: "50px",
                   borderRadius: "50%",
-                  bgcolor: "background.paper",
                   cursor: "pointer",
                 }}
                 onClick={() => history.push("/")}
-              />
+              >
+                <img
+                  src="https://firebasestorage.googleapis.com/v0/b/images-b3099.appspot.com/o/269863143_480068400349256_2256909955739492979_n.png?alt=media&token=3a12e3c5-a40d-4747-8607-a42eb4917cd2"
+                  alt="logo"
+                  style={{ width: "100%", marginTop: 5 }}
+                />
+              </Box>
             </Box>
             <SearchMenu />
 
