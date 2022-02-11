@@ -65,14 +65,16 @@ const Checkout = () => {
     setError(err);
   };
 
-  const handleSuccess = (order: any) => {
-    createOrder({ ...order, total: getProductPrice(cart) }).then(() =>
-      handleError("")
-    );
+  const handleSuccess = (order: any, cancelled = false) => {
+    createOrder({ ...order, total: getProductPrice(cart) }).then(() => {
+      if (!cancelled) {
+        handleError("");
+      }
+    });
   };
 
   const handleCancelled = (order: any) => {
-    handleSuccess(order);
+    handleSuccess(order, true);
   };
 
   let value;
@@ -92,6 +94,7 @@ const Checkout = () => {
   useEffect(() => {
     if (!loginToken) return;
     const fetchData = async () => {
+      setProcessing(true);
       try {
         const { data } = await axios.post(
           "https://web-shop-ban-game.herokuapp.com/api/carts/auth/active",
@@ -107,9 +110,10 @@ const Checkout = () => {
       } catch (error) {
         history.push("/cart");
       }
+      setProcessing(false);
     };
     fetchData();
-  }, [history, loginToken]);
+  }, [history, loginToken, error]);
 
   return (
     <CheckoutContext.Provider value={value}>

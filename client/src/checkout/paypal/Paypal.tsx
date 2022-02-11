@@ -89,10 +89,7 @@ const Paypal = () => {
               handleError(`payment failed: ${error.toString()}`);
             }}
             onCancel={async () => {
-              const order = generateOrder();
-              order.status = "cancelled";
-              order.cancelledAt = new Date(Date.now());
-              handleCancelled(order);
+              handleError(`Something went wrong! Please try again.`);
             }}
             disabled={!!(processing && !clientId)}
           />

@@ -1,21 +1,19 @@
-# Các bước chạy server
+# Run server
 
-## Nếu dùng json-server
+## Option 1: json-server
 
-## Chạy server
-
-- B1: Chạy json-server
+- Step 1: Run json-server
 
 ```bash
   json-server --watch ./sampleData/db.json --port 5000
 ```
 
-- B2:
-  - Mở link: http://localhost:5000
+- Step 1:
+  - Open link: http://localhost:5000
 
-**Tài liệu: https://github.com/typicode/json-server**
+**json server docs: https://github.com/typicode/json-server**
 
-## Thêm dữ liệu
+## Add data to /server/sampleData/db.json
 
 ```json
 {
@@ -30,9 +28,9 @@
 }
 ```
 
-## Nếu dùng mongodb
+## Option 2: Using mongodb
 
-- B1: Tạo file `.env` với các dữ liệu sau
+- B1: Create file `.env` with the following data
 
 ```
 NODE_ENV=development
@@ -40,22 +38,22 @@ PORT=5000
 MONGO_URI=`local db uri hoặc mongodb atlas`
 ```
 
-- B2: Cài typescript globally nếu chưa có
+- B2: Install typescript globaly
 
 ```
 npm i -g typescript
 ```
 
-- B3: Chạy các lệnh sau
+- B3: Run the following commands
 
-  - Đối với window(Tui chưa tìm ra cách chạy 2 lệnh này cùng lúc trên window :v)
+  - Windows
 
     ```bash
-    tsc -w #compile typescript to javascript
+    yarn add concurrently
     ```
 
-    ```bash
-    yarn nodemon dist/server.js #Watch compiled javascript file
+    ```
+    yarn concurrently "tsc -w" "yarn nodemon dist/server.js"
     ```
 
   - MacOS & linux
@@ -64,6 +62,6 @@ npm i -g typescript
     yarn server
     ```
 
-- B4: Mở link: http://localhost:5000 hoặc http://localhost:5000/api/sample để xem dữ liệu mẫu
+- B4: Server now run on port 5000
 
-**Lưu ý: folder dist được generate từ lệnh tsc, không chỉnh sửa trực tiếp**
+**Note:** In order to use every function of the app, you have to fill in all the data in .env file. See env.sample to see all the requirements

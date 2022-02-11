@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import { AlphaTypo } from "./AlphaTypo";
 
 const GameCard: React.FC<{ game: any }> = ({ game }) => {
-  console.log(game.discount_price)
   return (
     <Box
       sx={{

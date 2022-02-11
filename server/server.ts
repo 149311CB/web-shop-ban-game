@@ -35,6 +35,7 @@ app.use(passport.initialize());
 app.use(
   cors({
     origin: [
+      "https://penguin.149311cb.tech",
       "https://localhost:3000",
       "https://localhost:3001",
       "https://149311cb.tech",
