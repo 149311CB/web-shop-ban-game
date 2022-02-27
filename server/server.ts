@@ -39,6 +39,8 @@ app.use(
       "https://localhost:3000",
       "https://localhost:3001",
       "https://149311cb.tech",
+      "http://localhost:4200",
+      "https://localhost:4200"
     ], // will be changed later?
     methods: "GET,POST,PUT,DELETE",
     credentials: true,

@@ -1,0 +1,29 @@
+<div
+  class="carousel flex gap-4 flex-col md:flex-row mb-1 relative"
+  *ngIf="topSales$ | async as topSales"
+>
+  <div class="rounded-lg overflow-hidden w-4/5">
+    <ul class="flex list-none max-h[480px]">
+      <li
+        class="basis-full shrink-0 py-0 w-full"
+        *ngFor="let product of topSales.list_game"
+      >
+        <img class="rounded-lg" src="{{ product.images[0].url }}" />
+      </li>
+    </ul>
+  </div>
+  <ul class="small-panes flex flex-row md:flex-col w-full md:w-1/5 list-none">
+    <div
+      class="small-panes-item rounded-lg relative overflow-hidden flex md:items-center gap-2 w-full md:w-[unset] border p-2"
+      *ngFor="let product of topSales.list_game"
+    >
+      <div class="w-full md:w-1/4 h-full rounded-lg md:block">
+        <img
+          class="w-full h-full rounded-lg object-cover"
+          src="{{ product.images[0].url }}"
+        />
+      </div>
+      <p class="md:block w-0 md:w-3/4">{{product.name}}</p>
+    </div>
+  </ul>
+</div>

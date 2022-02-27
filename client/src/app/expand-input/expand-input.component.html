@@ -1,0 +1,13 @@
+<mat-form-field
+  appearance="outline"
+  style="width: {{ default }}"
+  class="{{iconPos}}"
+>
+  <mat-icon matSuffix>{{ icon }}</mat-icon>
+  <input
+    matInput
+    placeholder="Search..."
+    (focus)="expand()"
+    (blur)="narrowDown()"
+  />
+</mat-form-field>

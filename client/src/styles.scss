@@ -1,0 +1,38 @@
+/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: brutal;
+  src: url("fonts/BrutalType.woff2");
+}
+
+* {
+  font-family: brutal;
+}
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+expand-input {
+  .mat-form-field-wrapper {
+    padding-bottom: 0;
+  }
+
+  .mat-form-field-infix {
+    padding-top: 0.5em !important;
+    padding-bottom: 0.8em !important;
+  }
+  mat-form-field.left {
+    .mat-form-field-flex {
+      flex-direction: row-reverse;
+    }
+  }
+}
