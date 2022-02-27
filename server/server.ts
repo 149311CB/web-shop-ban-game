@@ -58,18 +58,13 @@ app.use("/api/vochers", vocherRoutes);
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
-// const credentials = {
-//   key: fs.readFileSync("./localhost-key.pem"),
-//   cert: fs.readFileSync("./localhost.pem"),
-// };
+// app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
+const credentials = {
+  key: fs.readFileSync("./localhost-key.pem"),
+  cert: fs.readFileSync("./localhost.pem"),
+};
 
-// const httpsServer = https.createServer(credentials, app);
-// httpsServer.listen(PORT, () =>
-//   console.log(`Server is running on port ${PORT}`)
-// );
-
-// httpsServer.on("clientError", (err, socket) => {
-//   console.log(err);
-//   socket.end("HTTP/1.1 400 Bad Request\r\n\r\n");
-// });
+const httpsServer = https.createServer(credentials, app);
+httpsServer.listen(PORT, () =>
+  console.log(`Server is running on port ${PORT}`)
+);

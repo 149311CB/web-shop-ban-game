@@ -3,21 +3,21 @@ import { Cart, ICart, IItem } from "../models/cartModel";
 import jwt from "jsonwebtoken";
 import { COOKIES_OPTIONS, generateRefreshToken } from "../utils/generateToken";
 
-const getCarts = asyncHandler(async (req, res) => {
+const getCarts = asyncHandler(async (_, res): Promise<any> => {
   const carts = await Cart.find({})
     .populate("user")
     .populate("products.product");
   res.json(carts);
 });
 
-const getCart = asyncHandler(async (req, res) => {
+const getCart = asyncHandler(async (req, res): Promise<any> => {
   const cart = await Cart.findById(req.params.Id)
     .populate("user")
     .populate("products.product");
   res.json(cart);
 });
 
-const getAllCart = asyncHandler(async (_, res) => {
+const getAllCart = asyncHandler(async (_, res): Promise<any> => {
   const carts = await Cart.find({});
   return res.json(carts);
 });
@@ -60,7 +60,7 @@ const addToCart = async (exist: any, product: any, res: any) => {
   return quantityInCart;
 };
 
-const authAddToCart = asyncHandler(async (req, res) => {
+const authAddToCart = asyncHandler(async (req, res): Promise<any> => {
   const { user } = req;
   const { product } = req.body;
   try {
@@ -96,7 +96,7 @@ const authAddToCart = asyncHandler(async (req, res) => {
   }
 });
 
-export const getCartId = asyncHandler(async (req, res, next) => {
+export const getCartId = asyncHandler(async (req, _, next) => {
   const { signedCookies = {} } = req;
   const { cart_token: cartToken } = signedCookies;
   if (!cartToken) {
@@ -109,11 +109,11 @@ export const getCartId = asyncHandler(async (req, res, next) => {
   }
 });
 
-const guestAddToCart = asyncHandler(async (req, res) => {
+const guestAddToCart = asyncHandler(async (req, res): Promise<any> => {
   const { cartId } = req;
   const { product } = req.body;
   if (!cartId) {
-    console.log("new cart")
+    console.log("new cart");
     const newCart = new Cart({
       user: null,
       products: [{ product: product._id, quantity: product.quantity }],
@@ -137,7 +137,7 @@ const guestAddToCart = asyncHandler(async (req, res) => {
   }
 });
 
-const authGetActiveCart = asyncHandler(async (req, res) => {
+const authGetActiveCart = asyncHandler(async (req, res): Promise<any> => {
   const { user } = req;
   const { select } = req.body;
   let exist;
@@ -164,7 +164,7 @@ const authGetActiveCart = asyncHandler(async (req, res) => {
   });
 });
 
-const getActiveCart = asyncHandler(async (req, res) => {
+const getActiveCart = asyncHandler(async (req, res): Promise<any> => {
   const { select } = req.body;
   const { cartId } = req;
   try {
@@ -211,7 +211,7 @@ const updateQty = async (exist: any, product: any, res: any) => {
   res.status(200).json(updatedCart);
 };
 
-const authUpdateQuantity = asyncHandler(async (req, res) => {
+const authUpdateQuantity = asyncHandler(async (req, res): Promise<any> => {
   const { user } = req;
   const { product } = req.body;
   try {
@@ -228,7 +228,7 @@ const authUpdateQuantity = asyncHandler(async (req, res) => {
   }
 });
 
-const updateQuantity = asyncHandler(async (req, res) => {
+const updateQuantity = asyncHandler(async (req, res): Promise<any> => {
   const { cartId } = req;
   const { product } = req.body;
   try {
@@ -258,7 +258,7 @@ const removeItem = async (exist: any, product: any, res: any) => {
   }
 };
 
-const authRemoveFromCart = asyncHandler(async (req, res) => {
+const authRemoveFromCart = asyncHandler(async (req, res): Promise<any> => {
   const { user } = req;
   const { product } = req.body;
   try {
@@ -278,7 +278,7 @@ const authRemoveFromCart = asyncHandler(async (req, res) => {
   }
 });
 
-const removeFromCart = asyncHandler(async (req, res) => {
+const removeFromCart = asyncHandler(async (req, res): Promise<any> => {
   const { cartId } = req;
   const { product } = req.body;
   try {
@@ -298,7 +298,7 @@ const totalItems = (exist: ICart) => {
   return totalItems;
 };
 
-const authCountItemInCart = asyncHandler(async (req, res) => {
+const authCountItemInCart = asyncHandler(async (req, res): Promise<any> => {
   const { user } = req;
   try {
     if (!user) return res.status(401);
@@ -315,7 +315,7 @@ const authCountItemInCart = asyncHandler(async (req, res) => {
   }
 });
 
-const countItemInCart = asyncHandler(async (req, res) => {
+const countItemInCart = asyncHandler(async (req, res): Promise<any> => {
   const { cartId } = req;
   try {
     const exist = await Cart.findById(cartId);
@@ -331,7 +331,7 @@ const countItemInCart = asyncHandler(async (req, res) => {
   }
 });
 
-const updateCart = asyncHandler(async (req, res) => {
+const updateCart = asyncHandler(async (req, res): Promise<any> => {
   const { user } = req;
   const { cartId } = req;
   try {
