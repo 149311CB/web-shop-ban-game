@@ -12,14 +12,25 @@ import { MatIconModule } from "@angular/material/icon";
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { ExpandInputComponent } from './expand-input/expand-input.component';
-import { HeaderComponent } from './header/header.component';
-import { CarouselComponent } from './carousel/carousel.component';
+import { ExpandInputComponent } from "./expand-input/expand-input.component";
+import { HeaderComponent } from "./header/header.component";
+import { CarouselComponent } from "./carousel/carousel.component";
 import { HttpClientModule } from "@angular/common/http";
-import { CategoryComponent } from './category/category.component';
+import { CategoryComponent } from "./category/category.component";
+import { CategoriesComponent } from "./categories/categories.component";
+import { GameCardComponent } from './game-card/game-card.component';
 
 @NgModule({
-  declarations: [AppComponent, ExpandInputComponent, ExpandInputComponent, HeaderComponent, CarouselComponent, CategoryComponent],
+  declarations: [
+    AppComponent,
+    ExpandInputComponent,
+    ExpandInputComponent,
+    HeaderComponent,
+    CarouselComponent,
+    CategoriesComponent,
+    CategoryComponent,
+    GameCardComponent
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,

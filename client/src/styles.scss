@@ -10,6 +10,9 @@
 
 * {
   font-family: brutal;
+  padding-bottom: 0;
+  margin-bottom: 0;
+  box-sizing: border-box;
 }
 
 html,
@@ -35,4 +38,7 @@ expand-input {
       flex-direction: row-reverse;
     }
   }
+}
+
+p {
 }

@@ -27,8 +27,8 @@ export class CollectionService {
   }
 
   getCollection(collections: string[]): Observable<any[]> {
-    const query = collections.join(",");
-    return this.http.get<any>(this.topSaleUrl + `?names=${query}`).pipe(
+    // const query = collections.join(",");
+    return this.http.get<any>(this.topSaleUrl + `?names=${JSON.stringify(collections)}`).pipe(
       tap((data) => console.log("raw data", data)),
       catchError(this.handleError)
     );

@@ -1,0 +1,12 @@
+<div class="w-full h-auto rounded-lg" *ngIf="game">
+  <a class="cursor-pointer">
+    <div
+      class="after:absolute after:w-full after:h-full after:inset-0 after:bg-white after:opacity-0 hover:after:opacity-20 relative after:transition-opacity"
+    >
+      <img src="{{ getPortrait() }}" class="rounded-md" />
+    </div>
+    <p class="pt-4">{{ game.name }}</p>
+    <p>{{ game.developer }}</p>
+    <p>{{ game.sale_price }}</p>
+  </a>
+</div>

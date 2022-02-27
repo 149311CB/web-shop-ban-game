@@ -1,0 +1,6 @@
+<div *ngIf="collections$ | async as collections" class="flex flex-col gap-6">
+  <category
+    *ngFor="let collection of collections"
+    [collection]="collection"
+  ></category>
+</div>
