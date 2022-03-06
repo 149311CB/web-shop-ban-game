@@ -1,9 +1,15 @@
-import { Injectable } from '@angular/core';
+import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { Observable, tap } from "rxjs";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class ProductService {
+  constructor(private http: HttpClient) {}
 
-  constructor() { }
+  getProductDetail(id: string): Observable<any> {
+    const url = `https://localhost:5000/api/products/games/${id}`;
+    return this.http.get<any>(url).pipe(tap((data) => console.log(data)));
+  }
 }
