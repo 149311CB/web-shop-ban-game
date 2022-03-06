@@ -1,7 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
+@use "@angular/material" as mat;
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@include mat.core();
 
 @font-face {
   font-family: brutal;
@@ -13,6 +15,7 @@
   padding-bottom: 0;
   margin-bottom: 0;
   box-sizing: border-box;
+  color: white;
 }
 
 html,
@@ -40,5 +43,167 @@ expand-input {
   }
 }
 
-p {
+$epic-dark-palette: (
+  50: #f9f9f9,
+  100: #f3f3f3,
+  200: #eaeaea,
+  300: #dadada,
+  400: #b7b7b7,
+  500: #979797,
+  600: #6f6f6f,
+  700: #5b5b5b,
+  800: #3c3c3c,
+  900: #1c1c1c,
+  A100: #f3f3f3,
+  A200: #1c1c1c,
+  A400: #1c1c1c,
+  A700: #1c1c1c,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #000000,
+    400: #000000,
+    500: #000000,
+    600: #fff,
+    700: #fff,
+    800: #fff,
+    900: #fff,
+    A100: rgba(black, 0.87),
+    A200: #fff,
+    A400: #fff,
+    A700: #fff,
+  ),
+);
+
+$epic-dark-palette-2: (
+  50: #fcfcfc,
+  100: #f7f7f7,
+  200: #f2f2f2,
+  300: #ececec,
+  400: #cacaca,
+  500: #adadad,
+  600: #838383,
+  700: #6e6e6e,
+  800: #4e4e4e,
+  900: #2c2c2c,
+  A100: #f7f7f7,
+  A200: #f2f2f2,
+  A400: #cacaca,
+  A700: #6e6e6e,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #000000,
+    400: #000000,
+    500: #000000,
+    600: #000000,
+    700: #fff,
+    800: #fff,
+    900: #fff,
+    A100: rgba(black, 0.87),
+    A200: rgba(black, 0.87),
+    A400: rgba(black, 0.87),
+    A700: #fff,
+  ),
+);
+
+$epic-blue-palette: (
+  50: #e2f1ff,
+  100: #b9dbff,
+  200: #8ac6ff,
+  300: #56afff,
+  400: #289eff,
+  500: #008dff,
+  600: #007efc,
+  700: #146be8,
+  800: #1b59d5,
+  900: #2038b5,
+  A100: #9afdfb,
+  A200: #00fcfc,
+  A400: #fc007e,
+  A700: #0000fc,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #000000,
+    400: #000000,
+    500: #fff,
+    600: #fff,
+    700: #fff,
+    800: #fff,
+    900: #fff,
+    A100: rgba(black, 0.87),
+    A200: rgba(black, 0.87),
+    A400: rgba(black, 0.87),
+    A700: #fff,
+  ),
+);
+
+$epic-yellow-palette: (
+  50: #fbf9e4,
+  100: #f6f0bd,
+  200: #f0e692,
+  300: #eadc67,
+  400: #e6d647,
+  500: #e2d024,
+  600: #e0be1f,
+  700: #dea818,
+  800: #db900e,
+  900: #d66900,
+  A100: #fff8cc,
+  A200: #fff3ac,
+  A400: #ffe977,
+  A700: #f7c05b,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #000000,
+    400: #000000,
+    500: #000000,
+    600: #000000,
+    700: #000000,
+    800: #000000,
+    900: #000000,
+    A100: rgba(black, 0.87),
+    A200: rgba(black, 0.87),
+    A400: rgba(black, 0.87),
+    A700: rgba(black, 0.87),
+  ),
+);
+
+$primary: mat.define-palette($epic-blue-palette, 600);
+$accent: mat.define-palette($epic-yellow-palette, A200, A100, A400);
+$grey: mat.define-palette($epic-dark-palette-2, 900);
+
+$epic-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $primary,
+      accent: $accent,
+    ),
+  )
+);
+
+@include mat.all-component-themes($epic-theme);
+
+.mat-select-panel {
+  background-color: #4b4b4b;
+}
+
+.add-to-cart-control {
+  .mat-form-field-outline-end {
+    border-radius: 0 !important;
+  }
+  .mat-form-field-wrapper {
+    padding: 0;
+  }
+  .mat-form-field-outline-start,
+  .mat-form-field-outline-gap,
+  .mat-form-field-outline-end {
+    border-color: #007efc !important;
+  }
 }

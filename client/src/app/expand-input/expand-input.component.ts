@@ -8,7 +8,7 @@ import { animateTo } from "src/utils/animateTo";
 })
 export class ExpandInputComponent implements OnInit {
   @Input() default = "150px";
-  @Input() expanded = "200px";
+  @Input() expanded = "230px";
   @Input() icon?: string;
   @Input() iconPos?: "left" | "right" = "left";
 
@@ -17,7 +17,7 @@ export class ExpandInputComponent implements OnInit {
   ngOnInit(): void {}
 
   expand() {
-    const el = document.querySelector("mat-form-field");
+    const el = document.querySelector(".search-field");
     if (el) {
       animateTo(el, [{ width: this.expanded }], {
         duration: 150,
@@ -28,7 +28,7 @@ export class ExpandInputComponent implements OnInit {
   }
 
   narrowDown() {
-    const el = document.querySelector("mat-form-field");
+    const el = document.querySelector(".search-field");
     if (el) {
       animateTo(el, [{ width: this.default }], {
         duration: 150,

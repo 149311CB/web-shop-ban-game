@@ -1,28 +1,31 @@
-<mat-toolbar>
-  <span>
-    <div class="logo-container">
-      <img
-        src="https://firebasestorage.googleapis.com/v0/b/images-b3099.appspot.com/o/269863143_480068400349256_2256909955739492979_n.png?alt=media&token=3a12e3c5-a40d-4747-8607-a42eb4917cd2"
-      />
-    </div>
-  </span>
-  <span class="tools">
+<div class="bg-[#2c2c2c]">
+  <mat-toolbar class="!w-4/5 !m-auto !bg-[#2c2c2c] !p-0">
     <span>
-      <expand-input [icon]="'search'" [iconPos]="'left'"></expand-input>
-    </span>
-    <span class="icon-list">
-      <div class="cart">
-        <mat-icon matSuffix style="font-size: 22px">shopping_cart</mat-icon>
-      </div>
-      <div class="login">
-        <mat-icon matSuffix>person</mat-icon>
-        <span>Login</span>
+      <div class="logo-container">
+        <img
+          src="https://firebasestorage.googleapis.com/v0/b/images-b3099.appspot.com/o/269863143_480068400349256_2256909955739492979_n.png?alt=media&token=3a12e3c5-a40d-4747-8607-a42eb4917cd2"
+        />
       </div>
     </span>
-  </span>
-</mat-toolbar>
-
-<div class="py-6 flex gap-3">
-  <a class="{{active === 'discover' && 'brightness-125'}}">Discover</a>
-  <a class="{{active === 'browse' && 'brightness-125'}}">Browse</a>
+    <span class="tools">
+      <span>
+        <expand-input [icon]="'search'" [iconPos]="'left'"></expand-input>
+      </span>
+      <span class="icon-list">
+        <div class="cart">
+          <mat-icon matSuffix style="font-size: 22px">shopping_cart</mat-icon>
+        </div>
+        <div class="login">
+          <mat-icon matSuffix>person</mat-icon>
+          <span>Login</span>
+        </div>
+      </span>
+    </span>
+  </mat-toolbar>
+</div>
+<div class="w-4/5 m-auto">
+  <div class="py-6 flex gap-3">
+    <a class="{{ active === 'discover' && 'brightness-125' }}">Discover</a>
+    <a class="{{ active === 'browse' && 'brightness-125' }}">Browse</a>
+  </div>
 </div>
