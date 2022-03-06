@@ -8,6 +8,8 @@ import {
 import { MatInputModule } from "@angular/material/input";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatIconModule } from "@angular/material/icon";
+import { MatButtonModule } from "@angular/material/button";
+import {MatSelectModule} from "@angular/material/select"
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
@@ -18,7 +20,9 @@ import { CarouselComponent } from "./carousel/carousel.component";
 import { HttpClientModule } from "@angular/common/http";
 import { CategoryComponent } from "./category/category.component";
 import { CategoriesComponent } from "./categories/categories.component";
-import { GameCardComponent } from './game-card/game-card.component';
+import { GameCardComponent } from "./game-card/game-card.component";
+import { GameDetailComponent } from "./game-detail/game-detail.component";
+import { DiscoverComponent } from "./discover/discover.component";
 
 @NgModule({
   declarations: [
@@ -29,7 +33,9 @@ import { GameCardComponent } from './game-card/game-card.component';
     CarouselComponent,
     CategoriesComponent,
     CategoryComponent,
-    GameCardComponent
+    GameCardComponent,
+    GameDetailComponent,
+    DiscoverComponent,
   ],
   imports: [
     BrowserModule,
@@ -42,6 +48,8 @@ import { GameCardComponent } from './game-card/game-card.component';
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,
+    MatButtonModule,
+    MatSelectModule
   ],
   providers: [
     {
