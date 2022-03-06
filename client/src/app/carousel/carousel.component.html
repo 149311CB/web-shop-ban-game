@@ -1,30 +1,31 @@
 <div
-  class="carousel flex gap-10 flex-col md:flex-row relative mb-16"
+  class="carousel flex gap-5 max-h-[480px] flex-col lg:flex-row mb-12"
   *ngIf="topSales$ | async as topSales"
 >
-  <div class="rounded-lg overflow-hidden w-full md:w-4/5">
-    <ul class="top-game-preview-list flex list-none max-h[480px]">
+  <div class="rounded-lg overflow-hidden w-full lg:w-[85%]">
+    <ul class="top-game-preview-list main-panes flex relative">
       <li
-        class="basis-full shrink-0 py-0 w-full"
-        *ngFor="let product of topSales.list_game"
+        class="w-full flex-grow flex-shrink-0"
+        *ngFor="let game of topSales.list_game"
       >
-        <img class="rounded-lg" src="{{ product.images[0].url }}" />
+        <img
+          class="rounded-lg h-full w-full"
+          src="{{ getLandscape(game.images)[0].url }}"
+        />
       </li>
     </ul>
   </div>
-  <ul class="small-panes flex flex-row md:flex-col w-full md:w-1/5 list-none">
-    <div
-      class="small-panes-item rounded-lg relative overflow-hidden flex md:items-center gap-2 w-full md:w-[unset] border p-2"
-      *ngFor="let product of topSales.list_game"
+  <ul class="small-panes w-full lg:w-[15%] flex flex-row lg:flex-col gap-2 justify-between">
+    <li
+      class="small-panes-item rounded-lg overflow-hidden relative flex p-2 gap-2"
+      *ngFor="let game of topSales.list_game"
     >
-      <div class="w-full md:w-1/4 h-full rounded-lg md:block z-10">
-        <img
-          class="w-full h-full rounded-lg object-cover"
-          src="{{ product.images[0].url }}"
-        />
-      </div>
-      <p class="md:block w-0 md:w-3/4 z-10">{{ product.name }}</p>
-      <div class="cover w-0 absolute h-full top-0 left-0 bg-[#2c2c2c]/[.9]"></div>
-    </div>
+      <img
+        class="rounded-lg w-[100px] lg:w-[28%] h-full object-cover z-[1]"
+        src="{{ getLandscape(game.images)[0].url }}"
+      />
+      <p class="text-xs hidden items-center lg:!flex z-[1]">{{ game.name }}</p>
+      <div class="cover bg-white/[0.16] absolute inset-0 w-0"></div>
+    </li>
   </ul>
 </div>

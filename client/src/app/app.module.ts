@@ -9,7 +9,7 @@ import { MatInputModule } from "@angular/material/input";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatIconModule } from "@angular/material/icon";
 import { MatButtonModule } from "@angular/material/button";
-import {MatSelectModule} from "@angular/material/select"
+import { MatSelectModule } from "@angular/material/select";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
@@ -49,7 +49,7 @@ import { DiscoverComponent } from "./discover/discover.component";
     MatInputModule,
     MatIconModule,
     MatButtonModule,
-    MatSelectModule
+    MatSelectModule,
   ],
   providers: [
     {
