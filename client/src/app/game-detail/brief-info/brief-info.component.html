@@ -1,0 +1,32 @@
+<div class="game-info-brief">
+    <p
+            class="game-type bg-amber-300 text-black inline-flex rounded-md px-2 py-1"
+    >
+        {{ camelCase(product.type) }} Game
+    </p>
+    <p class="!my-2">${{ product.sale_price }}</p>
+  <app-base-game-options [product]="product"></app-base-game-options>
+    <div class="basic-info flex flex-col gap-3 mt-5">
+        <div class="flex justify-between">
+            <p class="text-white/60">Developer</p>
+            <p class="text-white/[0.7]">{{ product.developer }}</p>
+        </div>
+        <hr class="border-white/[0.16]"/>
+        <div class="flex justify-between">
+            <p class="text-white/60">Publisher</p>
+            <p class="text-white/[0.7]">{{ product.publisher }}</p>
+        </div>
+        <hr class="border-white/[0.16]"/>
+        <div class="flex justify-between">
+            <p class="text-white/60">Release Date</p>
+            <p class="text-white/[0.7]">
+                {{ formatDate(product.release_date) }}
+            </p>
+        </div>
+        <hr class="border-white/[0.16]"/>
+        <div class="flex justify-between">
+            <p class="text-white/60">Platform</p>
+            <p class="text-white/[0.7]">{{ product.platform }}</p>
+        </div>
+    </div>
+</div>

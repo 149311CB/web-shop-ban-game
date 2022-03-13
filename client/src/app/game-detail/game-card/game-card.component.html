@@ -1,0 +1,33 @@
+<div class="game-overview flex flex-col md:flex-row gap-4">
+    <img
+            [src]="getLandscape(product.images)[0].url"
+            class="w-full md:w-[40%] rounded-tl-md"
+            alt="relate game preview"
+    />
+    <div class="info w-full md:w-[60%] p-5">
+        <p class="!mb-5 flex gap-3 items-center">
+              <span
+                class="uppercase p-[0.3rem] bg-[#333333] w-max rounded-sm text-xs"
+              >{{ product.type }}</span
+              ><span>{{ product.name }}</span>
+        </p>
+        <p class="text-white/60">{{ product.title }}</p>
+    </div>
+</div>
+<hr class="border-white/[0.16]"/>
+<div class="options flex gap-3 items-center justify-end py-3 px-5">
+    <p>${{ product.sale_price }}</p>
+    <button
+            mat-raised-button
+            color="primary"
+            class="uppercase w-max !text-xs !font-semibold !py-3 !px-16"
+    >
+        Buy now
+    </button>
+    <button
+            mat-stroked-button
+            class="overflow-hidden !text-xs w-max !py-3 !px-10 !border-white/60 uppercase after:absolute after:inset-0 after:w-full after:h-full after:bg-white after:opacity-0 after:transition-opacity hover:after:opacity-[0.16]"
+    >
+        Add to wishlist
+    </button>
+</div>

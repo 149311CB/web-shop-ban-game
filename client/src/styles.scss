@@ -12,10 +12,14 @@
 
 * {
   font-family: brutal;
-  padding-bottom: 0;
-  margin-bottom: 0;
+  padding: 0;
+  margin: 0;
   box-sizing: border-box;
   color: white;
+}
+
+p {
+  margin-bottom: 0 !important;
 }
 
 html,
@@ -194,16 +198,18 @@ $epic-theme: mat.define-light-theme(
   background-color: #4b4b4b;
 }
 
-.add-to-cart-control {
-  .mat-form-field-outline-end {
-    border-radius: 0 !important;
-  }
-  .mat-form-field-wrapper {
-    padding: 0;
-  }
-  .mat-form-field-outline-start,
-  .mat-form-field-outline-gap,
-  .mat-form-field-outline-end {
-    border-color: #007efc !important;
+app-base-game-options {
+  .options {
+    .mat-form-field-outline-end {
+      border-radius: 0 !important;
+    }
+    .mat-form-field-wrapper {
+      padding: 0;
+    }
+    .mat-form-field-outline-start,
+    .mat-form-field-outline-gap,
+    .mat-form-field-outline-end {
+      border-color: #007efc !important;
+    }
   }
 }
