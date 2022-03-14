@@ -1,17 +1,22 @@
-import { AfterViewInit, Component, OnInit } from "@angular/core";
+import { AfterViewInit, Component, OnDestroy, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { animateTo } from "src/utils/animateTo";
-import { animationInterval } from "src/utils/animationInterval";
+import { AnimationInterval } from "src/utils/animationInterval";
 import { ProductService } from "../product.service";
 import { marked } from "marked";
-import {GameDetail} from "./ProductDetailUtils";
+import { GameDetail } from "./ProductDetailUtils";
 
 @Component({
   selector: "app-game-detail",
   templateUrl: "./game-detail.component.html",
   styleUrls: ["./game-detail.component.scss"],
 })
-export class GameDetailComponent extends GameDetail implements OnInit, AfterViewInit {
+export class GameDetailComponent
+  extends GameDetail
+  implements OnInit, AfterViewInit, OnDestroy
+{
+  controller = new AbortController();
+  animationInterval: AnimationInterval | undefined;
   product$ = this.getProductDetail();
 
   constructor(
@@ -19,6 +24,13 @@ export class GameDetailComponent extends GameDetail implements OnInit, AfterView
     private productService: ProductService
   ) {
     super();
+  }
+
+  ngOnDestroy(): void {
+    if (this.animationInterval) {
+      this.animationInterval.end();
+      this.animationInterval.clear();
+    }
   }
 
   ngAfterViewInit(): void {
@@ -38,9 +50,9 @@ export class GameDetailComponent extends GameDetail implements OnInit, AfterView
     if (carousel) {
       const reset = carousel.querySelectorAll("li").length;
       let currentIndex = 0;
-      animationInterval(
+      this.animationInterval = new AnimationInterval(
         5000,
-        new AbortController(),
+        this.controller,
         () => {
           if (currentIndex === 0) {
             smallPreviewItem
@@ -58,7 +70,7 @@ export class GameDetailComponent extends GameDetail implements OnInit, AfterView
           }
         },
         true
-      );
+      ).start();
     }
   }
 
@@ -76,7 +88,8 @@ export class GameDetailComponent extends GameDetail implements OnInit, AfterView
         easing: "ease-in",
         duration: 1000,
         fill: "forwards",
-      }
+      },
+      this.controller.signal
     );
   }
 
@@ -89,7 +102,6 @@ export class GameDetailComponent extends GameDetail implements OnInit, AfterView
   getLogo(images: any[]) {
     return images.find((image) => image.type === "logo" && image.url !== "");
   }
-
 
   formatTag(tag: string, trailing: boolean) {
     const end = trailing ? ", " : "";

@@ -7,7 +7,7 @@ import {
 } from "@angular/core";
 import { map, Subscription } from "rxjs";
 import { animateTo } from "src/utils/animateTo";
-import { animationInterval } from "src/utils/animationInterval";
+import { AnimationInterval } from "src/utils/animationInterval";
 import { CollectionService } from "../collection.service";
 
 @Component({
@@ -18,6 +18,8 @@ import { CollectionService } from "../collection.service";
 export class CarouselComponent
   implements OnInit, AfterViewChecked, AfterViewInit, OnDestroy
 {
+  controller = new AbortController();
+  animationInterval: AnimationInterval | undefined;
   subscribers: Subscription[] = [];
   topSales$ = this.collectionService.getCollection(["top sale"]).pipe(
     map((collections) => ({
@@ -29,6 +31,10 @@ export class CarouselComponent
   constructor(private collectionService: CollectionService) {}
 
   ngOnDestroy(): void {
+    if (this.animationInterval) {
+      this.animationInterval.end();
+      this.animationInterval.clear();
+    }
     this.subscribers.forEach((subscriber) => {
       subscriber.unsubscribe();
     });
@@ -59,10 +65,10 @@ export class CarouselComponent
       const reset = carousel.querySelectorAll("li").length;
       const smallPanesArr = Array.from(smallPanes);
       let currentIndex = 0;
-      animationInterval(
+      this.animationInterval = new AnimationInterval(
         5000,
-        new AbortController(),
-        () => {
+        this.controller,
+        (_: number) => {
           const prevItem = smallPanesArr[currentIndex - 1] as HTMLElement;
           if (prevItem) {
             prevItem.style.backgroundColor = "unset";
@@ -91,7 +97,7 @@ export class CarouselComponent
           }
         },
         true
-      );
+      ).start();
     }
   }
 
@@ -107,7 +113,8 @@ export class CarouselComponent
         duration: 500,
         fill: "forwards",
         easing: "cubic-bezier(0.33, 0.00, 0.67, 1.00)",
-      }
+      },
+      this.controller.signal
     );
   }
 
@@ -125,15 +132,21 @@ export class CarouselComponent
         easing: "ease-in",
         duration: 1500,
         fill: "forwards",
-      }
+      },
+      this.controller.signal
     );
   }
 
   expandWidth(cover: HTMLDivElement) {
-    animateTo(cover, [{ width: "100%" }], {
-      easing: "ease-in-out",
-      duration: 5000,
-    });
+    animateTo(
+      cover,
+      [{ width: "100%" }],
+      {
+        easing: "ease-in-out",
+        duration: 5000,
+      },
+      this.controller.signal
+    );
   }
 
   getLandscape(images: any[]) {
