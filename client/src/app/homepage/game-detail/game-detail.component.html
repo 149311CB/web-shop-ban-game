@@ -15,21 +15,30 @@
     </div>
     <div class="row-[1/3] col-start-3 col-end-4 w-full">
       <div class="logo-container p-5 hidden md:!flex justify-center">
-        <img src="{{ getLogo(product.images).url }}" alt="logo"/>
+        <img src="{{ getLogo(product.images).url }}" alt="logo" />
       </div>
       <app-brief-info [product]="product"></app-brief-info>
     </div>
     <div class="row-[2/3] col-[1/3]">
       <div
-        class="description"
+        class="description mb-6"
         [innerHTML]="getMarked(product.description)"
       ></div>
-      <div
-        *ngFor="let product of product.included_in"
-        class="game-card flex flex-col bg-[#292929] rounded-md"
-      >
-        <app-game-card [product]="product"></app-game-card>
+      <div class="editions mb-6" *ngIf="product.included_in.length > 0">
+        <h1 class="uppercase !text-xl">Editions</h1>
+        <app-game-card
+          *ngFor="let product of product.included_in"
+          [product]="product"
+        ></app-game-card>
       </div>
+      <div class="add-ons" *ngIf="product.includes.length > 0">
+        <h1 class="uppercase !text-xl">Add-ons</h1>
+        <app-game-card
+          *ngFor="let product of product.includes"
+          [product]="product"
+        ></app-game-card>
+      </div>
+      <app-review [reviews$]="reviews$" [classifications]="classifications"></app-review>
     </div>
   </div>
 </div>

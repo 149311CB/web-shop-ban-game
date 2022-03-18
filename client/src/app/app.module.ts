@@ -11,13 +11,13 @@ import { AppComponent } from "./app.component";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { ExpandInputComponent } from "./expand-input/expand-input.component";
 import { HeaderComponent } from "./header/header.component";
-import { CarouselComponent } from "./carousel/carousel.component";
+import { CarouselComponent } from "./homepage/carousel/carousel.component";
 import { HttpClientModule } from "@angular/common/http";
-import { CategoryComponent } from "./category/category.component";
-import { CategoriesComponent } from "./categories/categories.component";
-import { GameCardComponent } from "./game-card/game-card.component";
-import { DiscoverComponent } from "./discover/discover.component";
-import { GameDetailModule } from "./game-detail/game-detail.module";
+import { CategoryComponent } from "./homepage/category/category.component";
+import { CategoriesComponent } from "./homepage/categories/categories.component";
+import { GameCardComponent } from "./homepage/game-card/game-card.component";
+import { DiscoverComponent } from "./homepage/discover/discover.component";
+import { GameDetailModule } from "./homepage/game-detail/game-detail.module";
 
 @NgModule({
   declarations: [

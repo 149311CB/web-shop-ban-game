@@ -5,10 +5,10 @@ import {
   OnDestroy,
   OnInit,
 } from "@angular/core";
-import { map, Subscription } from "rxjs";
+import { map, Subscription, tap } from "rxjs";
 import { animateTo } from "src/utils/animateTo";
 import { AnimationInterval } from "src/utils/animationInterval";
-import { CollectionService } from "../collection.service";
+import { CollectionService } from "../../collection.service";
 
 @Component({
   selector: "carousel",
@@ -16,12 +16,13 @@ import { CollectionService } from "../collection.service";
   styleUrls: ["./carousel.component.scss"],
 })
 export class CarouselComponent
-  implements OnInit, AfterViewChecked, AfterViewInit, OnDestroy
+  implements OnInit, AfterViewChecked, OnDestroy
 {
   controller = new AbortController();
   animationInterval: AnimationInterval | undefined;
   subscribers: Subscription[] = [];
   topSales$ = this.collectionService.getCollection(["top sale"]).pipe(
+    tap(() => this.animate()),
     map((collections) => ({
       ...collections[0],
       list_game: collections[0].list_game.slice(0, 6),
@@ -40,10 +41,6 @@ export class CarouselComponent
     });
   }
 
-  ngAfterViewInit(): void {
-    this.subscribers.push(this.topSales$.subscribe(() => this.animate()));
-  }
-
   ngAfterViewChecked(): void {
     const smallPanesEls = document.querySelectorAll(".small-panes-item");
     if (smallPanesEls) {
@@ -56,7 +53,12 @@ export class CarouselComponent
 
   ngOnInit(): void {}
 
-  animate() {
+  async animate() {
+    await new Promise((resolve) =>
+      setTimeout(() => {
+        resolve(true);
+      }, 200)
+    );
     const carousel = document.querySelector(
       ".top-game-preview-list"
     ) as HTMLElement;

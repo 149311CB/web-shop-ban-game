@@ -1,6 +1,6 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
-import { DiscoverComponent } from "./discover/discover.component";
+import { DiscoverComponent } from "./homepage/discover/discover.component";
 
 const routes: Routes = [
   { path: "discover", component: DiscoverComponent },
