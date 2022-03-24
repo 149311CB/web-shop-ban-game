@@ -7,7 +7,7 @@
       <div class="stack">
         <div *ngFor="let product of cartDetail.products" class="group">
           <app-cart-item [product]="product"></app-cart-item>
-          <hr class="group-even:!hidden border-white/[0.16] my-5" />
+          <hr *ngIf="cartDetail.products.length > 1" class="group-even:!hidden border-white/[0.16] my-5" />
         </div>
       </div>
     </div>

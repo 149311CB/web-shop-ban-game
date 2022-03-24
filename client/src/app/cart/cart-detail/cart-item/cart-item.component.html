@@ -1,6 +1,6 @@
 <div class="flex gap-8">
   <img
-    class="w-1/4 rounded-md"
+    class="w-1/4 rounded-md min-w-[115px]"
     [src]="imageService.getPortrait(product.product.images)[0].url"
   />
   <div class="item-control w-3/4 flex flex-col justify-between">
@@ -51,6 +51,7 @@
         color="warn"
         class="remove-product-btn !min-w-0 !p-0 !px-4 text-red-400"
         [disabled]="loading"
+        (click)="handleRemoveProduct()"
       >
         Remove
       </button>

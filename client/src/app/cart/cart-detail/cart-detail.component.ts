@@ -12,15 +12,7 @@ export class CartDetailComponent implements OnInit {
   totalPrice = 0;
   cartDetail$ = this.cartSerivice.cartDetail$.pipe(
     tap((cart) => {
-      if (!cart) return;
-      cart.products.forEach((product: any) => {
-        if (product) {
-          if (product.product) {
-            this.totalPrice =
-              this.totalPrice + product.product.sale_price * product.quantity;
-          }
-        }
-      });
+      this.calculateTotalPrice(cart);
     })
   );
 
@@ -30,4 +22,16 @@ export class CartDetailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {}
+
+  calculateTotalPrice(cart: any) {
+    if (!cart) return;
+    cart.products.forEach((product: any) => {
+      if (product) {
+        if (product.product) {
+          this.totalPrice =
+            this.totalPrice + product.product.sale_price * product.quantity;
+        }
+      }
+    });
+  }
 }

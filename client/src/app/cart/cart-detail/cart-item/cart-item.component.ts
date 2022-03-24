@@ -58,4 +58,11 @@ export class CartItemComponent implements OnInit {
       this.quantity -= 1;
     }
   }
+
+  handleRemoveProduct() {
+    this.loading = true;
+    this.cartService.removeFromCart({ _id: this.product._id }).subscribe(() => {
+      this.loading = false;
+    });
+  }
 }
