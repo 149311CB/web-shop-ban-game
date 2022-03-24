@@ -27,15 +27,7 @@ export class HeaderComponent implements OnInit {
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe((e) => {
         const event = e as NavigationEnd;
-        if (event.url.includes("discover")) {
-          this.active = "discover";
-        } else if (event.url.includes("browse")) {
-          this.active = "browse";
-        } else if (event.url.includes("detail")) {
-          this.active = "detail";
-        } else {
-          this.active = "";
-        }
+        this.checkRouter(event.url);
       });
 
     this.updatedCart$.subscribe((response) => {
@@ -57,6 +49,18 @@ export class HeaderComponent implements OnInit {
   handleCloseDropdown(isClose: boolean) {
     if (isClose) {
       this.show = false;
+    }
+  }
+
+  checkRouter(url: string) {
+    if (url.includes("discover") || url === "/") {
+      this.active = "discover";
+    } else if (url.includes("browse")) {
+      this.active = "browse";
+    } else if (url.includes("detail")) {
+      this.active = "detail";
+    } else {
+      this.active = "";
     }
   }
 }
