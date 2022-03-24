@@ -1,11 +1,11 @@
 import {
   AfterViewChecked,
-  AfterViewInit,
   Component,
   OnDestroy,
   OnInit,
 } from "@angular/core";
 import { map, Subscription, tap } from "rxjs";
+import { ImageService } from "src/app/image.service";
 import { animateTo } from "src/utils/animateTo";
 import { AnimationInterval } from "src/utils/animationInterval";
 import { CollectionService } from "../../collection.service";
@@ -15,9 +15,7 @@ import { CollectionService } from "../../collection.service";
   templateUrl: "./carousel.component.html",
   styleUrls: ["./carousel.component.scss"],
 })
-export class CarouselComponent
-  implements OnInit, AfterViewChecked, OnDestroy
-{
+export class CarouselComponent implements OnInit, AfterViewChecked, OnDestroy {
   controller = new AbortController();
   animationInterval: AnimationInterval | undefined;
   subscribers: Subscription[] = [];
@@ -29,7 +27,10 @@ export class CarouselComponent
     }))
   );
 
-  constructor(private collectionService: CollectionService) {}
+  constructor(
+    private collectionService: CollectionService,
+    public imageService: ImageService
+  ) {}
 
   ngOnDestroy(): void {
     if (this.animationInterval) {
@@ -148,12 +149,6 @@ export class CarouselComponent
         duration: 5000,
       },
       this.controller.signal
-    );
-  }
-
-  getLandscape(images: any[]) {
-    return images.filter(
-      (image) => image.type === "landscape" && image.url !== ""
     );
   }
 }

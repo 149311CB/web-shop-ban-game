@@ -1,7 +1,7 @@
 <div class="game-card flex flex-col bg-[#292929] rounded-md">
   <div class="game-overview flex flex-col md:flex-row gap-4">
     <img
-      [src]="getLandscape(product.images)[0].url"
+      [src]="imageService.getLandscape(product.images)[0].url"
       class="w-full md:w-[40%] rounded-tl-md"
       alt="relate game preview"
     />

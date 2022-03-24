@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from "@angular/core";
+import { CartService } from "src/app/cart.service";
 
 @Component({
   selector: "app-base-game-options",
@@ -7,8 +8,16 @@ import { Component, Input, OnInit } from "@angular/core";
 })
 export class BaseGameOptionsComponent implements OnInit {
   @Input() product: any;
+  quantity = 1;
 
-  constructor() {}
+  constructor(private cartService: CartService) {}
 
   ngOnInit(): void {}
+
+  addToCart() {
+    this.cartService.addToCart({
+      _id: this.product._id,
+      quantity: this.quantity,
+    });
+  }
 }

@@ -10,7 +10,7 @@
       >
         <img
           class="rounded-lg h-full w-full"
-          src="{{ getLandscape(game.images)[0].url }}"
+          src="{{ imageService.getLandscape(game.images)[0].url }}"
         />
       </li>
     </ul>
@@ -22,7 +22,7 @@
     >
       <img
         class="rounded-lg w-[100px] lg:w-[28%] h-full object-cover z-[1]"
-        src="{{ getLandscape(game.images)[0].url }}"
+        src="{{ imageService.getLandscape(game.images)[0].url }}"
       />
       <p class="text-xs hidden items-center lg:!flex z-[1]">{{ game.name }}</p>
       <div class="cover bg-white/[0.16] absolute inset-0 w-0"></div>

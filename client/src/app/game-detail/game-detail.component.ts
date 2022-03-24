@@ -1,34 +1,42 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { animateTo } from 'src/utils/animateTo';
-import { AnimationInterval } from 'src/utils/animationInterval';
-import { ProductService } from '../../product.service';
-import { marked } from 'marked';
-import { GameDetail } from './ProductDetailUtils';
-import { Observable, tap } from 'rxjs';
-import { ReviewService } from '../../review.service';
+import { Component, OnDestroy, OnInit } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
+import { animateTo } from "src/utils/animateTo";
+import { AnimationInterval } from "src/utils/animationInterval";
+import { ProductService } from "../product.service";
+import { marked } from "marked";
+import { concatMap, Observable, tap } from "rxjs";
+import { ReviewService } from "../review.service";
 
 @Component({
-  selector: 'app-game-detail',
-  templateUrl: './game-detail.component.html',
-  styleUrls: ['./game-detail.component.scss'],
+  selector: "app-game-detail",
+  templateUrl: "./game-detail.component.html",
+  styleUrls: ["./game-detail.component.scss"],
 })
-export class GameDetailComponent
-  extends GameDetail
-  implements OnInit, OnDestroy
-{
+export class GameDetailComponent implements OnInit, OnDestroy {
   controller = new AbortController();
   animationInterval: AnimationInterval | undefined;
-  product$ = this.getProductDetail();
+  product$ = this.route.params
+    .pipe(
+      concatMap((values) => this.productService.getProductDetail(values["id"]))
+    )
+    .pipe(
+      tap((product) => {
+        this.animate();
+        this.reviews$ = this.reviewService
+          .getProductReviews(product._id)
+          .pipe(tap((reviews) => this.getReviewsList(reviews)));
+      })
+    );
+
   reviews$: Observable<any> | undefined;
+
   classifications: any[] | undefined;
 
   constructor(
     private route: ActivatedRoute,
     private productService: ProductService,
-    private reviewService: ReviewService
+    private reviewService: ReviewService,
   ) {
-    super();
   }
 
   ngOnDestroy(): void {
@@ -40,25 +48,12 @@ export class GameDetailComponent
 
   ngOnInit(): void {}
 
-  getProductDetail() {
-    let gameId = '';
-    this.route.params.subscribe((values) => (gameId = values['id']));
-    return this.productService.getProductDetail(gameId).pipe(
-      tap((product) => {
-        this.animate();
-        this.reviews$ = this.reviewService
-          .getProductReviews(product._id)
-          .pipe(tap((reviews) => this.getReviewsList(reviews)));
-      })
-    );
-  }
-
   getLogo(images: any[]) {
-    return images.find((image) => image.type === 'logo' && image.url !== '');
+    return images.find((image) => image.type === "logo" && image.url !== "");
   }
 
   formatTag(tag: string, trailing: boolean) {
-    const end = trailing ? ', ' : '';
+    const end = trailing ? ", " : "";
     return (
       tag.substring(0, 1).toUpperCase() + tag.substring(1, tag.length) + end
     );
@@ -75,10 +70,12 @@ export class GameDetailComponent
       classify[review.rating as 5 | 4 | 3 | 2 | 1] += 1;
     });
 
-    this.classifications = Object.entries(classify).map((c) => ({
-      key: c[0],
-      value: (c[1] / reviews.length) * 100,
-    })).reverse();
+    this.classifications = Object.entries(classify)
+      .map((c) => ({
+        key: c[0],
+        value: (c[1] / reviews.length) * 100,
+      }))
+      .reverse();
   }
 
   /* animating section */
@@ -89,11 +86,11 @@ export class GameDetailComponent
       }, 200)
     );
     const carousel = document.querySelector(
-      '.game-carousel .big-thumbnail'
+      ".game-carousel .big-thumbnail"
     ) as HTMLElement;
-    const smallPreviewItem = document.querySelectorAll('.small-preview-item');
+    const smallPreviewItem = document.querySelectorAll(".small-preview-item");
     if (carousel) {
-      const reset = carousel.querySelectorAll('li').length;
+      const reset = carousel.querySelectorAll("li").length;
       let currentIndex = 0;
       this.animationInterval = new AnimationInterval(
         5000,
@@ -102,11 +99,11 @@ export class GameDetailComponent
           if (currentIndex === 0) {
             smallPreviewItem
               .item(smallPreviewItem.length - 1)
-              .classList.remove('active');
+              .classList.remove("active");
           } else {
-            smallPreviewItem.item(currentIndex - 1).classList.remove('active');
+            smallPreviewItem.item(currentIndex - 1).classList.remove("active");
           }
-          smallPreviewItem.item(currentIndex).classList.add('active');
+          smallPreviewItem.item(currentIndex).classList.add("active");
           this.slideToNext(carousel, currentIndex);
           if (currentIndex !== reset - 1) {
             currentIndex += 1;
@@ -124,15 +121,15 @@ export class GameDetailComponent
       carousel,
       [
         {
-          transform: `translateX(${currentIndex !== 0 ? '-' : ''}${
+          transform: `translateX(${currentIndex !== 0 ? "-" : ""}${
             currentIndex * 100
           }%)`,
         },
       ],
       {
-        easing: 'ease-in',
+        easing: "ease-in",
         duration: 1000,
-        fill: 'forwards',
+        fill: "forwards",
       },
       this.controller.signal
     );
@@ -141,9 +138,9 @@ export class GameDetailComponent
 
   /* styling */
   descriptionColorize() {
-    const items = document.querySelector('.description')?.querySelectorAll('*');
+    const items = document.querySelector(".description")?.querySelectorAll("*");
     items?.forEach((item) => {
-      (item as HTMLElement).style.color = 'hsla(0, 0%, 200%, 0.6)';
+      (item as HTMLElement).style.color = "hsla(0, 0%, 200%, 0.6)";
     });
   }
   /* end styling section */
