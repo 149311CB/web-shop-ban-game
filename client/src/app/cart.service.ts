@@ -7,6 +7,16 @@ type newItem = { _id: string; quantity: number };
   providedIn: "root",
 })
 export class CartService {
+  cartDetail$: Observable<any> = this.http
+    .post(
+      "https://localhost:5000/api/carts/active",
+      {},
+      {
+        withCredentials: true,
+      }
+    )
+    .pipe(tap((data) => console.log("cart detail", data)));
+
   constructor(private http: HttpClient) {}
 
   private addToCartSubject = new Subject<newItem>();
@@ -28,5 +38,18 @@ export class CartService {
 
   addToCart(product: newItem) {
     this.addToCartSubject.next(product);
+  }
+
+  updateQuantity(product: any) {
+    return this.http.post(
+      "https://localhost:5000/api/carts/qty/update",
+      { product },
+      {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
   }
 }

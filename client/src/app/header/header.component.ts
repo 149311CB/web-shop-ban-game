@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
+import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
+import { filter, tap } from "rxjs";
 import { CartService } from "../cart.service";
 import { ImageService } from "../image.service";
 import { ProductService } from "../product.service";
@@ -22,13 +23,21 @@ export class HeaderComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    if (this.router.url.includes("discover")) {
-      this.active = "discover";
-    } else if (this.router.url.includes("browse")) {
-      this.active = "browse";
-    } else {
-      this.active = "";
-    }
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe((e) => {
+        const event = e as NavigationEnd;
+        if (event.url.includes("discover")) {
+          this.active = "discover";
+        } else if (event.url.includes("browse")) {
+          this.active = "browse";
+        } else if (event.url.includes("detail")) {
+          this.active = "detail";
+        } else {
+          this.active = "";
+        }
+      });
+
     this.updatedCart$.subscribe((response) => {
       this.show = true;
       if (response.message) {

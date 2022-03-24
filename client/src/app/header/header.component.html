@@ -15,7 +15,11 @@
       </span>
       <span class="icon-list">
         <div class="cart relative">
-          <mat-icon matSuffix style="font-size: 22px">shopping_cart</mat-icon>
+          <a routerLink="/cart"
+            ><mat-icon matSuffix style="font-size: 22px"
+              >shopping_cart</mat-icon
+            ></a
+          >
           <app-cart-dropdown
             *ngIf="show"
             (closeDropdown)="handleCloseDropdown($event)"
@@ -30,7 +34,7 @@
     </span>
   </mat-toolbar>
 </div>
-<div class="w-4/5 m-auto">
+<div class="w-4/5 m-auto" *ngIf="active !== ''">
   <div class="py-6 flex gap-3">
     <a
       class="{{
