@@ -1,0 +1,36 @@
+<div
+  class="absolute bottom-0 translate-y-full right-0 min-w-max p-2 rounded-md bg-[#333333] shadow-md"
+>
+  <div class="flex gap-3">
+    <img
+      [src]="
+        imageService.getPortrait(productService.currentProduct.images)[0].url
+      "
+      class="w-[50px]"
+    />
+    <div class="flex flex-col !items-start" *ngIf="cartBriefSummary">
+      <ng-container
+        *ngIf="cartBriefSummary.currentInCart < cartBriefSummary.max"
+      >
+        <p class="text-sm">A new item has been add to your cart</p>
+        <p class="text-sm text-white/60">
+          Quantity: {{ cartBriefSummary.currentInCart }}
+        </p>
+      </ng-container>
+      <ng-container
+        *ngIf="cartBriefSummary.currentInCart === cartBriefSummary.max"
+      >
+        <p class="text-sm text-red-400 font-bold">
+          You can purchase {{ cartBriefSummary.max }} of this item
+        </p>
+        <p class="text-sm text-white/60">
+          Current: {{ cartBriefSummary.currentInCart }}
+        </p>
+      </ng-container>
+    </div>
+  </div>
+  <a
+    class="text-sm bg-[#007efc] !w-full p-1 rounded-sm block text-center mt-2 cursor-pointer hover:brightness-90"
+    >View cart and Checkout</a
+  >
+</div>

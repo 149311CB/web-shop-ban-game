@@ -1,5 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
+import { CartService } from "../cart.service";
+import { ImageService } from "../image.service";
+import { ProductService } from "../product.service";
 
 @Component({
   selector: "header",
@@ -8,8 +11,15 @@ import { Router } from "@angular/router";
 })
 export class HeaderComponent implements OnInit {
   active = "discover";
-
-  constructor(private router: Router) {}
+  show = false;
+  cartBriefSummary = { max: 0, currentInCart: 0 };
+  updatedCart$ = this.cartService.addToCartAction$;
+  constructor(
+    private router: Router,
+    private cartService: CartService,
+    public productService: ProductService,
+    public imageService: ImageService
+  ) {}
 
   ngOnInit(): void {
     if (this.router.url.includes("discover")) {
@@ -18,6 +28,26 @@ export class HeaderComponent implements OnInit {
       this.active = "browse";
     } else {
       this.active = "";
+    }
+    this.updatedCart$.subscribe((response) => {
+      this.show = true;
+      if (response.message) {
+        this.cartBriefSummary = {
+          max: response.details.max,
+          currentInCart: response.details.in_cart,
+        };
+      } else {
+        this.cartBriefSummary = {
+          max: response.max,
+          currentInCart: response.in_cart,
+        };
+      }
+    });
+  }
+
+  handleCloseDropdown(isClose: boolean) {
+    if (isClose) {
+      this.show = false;
     }
   }
 }

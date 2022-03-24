@@ -17,7 +17,8 @@ import { CategoryComponent } from "./homepage/category/category.component";
 import { CategoriesComponent } from "./homepage/categories/categories.component";
 import { GameCardComponent } from "./homepage/game-card/game-card.component";
 import { DiscoverComponent } from "./homepage/discover/discover.component";
-import { GameDetailModule } from "./homepage/game-detail/game-detail.module";
+import { GameDetailModule } from "./game-detail/game-detail.module";
+import { CartDropdownComponent } from "./header/cart-dropdown/cart-dropdown.component";
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { GameDetailModule } from "./homepage/game-detail/game-detail.module";
     CategoryComponent,
     GameCardComponent,
     DiscoverComponent,
+    CartDropdownComponent,
   ],
   imports: [
     BrowserModule,

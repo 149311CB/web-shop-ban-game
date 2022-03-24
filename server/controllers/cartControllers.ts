@@ -2,6 +2,7 @@ import asyncHandler from "express-async-handler";
 import { Cart, ICart, IItem } from "../models/cartModel";
 import jwt from "jsonwebtoken";
 import { COOKIES_OPTIONS, generateRefreshToken } from "../utils/generateToken";
+import { Game } from "../models/productModel";
 
 const getCarts = asyncHandler(async (_, res): Promise<any> => {
   const carts = await Cart.find({})
@@ -28,11 +29,13 @@ const addToCart = async (exist: any, product: any, res: any) => {
     return item.product !== null;
   });
   let quantityInCart = product.quantity;
+  let max = 0;
 
   if (existItem) {
     const availabledKeys = existItem.product.keys.filter((key: any) => {
       return key.status === false;
     });
+    max = availabledKeys.length;
 
     if (existItem.quantity + product.quantity > availabledKeys.length) {
       return res.status(200).json({
@@ -57,7 +60,7 @@ const addToCart = async (exist: any, product: any, res: any) => {
   }
 
   await exist.save();
-  return quantityInCart;
+  return { max, in_cart: quantityInCart };
 };
 
 const authAddToCart = asyncHandler(async (req, res): Promise<any> => {
@@ -79,7 +82,7 @@ const authAddToCart = asyncHandler(async (req, res): Promise<any> => {
 
     if (exist) {
       const quantityInCart = await addToCart(exist, product, res);
-      return res.status(200).json({ qty_in_cart: quantityInCart });
+      return res.status(200).json(quantityInCart);
     } else {
       // if cart not found => create
       const newCart = new Cart({
@@ -88,8 +91,16 @@ const authAddToCart = asyncHandler(async (req, res): Promise<any> => {
         status: true,
       });
 
+      const existProduct = await Game.findById(product._id);
+      let max = 0;
+      if (existProduct) {
+        max = existProduct.keys.filter((key: any) => {
+          return key.status === false;
+        }).length;
+      }
+
       await newCart.save();
-      return res.status(201).json({ qty_in_cart: product.quantity });
+      return res.status(201).json({ max, in_cart: product.quantity });
     }
   } catch (error: any) {
     res.status(500).json({ message: error.message });
@@ -113,19 +124,26 @@ const guestAddToCart = asyncHandler(async (req, res): Promise<any> => {
   const { cartId } = req;
   const { product } = req.body;
   if (!cartId) {
-    console.log("new cart");
     const newCart = new Cart({
       user: null,
       products: [{ product: product._id, quantity: product.quantity }],
       status: true,
     });
+    const existProduct = await Game.findById(product._id);
+    let max = 0;
+    if (existProduct) {
+      max = existProduct.keys.filter((key: any) => {
+        return key.status === false;
+      }).length;
+    }
+
     await newCart.save();
     res.cookie(
       "cart_token",
       generateRefreshToken({ cartId: newCart._id }),
       COOKIES_OPTIONS
     );
-    return res.status(200).json({ qty_in_cart: product.quantity });
+    return res.status(200).json({ max, in_cart: product.quantity });
   } else {
     const exist = await Cart.findById(cartId).populate({
       path: "products.product",
@@ -133,7 +151,7 @@ const guestAddToCart = asyncHandler(async (req, res): Promise<any> => {
       option: { limit: 1 },
     });
     const quantityInCart = await addToCart(exist, product, res);
-    return res.status(200).json({ qty_in_cart: quantityInCart });
+    return res.status(200).json(quantityInCart);
   }
 });
 
