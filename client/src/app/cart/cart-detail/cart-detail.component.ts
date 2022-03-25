@@ -25,6 +25,7 @@ export class CartDetailComponent implements OnInit {
 
   calculateTotalPrice(cart: any) {
     if (!cart) return;
+    this.totalPrice = 0;
     cart.products.forEach((product: any) => {
       if (product) {
         if (product.product) {

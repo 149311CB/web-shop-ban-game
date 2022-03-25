@@ -9,7 +9,7 @@ import { filter } from "rxjs";
 })
 export class AppComponent implements OnInit {
   title = "client";
-  className = "w-[95%] sm:w-11/12 md:w-4/5 m-auto pt-36";
+  className = "";
   constructor(private router: Router) {}
   ngOnInit(): void {
     this.router.events
@@ -20,8 +20,15 @@ export class AppComponent implements OnInit {
       });
   }
   checkRouter(url: string) {
-    if (!url.includes("discover") || url !== "/" || !url.includes("browse")) {
+    if (
+      !url.includes("discover") &&
+      url !== "/" &&
+      !url.includes("browse") &&
+      !url.includes("detail")
+    ) {
       this.className = "w-[95%] sm:w-11/12 md:w-4/5 m-auto pt-14";
+    } else {
+      this.className = "w-[95%] sm:w-11/12 md:w-4/5 m-auto pt-36";
     }
   }
 }
