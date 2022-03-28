@@ -1,0 +1,60 @@
+<div class="flex gap-8">
+  <img
+    class="w-1/4 rounded-md min-w-[115px]"
+    [src]="imageService.getPortrait(product.product.images)[0].url"
+  />
+  <div class="item-control w-3/4 flex flex-col justify-between">
+    <div class="w-3/4 flex flex-col justify-between">
+      <a routerLink="/detail/{{ product.product._id }}"
+        ><p class="pb-2 text-lg font-bold">
+          {{ product.product.name }}
+        </p></a
+      >
+      <p class="pb-4 text-white/60">{{ product.product.developer }}</p>
+      <p
+        class="game-type bg-amber-300 text-black inline-flex rounded-md px-2 py-1 w-max"
+      >
+        ${{ product.product.sale_price }}
+      </p>
+    </div>
+    <div class="flex gap-5">
+      <div class="quantity-controls inline-flex">
+        <button
+          mat-raised-button
+          color="primary"
+          class="uppercase w-full !font-semibold !rounded-r-none !min-w-0 !p-0 !px-2"
+          (click)="handleUpdateQuantity('decrease')"
+          [disabled]="loading"
+        >
+          <mat-icon>remove</mat-icon>
+        </button>
+        <input
+          class="!text-black outline-none border border-[#007efc] focus:border-2 px-3"
+          type="number"
+          [value]="quantity"
+          min="0"
+          max="{{ activeKeys.length }}"
+          [disabled]="loading"
+        />
+        <button
+          mat-raised-button
+          color="primary"
+          class="uppercase w-full !font-semibold !rounded-l-none !min-w-0 !p-0 !px-2"
+          (click)="handleUpdateQuantity('increase')"
+          [disabled]="loading"
+        >
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+      <button
+        mat-button
+        color="warn"
+        class="remove-product-btn !min-w-0 !p-0 !px-4 text-red-400"
+        [disabled]="loading"
+        (click)="handleRemoveProduct()"
+      >
+        Remove
+      </button>
+    </div>
+  </div>
+</div>

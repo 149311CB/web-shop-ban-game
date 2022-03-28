@@ -213,6 +213,21 @@
   dependencies:
     tslib "^2.3.0"
 
+"@angular/language-server@^13.3.0":
+  version "13.3.0"
+  resolved "https://registry.yarnpkg.com/@angular/language-server/-/language-server-13.3.0.tgz#b6b800290646919f723c1fda6ca37bd3d8999680"
+  integrity sha512-XGca8f4DYhQUIIe2v4lO7ZWN8YpkD+htqKhZBJS1blmoMBn0XN6kIPkSD501Xh3hK36Qvf6+z3rIJ+Gh6Hr9Dw==
+  dependencies:
+    "@angular/language-service" "13.3.0"
+    vscode-jsonrpc "6.0.0"
+    vscode-languageserver "7.0.0"
+    vscode-uri "3.0.3"
+
+"@angular/language-service@13.3.0":
+  version "13.3.0"
+  resolved "https://registry.yarnpkg.com/@angular/language-service/-/language-service-13.3.0.tgz#366bde21a952ae6ccf2f05659924a583fba01577"
+  integrity sha512-XzfamYk39h+ASxb2ycZKfn9nITmns+jTV+DPrFAY1BoW+4x3tAoqt3/CkdJn8UaCePswKXckDQ6y9i109TfddQ==
+
 "@angular/material@13.2.4":
   version "13.2.4"
   resolved "https://registry.yarnpkg.com/@angular/material/-/material-13.2.4.tgz#d2b0a17ab34d5be0e0d138634ee81d51c58aa9ee"
@@ -6205,6 +6220,36 @@ void-elements@^2.0.0:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/void-elements/-/void-elements-2.0.1.tgz#c066afb582bb1cb4128d60ea92392e94d5e9dbec"
   integrity sha1-wGavtYK7HLQSjWDqkjkulNXp2+w=
+
+vscode-jsonrpc@6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/vscode-jsonrpc/-/vscode-jsonrpc-6.0.0.tgz#108bdb09b4400705176b957ceca9e0880e9b6d4e"
+  integrity sha512-wnJA4BnEjOSyFMvjZdpiOwhSq9uDoK8e/kpRJDTaMYzwlkrhG1fwDIZI94CLsLzlCK5cIbMMtFlJlfR57Lavmg==
+
+vscode-languageserver-protocol@3.16.0:
+  version "3.16.0"
+  resolved "https://registry.yarnpkg.com/vscode-languageserver-protocol/-/vscode-languageserver-protocol-3.16.0.tgz#34135b61a9091db972188a07d337406a3cdbe821"
+  integrity sha512-sdeUoAawceQdgIfTI+sdcwkiK2KU+2cbEYA0agzM2uqaUy2UpnnGHtWTHVEtS0ES4zHU0eMFRGN+oQgDxlD66A==
+  dependencies:
+    vscode-jsonrpc "6.0.0"
+    vscode-languageserver-types "3.16.0"
+
+vscode-languageserver-types@3.16.0:
+  version "3.16.0"
+  resolved "https://registry.yarnpkg.com/vscode-languageserver-types/-/vscode-languageserver-types-3.16.0.tgz#ecf393fc121ec6974b2da3efb3155644c514e247"
+  integrity sha512-k8luDIWJWyenLc5ToFQQMaSrqCHiLwyKPHKPQZ5zz21vM+vIVUSvsRpcbiECH4WR88K2XZqc4ScRcZ7nk/jbeA==
+
+vscode-languageserver@7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/vscode-languageserver/-/vscode-languageserver-7.0.0.tgz#49b068c87cfcca93a356969d20f5d9bdd501c6b0"
+  integrity sha512-60HTx5ID+fLRcgdHfmz0LDZAXYEV68fzwG0JWwEPBode9NuMYTIxuYXPg4ngO8i8+Ou0lM7y6GzaYWbiDL0drw==
+  dependencies:
+    vscode-languageserver-protocol "3.16.0"
+
+vscode-uri@3.0.3:
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/vscode-uri/-/vscode-uri-3.0.3.tgz#a95c1ce2e6f41b7549f86279d19f47951e4f4d84"
+  integrity sha512-EcswR2S8bpR7fD0YPeS7r2xXExrScVMxg4MedACaWHEtx9ftCF/qHG1xGkolzTPcEmjTavCQgbVzHUIdTMzFGA==
 
 watchpack@^2.3.1:
   version "2.3.1"

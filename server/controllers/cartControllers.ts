@@ -262,10 +262,12 @@ const removeItem = async (exist: any, product: any, res: any) => {
   if (exist) {
     let itemIndex = -1;
     exist.products.find((item: any, index: number) => {
-      if (item.product == product._id) {
+      if (item._id == product._id) {
         itemIndex = index;
       }
     });
+    console.log("cart", exist);
+    console.log("product", product);
     if (itemIndex > -1) {
       exist.products.splice(itemIndex, 1);
     }
