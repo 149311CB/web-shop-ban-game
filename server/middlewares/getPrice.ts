@@ -1,7 +1,7 @@
 import asyncHandler from "express-async-handler";
 import { Cart } from "../models/cartModel";
 
-const getPrice = asyncHandler(async (req, res, next) => {
+const getPrice = asyncHandler(async (req, res, next): Promise<any> => {
   const { user } = req;
   if (!user) return res.status(401);
   const cart = await Cart.findOne({ user: user._id, status: true }).populate({

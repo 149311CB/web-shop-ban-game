@@ -34,7 +34,7 @@ const getOptionalQueries = (
   return {};
 };
 
-const getAllGame = asyncHandler(async (req, res) => {
+const getAllGame = asyncHandler(async (req, res): Promise<any> => {
   let { limit = 0, skip = 0, keyword = "", collection } = req.query;
   try {
     let filters;
@@ -81,7 +81,7 @@ const getAllGame = asyncHandler(async (req, res) => {
   }
 });
 
-const getGameById = asyncHandler(async (req, res) => {
+const getGameById = asyncHandler(async (req, res): Promise<any> => {
   try {
     const { id } = req.params;
     if (!id) {
@@ -100,7 +100,7 @@ const getGameById = asyncHandler(async (req, res) => {
   }
 });
 
-const search = asyncHandler(async (req, res) => {
+const search = asyncHandler(async (req, res): Promise<any> => {
   const { keyword } = req.query;
   if (!keyword || typeof keyword === "undefined") {
     return res.status(400);
@@ -124,17 +124,17 @@ const search = asyncHandler(async (req, res) => {
   }
 });
 
-const getGameList = asyncHandler(async (_, res) => {
+const getGameList = asyncHandler(async (_, res): Promise<any> => {
   const games = await Game.find({});
   res.json(games);
 });
 
-const addGame = asyncHandler(async (req, res) => {
+const addGame = asyncHandler(async (req, res): Promise<any> => {
   const game = await Game.create(req.body);
   res.json(game);
 });
 
-const deleteGame = asyncHandler(async (req, res) => {
+const deleteGame = asyncHandler(async (req, res): Promise<any> => {
   const game = await Game.findByIdAndDelete(req.params.id);
   if (game) {
     res.status(200).json({ message: "Delete success" });
@@ -143,7 +143,7 @@ const deleteGame = asyncHandler(async (req, res) => {
   }
 });
 
-const getGame = asyncHandler(async (req, res) => {
+const getGame = asyncHandler(async (req, res): Promise<any> => {
   const game = await Game.findById(req.params.Id)
     .populate("included_in")
     .populate("includes");

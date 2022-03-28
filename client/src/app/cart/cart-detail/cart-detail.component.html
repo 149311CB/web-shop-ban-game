@@ -1,0 +1,47 @@
+<div *ngIf="cartDetail$ | async as cartDetail">
+  <h2 class="py-5 !mb-0">Cart Details</h2>
+  <div class="flex flex-col md:flex-row justify-between gap-12">
+    <div
+      class="p-4 border border-white/30 rounded-md bg-[#333333] overflow-y-auto w-full md:w-[70%]"
+    >
+      <div class="stack">
+        <div *ngFor="let product of cartDetail.products" class="group">
+          <app-cart-item [product]="product"></app-cart-item>
+          <hr *ngIf="cartDetail.products.length > 1" class="group-even:!hidden border-white/[0.16] my-5" />
+        </div>
+      </div>
+    </div>
+    <div class="cart-controls w-full md:w-[30%] flex flex-col gap-4">
+      <div class="p-4 border border-white/30 rounded-md bg-[#333333]">
+        <p>Coupons:</p>
+        <div
+          class="coupon-tag bg-amber-300 rounded-md inline-flex items-center relative py-[0.3rem] px-3"
+        >
+          <div
+            class="coupon-tag-ball rounded-full bg-[#333333] absolute left-[-8px] p-[0.4rem]"
+          ></div>
+          <p class="text-[hsl(0,0%,11%)]">$10 Discount</p>
+          <div
+            class="coupon-tag-ball rounded-full bg-[#333333] absolute right-[-8px] p-[0.4rem]"
+          ></div>
+        </div>
+        <hr class="group-even:!hidden border-white/[0.16] my-5" />
+        <div class="flex justify-between">
+          <p>Total</p>
+          <p
+            class="game-type bg-amber-300 text-black inline-flex rounded-md px-2 py-1 w-max"
+          >
+            ${{ totalPrice }}
+          </p>
+        </div>
+      </div>
+      <button
+        mat-raised-button
+        color="primary"
+        class="uppercase w-full !p-2 !font-semibold"
+      >
+        Proceed to checkout
+      </button>
+    </div>
+  </div>
+</div>

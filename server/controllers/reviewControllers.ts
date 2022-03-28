@@ -3,7 +3,7 @@ import { Cart } from "../models/cartModel";
 import Order from "../models/orderModels";
 import Review from "../models/reviewModel";
 
-const createReview = asyncHandler(async (req, res) => {
+const createReview = asyncHandler(async (req, res): Promise<any> => {
   const { user } = req;
   if (!user) {
     return res.status(401);
@@ -36,7 +36,7 @@ const createReview = asyncHandler(async (req, res) => {
   }
 });
 
-const getAllReviewByProduct = asyncHandler(async (req, res) => {
+const getAllReviewByProduct = asyncHandler(async (req, res): Promise<any> => {
   try {
     const { gameId } = req.query;
     if (!gameId) {
@@ -58,7 +58,7 @@ const getAllReviewByProduct = asyncHandler(async (req, res) => {
   }
 });
 
-const getReviewByUser = asyncHandler(async (req, res) => {
+const getReviewByUser = asyncHandler(async (req, res): Promise<any> => {
   const { user } = req;
   if (!user) {
     return res.status(401);
@@ -80,7 +80,7 @@ const getReviewByUser = asyncHandler(async (req, res) => {
   }
 });
 
-const updateReviewByUser = asyncHandler(async (req, res) => {
+const updateReviewByUser = asyncHandler(async (req, res): Promise<any> => {
   const { user } = req;
   if (!user) {
     return res.status(401);
@@ -103,7 +103,7 @@ const updateReviewByUser = asyncHandler(async (req, res) => {
   }
 });
 
-const reviewAble = asyncHandler(async (req, res) => {
+const reviewAble = asyncHandler(async (req, res): Promise<any> => {
   const { user } = req;
   if (!user) {
     return res.status(401);

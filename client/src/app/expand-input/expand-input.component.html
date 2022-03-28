@@ -1,0 +1,16 @@
+<div
+  class="search-field relative after:absolute after:w-full after:inset-0 after:bg-white after:rounded-sm after:opacity-0 hover:after:opacity-10 after:cursor-text"
+  style="width: {{default}}"
+>
+  <mat-icon
+    matSuffix
+    class="absolute text-white text-md top-1/2 -translate-y-1/2 left-2"
+    >{{ icon }}</mat-icon
+  >
+  <input
+    class="placeholder:text-sm text-sm h-[2.5em] placeholder:text-gray-400 rounded-sm px-10 w-full bg-[#4e4e4e] outline-none"
+    placeholder="Search..."
+    (focus)="expand()"
+    (blur)="narrowDown()"
+  />
+</div>

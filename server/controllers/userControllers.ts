@@ -11,7 +11,7 @@ import jwt from "jsonwebtoken";
 // @desc    Auth user & get token
 // @route   POST /api/users/login
 // @access  Public
-const login = asyncHandler(async (req, res) => {
+const login = asyncHandler(async (req, res): Promise<any> => {
   if (!req.user) {
     return res.status(401);
   }
@@ -42,7 +42,7 @@ const login = asyncHandler(async (req, res) => {
 // @desc    Register a new user
 // @route   POST /api/users
 // @access  Public
-const registerUser = asyncHandler(async (req, res, next) => {
+const registerUser = asyncHandler(async (req, res, next): Promise<any> => {
   try {
     const {
       first_name,
@@ -93,7 +93,7 @@ const registerUser = asyncHandler(async (req, res, next) => {
   }
 });
 
-const createCredential = asyncHandler(async (req, res) => {
+const createCredential = asyncHandler(async (req, res): Promise<any> => {
   const { user } = req;
   if (!user) {
     return res.status(401);
@@ -110,7 +110,7 @@ const createCredential = asyncHandler(async (req, res) => {
   res.status(201).json({ message: "successful" });
 });
 
-const refreshTokenController = asyncHandler(async (req, res) => {
+const refreshTokenController = asyncHandler(async (req, res): Promise<any> => {
   const { signedCookies = {} } = req;
   const { refresh_token: refreshToken } = signedCookies;
 
@@ -148,7 +148,7 @@ const refreshTokenController = asyncHandler(async (req, res) => {
   }
 });
 
-const getUserDetails = asyncHandler(async (req, res) => {
+const getUserDetails = asyncHandler(async (req, res): Promise<any> => {
   const query = req.query;
   let select = Object.keys(query).join(" ");
   if (!/\S/.test(select) || select === null || select === undefined) {
@@ -166,7 +166,7 @@ const getUserDetails = asyncHandler(async (req, res) => {
   }
 });
 
-const logout = asyncHandler(async (req, res) => {
+const logout = asyncHandler(async (req, res): Promise<any> => {
   try {
     const { signedCookies = {} } = req;
     const { refresh_token: refreshToken } = signedCookies;
@@ -191,7 +191,7 @@ const logout = asyncHandler(async (req, res) => {
   }
 });
 
-const updateEmail = asyncHandler(async (req, res) => {
+const updateEmail = asyncHandler(async (req, res): Promise<any> => {
   const { user } = req;
   if (!user) {
     return res.status(401);
@@ -224,7 +224,7 @@ const updateEmail = asyncHandler(async (req, res) => {
   }
 });
 
-const updatePassword = asyncHandler(async (req, res) => {
+const updatePassword = asyncHandler(async (req, res): Promise<any> => {
   const { user } = req;
   if (!user) {
     return res.status(401);
@@ -250,7 +250,7 @@ const updatePassword = asyncHandler(async (req, res) => {
   }
 });
 
-const verifyEmail = asyncHandler(async (req, res) => {
+const verifyEmail = asyncHandler(async (req, res): Promise<any> => {
   const { user, authInfo } = req;
   if (!user) {
     return res.status(401);
@@ -261,10 +261,7 @@ const verifyEmail = asyncHandler(async (req, res) => {
     return res.status(401);
   }
   // Redirect to create password page if no password found and is register
-  if (
-    exist.password === "" ||
-      !exist.password
-  ) {
+  if (exist.password === "" || !exist.password) {
     // Generate short live token to create password
     const emailVerificationToken = generateToken({
       userId: user._id,
@@ -295,7 +292,7 @@ const verifyEmail = asyncHandler(async (req, res) => {
   }
 });
 
-const createPassword = asyncHandler(async (req, res) => {
+const createPassword = asyncHandler(async (req, res): Promise<any> => {
   const { password, confirm_pass } = req.body;
   const { token: emailVerificationToken } = req.query;
   if (!emailVerificationToken || typeof emailVerificationToken !== "string") {
@@ -344,7 +341,7 @@ const createPassword = asyncHandler(async (req, res) => {
   }
 });
 
-const updatePersonalDetails = asyncHandler(async (req, res) => {
+const updatePersonalDetails = asyncHandler(async (req, res): Promise<any> => {
   const { user } = req;
   if (!user) {
     return res.status(401);
@@ -368,12 +365,12 @@ const updatePersonalDetails = asyncHandler(async (req, res) => {
   }
 });
 
-const getAllUser = asyncHandler(async (_, res) => {
+const getAllUser = asyncHandler(async (_, res): Promise<any> => {
   const users = await User.find({});
   return res.status(200).json(users);
 });
 
-const resetPasswordRequest = asyncHandler(async (req, res) => {
+const resetPasswordRequest = asyncHandler(async (req, res): Promise<any> => {
   const { email } = req.body;
   const exist = await User.findOne({ email: email });
   if (!exist) {
@@ -396,7 +393,7 @@ const resetPasswordRequest = asyncHandler(async (req, res) => {
   return res.status(200).json(exist);
 });
 
-const resetPassword = asyncHandler(async (req, res) => {
+const resetPassword = asyncHandler(async (req, res): Promise<any> => {
   try {
     const { token } = req.query;
     const { password } = req.body;
@@ -420,16 +417,15 @@ const resetPassword = asyncHandler(async (req, res) => {
   }
 });
 
-const getUsers = asyncHandler(async (_, res) => {
-    const users = await User.find({})
-    res.json(users);
+const getUsers = asyncHandler(async (_, res): Promise<any> => {
+  const users = await User.find({});
+  res.json(users);
 });
 
 const getUser = asyncHandler(async (req, res) => {
-    const user = await User.findById(req.params.Id)
-    res.json(user);
+  const user = await User.findById(req.params.Id);
+  res.json(user);
 });
-
 
 export {
   login,
@@ -447,5 +443,5 @@ export {
   resetPasswordRequest,
   resetPassword,
   getUsers,
-  getUser
+  getUser,
 };

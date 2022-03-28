@@ -1,0 +1,9 @@
+.small-preview-item.active{
+  border: 1px solid hsla(0, 0%, 100%, 0.6);
+}
+
+.small-preview-item.active::after{
+  width: 0;
+}
+
+

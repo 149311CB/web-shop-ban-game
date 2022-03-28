@@ -2,9 +2,9 @@ import { CookieOptions } from "express";
 import jwt from "jsonwebtoken";
 const dev = process.env.NODE_ENV !== "production";
 
-const COOKIES_OPTIONS:CookieOptions = {
+const COOKIES_OPTIONS: CookieOptions = {
   path: "/",
-  domain:"web-shop-ban-game.herokuapp.com",
+  domain: "localhost",
   httpOnly: true,
   secure: true,
   signed: true,
@@ -31,3 +31,4 @@ const generateRefreshToken = (payload: Object) => {
 };
 
 export { generateToken, generateRefreshToken, COOKIES_OPTIONS };
+// "web-shop-ban-game.herokuapp.com"
