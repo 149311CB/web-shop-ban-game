@@ -1,0 +1,44 @@
+<div *ngIf="product$ | async as product">
+  <h1>{{ product.name }}</h1>
+  <div class="flex md:grid gap-11 flex-col items-start grid-cols-3">
+    <div class="row-[1/2] col-start-1 col-end-3">
+      <app-game-carousel [product]="product"></app-game-carousel>
+      <p class="text-base pb-5">{{ product.title }}</p>
+      <div class="border-l border-white/[0.3] px-3 py-3 text-sm">
+        <p class="text-white/60 pb-1">Genres</p>
+        <p>
+          <span *ngFor="let tag of product.tag; index as i">{{
+            formatTag(tag, i < product.tag.length - 1)
+          }}</span>
+        </p>
+      </div>
+    </div>
+    <div class="row-[1/3] col-start-3 col-end-4 w-full">
+      <div class="logo-container p-5 hidden md:!flex justify-center">
+        <img src="{{ getLogo(product.images).url }}" alt="logo" />
+      </div>
+      <app-brief-info [product]="product"></app-brief-info>
+    </div>
+    <div class="row-[2/3] col-[1/3]">
+      <div
+        class="description mb-6"
+        [innerHTML]="getMarked(product.description)"
+      ></div>
+      <div class="editions mb-6" *ngIf="product.included_in.length > 0">
+        <h1 class="uppercase !text-xl">Editions</h1>
+        <app-game-card
+          *ngFor="let product of product.included_in"
+          [product]="product"
+        ></app-game-card>
+      </div>
+      <div class="add-ons" *ngIf="product.includes.length > 0">
+        <h1 class="uppercase !text-xl">Add-ons</h1>
+        <app-game-card
+          *ngFor="let product of product.includes"
+          [product]="product"
+        ></app-game-card>
+      </div>
+      <app-review [reviews$]="reviews$" [classifications]="classifications"></app-review>
+    </div>
+  </div>
+</div>

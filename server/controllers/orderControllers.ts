@@ -5,25 +5,25 @@ import { Game } from "../models/productModel";
 import { orderConfirmationBuilder } from "../utils/orderConfirmationBuilder";
 import sendgrid from "@sendgrid/mail";
 
-const getAllOrder = asyncHandler(async (_, res) => {
+const getAllOrder = asyncHandler(async (_, res): Promise<any> => {
   const order = await Order.find({});
 
   res.json(order);
 });
 
-const getOrders = asyncHandler(async (_, res) => {
+const getOrders = asyncHandler(async (_, res): Promise<any> => {
   const orders = await Order.find({}).populate("cart").populate("user");
   res.json(orders);
 });
 
-const getOrder = asyncHandler(async (req, res) => {
+const getOrder = asyncHandler(async (req, res): Promise<any> => {
   const order = await Order.findById(req.params.Id)
     .populate("cart")
     .populate("user");
   res.json(order);
 });
 
-const getAllOrderByUser = asyncHandler(async (req, res) => {
+const getAllOrderByUser = asyncHandler(async (req, res): Promise<any> => {
   const { user } = req;
   if (!user) {
     return res.status(404);
@@ -64,7 +64,7 @@ const getAllOrderByUser = asyncHandler(async (req, res) => {
   }
 });
 
-const createOrder = asyncHandler(async (req, res) => {
+const createOrder = asyncHandler(async (req, res): Promise<any> => {
   try {
     const { user } = req;
     if (!user) return res.status(401);
@@ -146,7 +146,7 @@ const createOrder = asyncHandler(async (req, res) => {
 });
 
 // This is for lab
-const createRevenueReport = asyncHandler(async (req, res) => {
+const createRevenueReport = asyncHandler(async (req, res): Promise<any> => {
   const { from, to } = req.body;
   const order = await Order.find({
     createdAt: {
@@ -165,7 +165,7 @@ const createRevenueReport = asyncHandler(async (req, res) => {
   res.json(order);
 });
 
-const getOrderById = asyncHandler(async (req, res) => {
+const getOrderById = asyncHandler(async (req, res): Promise<any> => {
   const { id } = req.params;
   try {
     const order = await Order.findById(id).populate({

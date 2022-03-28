@@ -1,0 +1,31 @@
+<div
+  class="carousel flex gap-5 max-h-[480px] flex-col lg:flex-row mb-12"
+  *ngIf="topSales$ | async as topSales"
+>
+  <div class="rounded-lg overflow-hidden w-full lg:w-[85%]">
+    <ul class="top-game-preview-list main-panes flex relative">
+      <li
+        class="w-full flex-grow flex-shrink-0"
+        *ngFor="let game of topSales.list_game"
+      >
+        <img
+          class="rounded-lg h-full w-full"
+          src="{{ imageService.getLandscape(game.images)[0].url }}"
+        />
+      </li>
+    </ul>
+  </div>
+  <ul class="small-panes w-full lg:w-[15%] flex flex-row lg:flex-col gap-2 justify-between">
+    <li
+      class="small-panes-item rounded-lg overflow-hidden relative flex p-2 gap-2"
+      *ngFor="let game of topSales.list_game"
+    >
+      <img
+        class="rounded-lg w-[100px] lg:w-[28%] h-full object-cover z-[1]"
+        src="{{ imageService.getLandscape(game.images)[0].url }}"
+      />
+      <p class="text-xs hidden items-center lg:!flex z-[1]">{{ game.name }}</p>
+      <div class="cover bg-white/[0.16] absolute inset-0 w-0"></div>
+    </li>
+  </ul>
+</div>

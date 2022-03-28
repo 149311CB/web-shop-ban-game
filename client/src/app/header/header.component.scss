@@ -1,0 +1,35 @@
+.mat-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .tools {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    > * > div {
+      display: flex;
+      align-items: center;
+    }
+    .login {
+      cursor: pointer;
+      gap: 0.3rem;
+      span {
+        font-size: 0.875rem;
+      }
+    }
+    .icon-list {
+      display: flex;
+      gap: 0.3rem;
+    }
+  }
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  width: 50px;
+  img {
+    width: 100%;
+  }
+}

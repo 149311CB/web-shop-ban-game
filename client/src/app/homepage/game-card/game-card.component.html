@@ -1,0 +1,12 @@
+<a class="cursor-pointer" routerLink="/detail/{{game._id}}">
+  <div class="w-full h-auto rounded-lg " *ngIf="game">
+    <div
+      class="after:absolute after:w-full after:h-full after:inset-0 after:bg-white after:opacity-0 hover:after:opacity-20 relative after:transition-opacity overflow-hidden rounded-lg"
+    >
+      <img src="{{ getPortrait() }}" />
+    </div>
+    <p class="pt-4">{{ game.name }}</p>
+    <p class="text-white/60">{{ game.developer }}</p>
+    <p class="pt-4">${{ game.sale_price }}</p>
+  </div>
+</a>

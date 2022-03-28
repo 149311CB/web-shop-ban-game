@@ -33,14 +33,12 @@ const getCollectionByName = asyncHandler(async (req, res) => {
   if (!names) {
     return res.status(400).json({ message: "required collection names" });
   }
-  if (!typeof names === "array") {
+  if (!Array.isArray(JSON.parse(names))) {
     return res.status(400).json({ message: "name must be an array" });
   }
   try {
-    const testDb = await Collection.find({})
-    console.log(testDb)
     const collections = await Collection.find({
-      name: { $in: names },
+      name: { $in: JSON.parse(names) },
     }).populate({
       path: "list_game",
       select: "name developer images sale_price",

@@ -1,0 +1,27 @@
+<div class="options flex items-center">
+  <mat-form-field appearance="outline" class="w-1/5">
+    <mat-label>Choose quantity</mat-label>
+    <mat-select [(value)]="quantity">
+      <mat-option
+        class="hover:!bg-[#007efc]"
+        *ngFor="let key of product.keys; index as i"
+        [value]="i + 1"
+        >{{ i + 1 }}</mat-option
+      >
+    </mat-select>
+  </mat-form-field>
+  <button
+    mat-raised-button
+    color="primary"
+    class="uppercase w-full !p-2 !font-semibold !rounded-l-none"
+    (click)="addToCart()"
+  >
+    Add to cart
+  </button>
+</div>
+<button
+  mat-stroked-button
+  class="overflow-hidden !border-white/60 uppercase w-full after:absolute after:inset-0 after:w-full after:h-full after:bg-white after:opacity-0 after:transition-opacity hover:after:opacity-[0.16] !mt-2"
+>
+  Add to wishlist
+</button>
