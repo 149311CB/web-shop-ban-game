@@ -3,7 +3,7 @@
     <mat-label>Choose quantity</mat-label>
     <mat-select [(value)]="quantity">
       <mat-option
-        class="hover:!bg-[#007efc]"
+        class="hover:!bg-accent"
         *ngFor="let key of product.keys; index as i"
         [value]="i + 1"
         >{{ i + 1 }}</mat-option
