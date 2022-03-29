@@ -46,7 +46,7 @@ import { CartModule } from "./cart/cart.module";
     MatInputModule,
     MatIconModule,
     GameDetailModule,
-    CartModule
+    CartModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

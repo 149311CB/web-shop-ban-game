@@ -1,4 +1,4 @@
-<div class="game-card flex flex-col bg-[#292929] rounded-md">
+<div class="game-card flex flex-col bg-primary-200 rounded-md">
   <div class="game-overview flex flex-col md:flex-row gap-4">
     <img
       [src]="imageService.getLandscape(product.images)[0].url"
@@ -8,7 +8,7 @@
     <div class="info w-full md:w-[60%] p-5">
       <p class="!mb-5 flex gap-3 items-center">
         <span
-          class="uppercase p-[0.3rem] bg-[#333333] w-max rounded-sm text-xs"
+          class="uppercase p-[0.3rem] bg-primary-400 w-max rounded-sm text-xs"
           >{{ product.type }}</span
         ><span>{{ product.name }}</span>
       </p>
