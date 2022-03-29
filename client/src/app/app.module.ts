@@ -19,6 +19,7 @@ import { GameCardComponent } from "./homepage/game-card/game-card.component";
 import { DiscoverComponent } from "./homepage/discover/discover.component";
 import { GameDetailModule } from "./game-detail/game-detail.module";
 import { CartDropdownComponent } from "./header/cart-dropdown/cart-dropdown.component";
+import { CartModule } from "./cart/cart.module";
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { CartDropdownComponent } from "./header/cart-dropdown/cart-dropdown.comp
     MatInputModule,
     MatIconModule,
     GameDetailModule,
+    CartModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
