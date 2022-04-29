@@ -6,9 +6,16 @@ import {
   OnDestroy,
   Input,
 } from "@angular/core";
-import { fromEvent, Subscription, tap } from "rxjs";
+import { fromEvent, Subscription } from "rxjs";
 import { ImageService } from "src/app/image.service";
 import { ProductService } from "src/app/product.service";
+
+export interface ICartBriefSummary {
+  message: string;
+  success: boolean;
+  currentInCart: number;
+  max: number;
+}
 
 @Component({
   selector: "app-cart-dropdown",
@@ -19,7 +26,7 @@ export class CartDropdownComponent implements OnInit, OnDestroy {
   clickOutside$ = fromEvent(document, "click");
   clickOutsideSub: Subscription | undefined = undefined;
   @Output("closeDropdown") closeDropdown = new EventEmitter<boolean>(false);
-  @Input() cartBriefSummary: any = undefined;
+  @Input() cartBriefSummary: ICartBriefSummary | undefined;
 
   constructor(
     public imageService: ImageService,

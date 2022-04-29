@@ -1,9 +1,10 @@
 import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
-import { filter, tap } from "rxjs";
+import { NavigationEnd, Router } from "@angular/router";
+import { filter } from "rxjs";
 import { CartService } from "../cart.service";
 import { ImageService } from "../image.service";
 import { ProductService } from "../product.service";
+import { ICartBriefSummary } from "./cart-dropdown/cart-dropdown.component";
 
 @Component({
   selector: "header",
@@ -13,8 +14,14 @@ import { ProductService } from "../product.service";
 export class HeaderComponent implements OnInit {
   active = "discover";
   show = false;
-  cartBriefSummary = { max: 0, currentInCart: 0 };
+  cartBriefSummary: ICartBriefSummary = {
+    max: 0,
+    currentInCart: 0,
+    success: false,
+    message: "",
+  };
   updatedCart$ = this.cartService.addToCartAction$;
+  paddingBottom = "pb-14";
   constructor(
     private router: Router,
     private cartService: CartService,
@@ -36,11 +43,15 @@ export class HeaderComponent implements OnInit {
         this.cartBriefSummary = {
           max: response.details.max,
           currentInCart: response.details.in_cart,
+          success: false,
+          message: response.message[0].toUpperCase() + response.message,
         };
       } else {
         this.cartBriefSummary = {
           max: response.max,
           currentInCart: response.in_cart,
+          success: true,
+          message: "A new item has been add to your cart",
         };
       }
     });
@@ -52,7 +63,11 @@ export class HeaderComponent implements OnInit {
     }
   }
 
+  largePad = ["discover", "browse", "cart", "detail"];
   checkRouter(url: string) {
+    if (this.largePad.find((item) => url.includes(item))) {
+      this.paddingBottom = "pb-36";
+    }
     if (url.includes("discover") || url === "/") {
       this.active = "discover";
     } else if (url.includes("browse")) {
@@ -61,6 +76,15 @@ export class HeaderComponent implements OnInit {
       this.active = "detail";
     } else {
       this.active = "";
+    }
+    if (url.includes("cart")) {
+      this.cartService.cartDetail$.subscribe((cart) => {
+        if (cart.products.length > 0) {
+          this.paddingBottom = "pb-14";
+        } else {
+          this.paddingBottom = "pb-36";
+        }
+      });
     }
   }
 }

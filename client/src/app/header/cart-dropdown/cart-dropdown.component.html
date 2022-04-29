@@ -6,19 +6,20 @@
       [src]="
         imageService.getPortrait(productService.currentProduct.images)[0].url
       "
+      alt="product preview"
       class="w-[50px]"
     />
     <div class="flex flex-col !items-start" *ngIf="cartBriefSummary">
       <ng-container
-        *ngIf="cartBriefSummary.currentInCart < cartBriefSummary.max"
+        *ngIf="cartBriefSummary.success"
       >
-        <p class="text-sm">A new item has been add to your cart</p>
+        <p class="text-sm">{{ cartBriefSummary.message }}</p>
         <p class="text-sm text-white/60">
           Quantity: {{ cartBriefSummary.currentInCart }}
         </p>
       </ng-container>
       <ng-container
-        *ngIf="cartBriefSummary.currentInCart === cartBriefSummary.max"
+        *ngIf="!cartBriefSummary.success"
       >
         <p class="text-sm text-red-400 font-bold">
           You can purchase {{ cartBriefSummary.max }} of this item
@@ -31,7 +32,8 @@
   </div>
   <a
     class="text-sm bg-accent !w-full p-1 rounded-sm block text-center mt-2 cursor-pointer hover:brightness-90"
-    href="/cart"
+    routerLink="/cart"
+    (click)='closeDropdown.emit(true)'
     >View cart and Checkout</a
   >
 </div>

@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { tap } from "rxjs";
+import { catchError, of, tap } from "rxjs";
 import { CartService } from "../../cart.service";
 import { ImageService } from "../../image.service";
 
@@ -13,6 +13,9 @@ export class CartDetailComponent implements OnInit {
   cartDetail$ = this.cartSerivice.cartDetail$.pipe(
     tap((cart) => {
       this.calculateTotalPrice(cart);
+    }),
+    catchError((_) => {
+      return of({});
     })
   );
 
@@ -21,7 +24,9 @@ export class CartDetailComponent implements OnInit {
     public imageService: ImageService
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.cartSerivice.reloadIfEmpty();
+  }
 
   calculateTotalPrice(cart: any) {
     if (!cart) return;
