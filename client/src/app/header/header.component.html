@@ -1,54 +1,59 @@
-<div class="fixed top-0 left-0 w-full z-20 bg-primary-100/95 backdrop-blur-md">
-  <div class="bg-primary-300">
-    <mat-toolbar
-      class="!w-[95%] sm:!w-11/12 md:!w-4/5 !m-auto !bg-primary-300 !p-0"
-    >
-      <span>
-        <div class="logo-container">
-          <img
-            src="https://firebasestorage.googleapis.com/v0/b/images-b3099.appspot.com/o/269863143_480068400349256_2256909955739492979_n.png?alt=media&token=3a12e3c5-a40d-4747-8607-a42eb4917cd2"
-          />
-        </div>
-      </span>
-      <span class="tools">
+<div [class]='paddingBottom'>
+  <div
+    class="fixed top-0 left-0 w-full z-20 bg-primary-100/95 backdrop-blur-md"
+  >
+    <div class="bg-primary-300">
+      <mat-toolbar
+        class="!w-[95%] sm:!w-11/12 md:!w-4/5 !m-auto !bg-primary-300 !p-0"
+      >
         <span>
-          <expand-input [icon]="'search'" [iconPos]="'left'"></expand-input>
-        </span>
-        <span class="icon-list">
-          <div class="cart relative">
-            <a routerLink="/cart"
-              ><mat-icon matSuffix style="font-size: 22px"
-                >shopping_cart</mat-icon
-              ></a
-            >
-            <app-cart-dropdown
-              *ngIf="show"
-              (closeDropdown)="handleCloseDropdown($event)"
-              [cartBriefSummary]="cartBriefSummary"
-            ></app-cart-dropdown>
-          </div>
-          <div class="login">
-            <mat-icon matSuffix>person</mat-icon>
-            <span>Login</span>
+          <div class="logo-container">
+            <img
+              src="https://firebasestorage.googleapis.com/v0/b/images-b3099.appspot.com/o/269863143_480068400349256_2256909955739492979_n.png?alt=media&token=3a12e3c5-a40d-4747-8607-a42eb4917cd2"
+              alt="website logo"
+            />
           </div>
         </span>
-      </span>
-    </mat-toolbar>
-  </div>
-  <div class="w-[95%] sm:w-11/12 md:w-4/5 m-auto" *ngIf="active !== ''">
-    <div class="py-6 flex gap-3">
-      <a
-        class="{{
-          active === 'discover' ? 'text-white' : 'text-white/60'
-        }} hover:text-white cursor-pointer"
-        >Discover</a
-      >
-      <a
-        class="{{
-          active === 'browse' ? 'text-white' : 'text-white/60'
-        }} hover:text-white cursor-pointer"
-        >Browse</a
-      >
+        <span class="tools">
+          <span>
+            <expand-input [icon]="'search'" [iconPos]="'left'"></expand-input>
+          </span>
+          <span class="icon-list">
+            <div class="cart relative">
+              <a routerLink="/cart"
+                ><mat-icon matSuffix style="font-size: 22px"
+                  >shopping_cart</mat-icon
+                ></a
+              >
+              <app-cart-dropdown
+                *ngIf="show"
+                (closeDropdown)="handleCloseDropdown($event)"
+                [cartBriefSummary]="cartBriefSummary"
+              ></app-cart-dropdown>
+            </div>
+            <div class="login">
+              <mat-icon matSuffix>person</mat-icon>
+              <span>Login</span>
+            </div>
+          </span>
+        </span>
+      </mat-toolbar>
+    </div>
+    <div class="w-[95%] sm:w-11/12 md:w-4/5 m-auto" *ngIf="active !== ''">
+      <div class="py-6 flex gap-3">
+        <a
+          class="{{
+            active === 'discover' ? 'text-white' : 'text-white/60'
+          }} hover:text-white cursor-pointer"
+          >Discover</a
+        >
+        <a
+          class="{{
+            active === 'browse' ? 'text-white' : 'text-white/60'
+          }} hover:text-white cursor-pointer"
+          >Browse</a
+        >
+      </div>
     </div>
   </div>
 </div>
