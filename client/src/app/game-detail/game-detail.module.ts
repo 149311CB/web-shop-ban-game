@@ -6,7 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { GameCarouselComponent } from './game-carousel/game-carousel.component';
 import { BriefInfoComponent } from './brief-info/brief-info.component';
-import { GameCardComponent } from './game-card/game-card.component';
+import { DetailGameCardComponent } from './game-card/game-card.component';
 import { BaseGameOptionsComponent } from './base-game-options/base-game-options.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { ReviewComponent } from './review/review.component';
@@ -16,7 +16,7 @@ import { ReviewComponent } from './review/review.component';
     GameDetailComponent,
     GameCarouselComponent,
     BriefInfoComponent,
-    GameCardComponent,
+    DetailGameCardComponent,
     BaseGameOptionsComponent,
     ReviewComponent,
   ],

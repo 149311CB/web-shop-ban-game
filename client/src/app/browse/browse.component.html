@@ -1,0 +1,49 @@
+<div class="flex gap-11">
+  <div
+    class="w-1/2 sm:w-3/5 md:w-3/4 flex flex-col items-center gap-4"
+    *ngIf="games$ | async as games"
+  >
+    <div
+      *ngIf="games && games.data.length > 0"
+      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5"
+    >
+      <game-card
+        *ngFor="
+          let game of games.data
+            | paginate
+              : {
+                  itemsPerPage: 20,
+                  currentPage: games.current_page,
+                  totalItems: games.total_docs
+                }
+        "
+        [game]="game"
+      ></game-card>
+    </div>
+    <div *ngIf="!games.data || games.data.length === 0">
+      Nothing here
+    </div>
+    <div class="has-text-centered">
+      <pagination-controls
+        (pageChange)="onPageChange($event)"
+      ></pagination-controls>
+    </div>
+  </div>
+  <div class="filter-pane w-1/2 sm:w-2/5 md:w-1/4 flex flex-col gap-2">
+    <expand-input
+      [icon]="'search'"
+      [iconPos]="'left'"
+      [default]="'100%'"
+      [expanded]="'100%'"
+      [onChange]="onSearchChange.bind(this)"
+    ></expand-input>
+    <hr class="border-white/[0.16] my-4" />
+    <p
+      class="filter-item w-full px-2 py-2 rounded cursor-pointer capitalize text-white/60 hover:text-white flex justify-between items-center"
+      *ngFor="let category of categories"
+      (click)="toggleActive($event, category)"
+    >
+      {{ category.name }} <mat-icon class="!hidden text-base">check</mat-icon>
+    </p>
+  </div>
+</div>
