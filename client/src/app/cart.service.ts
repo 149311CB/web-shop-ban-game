@@ -26,7 +26,7 @@ export class CartService {
     this.cartDetailCoresponsedSubject.asObservable();
 
   private httpRequest = this.http.post(
-    "https://localhost:5000/api/carts/active",
+    "http://localhost:5000/api/carts/active",
     {},
     {
       withCredentials: true,
@@ -57,7 +57,7 @@ export class CartService {
   addToCartAction$ = this.addToCartSubject.asObservable().pipe(
     concatMap<any, Observable<any>>((data) =>
       this.http.post(
-        "https://localhost:5000/api/carts/add",
+        "http://localhost:5000/api/carts/add",
         {
           product: data,
         },
@@ -76,7 +76,7 @@ export class CartService {
 
   updateQuantity(product: any) {
     return this.http.post(
-      "https://localhost:5000/api/carts/qty/update",
+      "http://localhost:5000/api/carts/qty/update",
       { product },
       {
         withCredentials: true,
@@ -90,7 +90,7 @@ export class CartService {
   removeFromCart(product: any) {
     return this.http
       .post(
-        "https://localhost:5000/api/carts/remove",
+        "http://localhost:5000/api/carts/remove",
         {
           product,
         },
