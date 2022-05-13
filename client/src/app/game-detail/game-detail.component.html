@@ -26,17 +26,17 @@
       ></div>
       <div class="editions mb-6" *ngIf="product.included_in.length > 0">
         <h1 class="uppercase !text-xl">Editions</h1>
-        <app-game-card
+        <app-detail-game-card
           *ngFor="let product of product.included_in"
           [product]="product"
-        ></app-game-card>
+        ></app-detail-game-card>
       </div>
       <div class="add-ons" *ngIf="product.includes.length > 0">
         <h1 class="uppercase !text-xl">Add-ons</h1>
-        <app-game-card
+        <app-detail-game-card
           *ngFor="let product of product.includes"
           [product]="product"
-        ></app-game-card>
+        ></app-detail-game-card>
       </div>
       <app-review [reviews$]="reviews$" [classifications]="classifications"></app-review>
     </div>

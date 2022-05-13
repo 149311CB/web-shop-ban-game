@@ -1,6 +1,9 @@
 <div
-  class="search-field relative after:absolute after:w-full after:inset-0 after:bg-white after:rounded-sm after:opacity-0 hover:after:opacity-10 after:cursor-text"
-  style="width: {{default}}"
+  [class]="
+    id +
+    ' relative after:absolute after:w-full after:inset-0 after:bg-white after:rounded-sm after:opacity-0 hover:after:opacity-10 after:cursor-text'
+  "
+  style="width: {{ default }}"
 >
   <mat-icon
     matSuffix
@@ -12,5 +15,6 @@
     placeholder="Search..."
     (focus)="expand()"
     (blur)="narrowDown()"
+    (input)="onInputChange($event)"
   />
 </div>

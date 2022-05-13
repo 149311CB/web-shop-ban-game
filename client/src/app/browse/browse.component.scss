@@ -1,0 +1,5 @@
+.filter-pane {
+  .filter-item.active {
+    @apply text-white bg-[#333333];
+  }
+}

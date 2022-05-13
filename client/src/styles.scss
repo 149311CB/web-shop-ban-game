@@ -225,3 +225,17 @@ app-base-game-options {
 .remove-product-btn .mat-button-wrapper {
   color: rgb(239 68 68);
 }
+
+.ngx-pagination {
+  li.current {
+    @apply bg-accent rounded mx-2 px-3 py-1;
+  }
+  li {
+    a {
+      @apply px-3 py-1;
+      &:hover {
+        @apply bg-accent rounded;
+      }
+    }
+  }
+}

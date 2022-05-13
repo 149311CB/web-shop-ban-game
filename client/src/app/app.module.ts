@@ -9,28 +9,26 @@ import { MatIconModule } from "@angular/material/icon";
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { ExpandInputComponent } from "./expand-input/expand-input.component";
 import { HeaderComponent } from "./header/header.component";
 import { CarouselComponent } from "./homepage/carousel/carousel.component";
 import { HttpClientModule } from "@angular/common/http";
 import { CategoryComponent } from "./homepage/category/category.component";
 import { CategoriesComponent } from "./homepage/categories/categories.component";
-import { GameCardComponent } from "./homepage/game-card/game-card.component";
 import { DiscoverComponent } from "./homepage/discover/discover.component";
 import { GameDetailModule } from "./game-detail/game-detail.module";
 import { CartDropdownComponent } from "./header/cart-dropdown/cart-dropdown.component";
 import { CartModule } from "./cart/cart.module";
+import { BrowseModule } from "./browse/browse.module";
+import { SharesModule } from "./shares/shares.module";
 
 @NgModule({
   declarations: [
     AppComponent,
-    ExpandInputComponent,
-    ExpandInputComponent,
+    // ExpandInputComponent,
     HeaderComponent,
     CarouselComponent,
     CategoriesComponent,
     CategoryComponent,
-    GameCardComponent,
     DiscoverComponent,
     CartDropdownComponent,
   ],
@@ -47,6 +45,8 @@ import { CartModule } from "./cart/cart.module";
     MatIconModule,
     GameDetailModule,
     CartModule,
+    BrowseModule,
+    SharesModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
