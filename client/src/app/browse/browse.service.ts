@@ -30,7 +30,7 @@ export class BrowseService {
     .pipe(tap((games) => console.log({ games })));
 
   private makeRequest({ currentPage, keyword, filters }: IGameFilter) {
-    const url = chainQueries("https://localhost:5000/api/products/games/all", {
+    const url = chainQueries("http://localhost:5000/api/products/games/all", {
       limit: 20,
       skip: currentPage,
     });

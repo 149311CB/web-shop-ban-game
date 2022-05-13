@@ -6,7 +6,7 @@ import { catchError, Observable, tap, throwError } from "rxjs";
   providedIn: "root",
 })
 export class CollectionService {
-  topSaleUrl = "https://localhost:5000/api/collections/name";
+  topSaleUrl = "http://localhost:5000/api/collections/name";
 
   constructor(private http: HttpClient) {}
 
