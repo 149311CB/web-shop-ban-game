@@ -33,13 +33,13 @@ export class BrowseService {
     const url = chainQueries("http://localhost:5000/api/products/games/all", {
       limit: 20,
       skip: currentPage,
+      keyword: keyword,
     });
     return this.http.post(
       url,
       {
         limit: 20,
         skip: currentPage,
-        keyword: keyword,
         filters: filters.length > 0 ? filters : null,
       },
       {

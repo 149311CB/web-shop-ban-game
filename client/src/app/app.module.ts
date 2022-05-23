@@ -24,7 +24,6 @@ import { SharesModule } from "./shares/shares.module";
 @NgModule({
   declarations: [
     AppComponent,
-    // ExpandInputComponent,
     HeaderComponent,
     CarouselComponent,
     CategoriesComponent,

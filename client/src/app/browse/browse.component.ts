@@ -8,7 +8,9 @@ import { BrowseService, IGameFilter } from "./browse.service";
   styleUrls: ["./browse.component.scss"],
 })
 export class BrowseComponent implements OnInit {
-  constructor(private browseService: BrowseService) {}
+  constructor(private browseService: BrowseService) {
+    this.onSearchChange = this.onSearchChange.bind(this);
+  }
   ngOnInit(): void {}
   config: IGameFilter = {
     currentPage: 0,
@@ -56,10 +58,9 @@ export class BrowseComponent implements OnInit {
       clearTimeout(this.flag);
     }
     const target = event.target as HTMLInputElement;
-    console.log(this.config)
+    this.config.keyword = target.value;
     this.flag = setTimeout(() => {
-      console.log({ value: target.value });
-      // this.browseService.getGame({ ...this.config, keyword: target.value });
+      this.browseService.getGame({ ...this.config, keyword: target.value });
     }, 400);
   }
 }
