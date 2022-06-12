@@ -1,9 +1,13 @@
 import { Component, OnInit } from "@angular/core";
+import { MatDialog } from "@angular/material/dialog";
 import { NavigationEnd, Router } from "@angular/router";
-import { filter } from "rxjs";
+import { filter, tap } from "rxjs";
+import { AuthService } from "../auth.service";
 import { CartService } from "../cart.service";
 import { ImageService } from "../image.service";
 import { ProductService } from "../product.service";
+import { AuthModalComponent } from "../shares/auth-modal/auth-modal.component";
+import { LoginModalComponent } from "../shares/login-modal/login-modal.component";
 import { ICartBriefSummary } from "./cart-dropdown/cart-dropdown.component";
 
 @Component({
@@ -22,11 +26,14 @@ export class HeaderComponent implements OnInit {
   };
   updatedCart$ = this.cartService.addToCartAction$;
   paddingBottom = "pb-14";
+  isShowAccountMenu = false;
   constructor(
     private router: Router,
     private cartService: CartService,
     public productService: ProductService,
-    public imageService: ImageService
+    public imageService: ImageService,
+    public dialog: MatDialog,
+    public authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -55,6 +62,14 @@ export class HeaderComponent implements OnInit {
         };
       }
     });
+    this.authService.refresh$
+      .pipe(
+        tap(({ token }: any) => {
+          this.authService.info$.obs.subscribe();
+          this.authService.info$.next(token);
+        })
+      )
+      .subscribe();
   }
 
   handleCloseDropdown(isClose: boolean) {
@@ -86,5 +101,42 @@ export class HeaderComponent implements OnInit {
         }
       });
     }
+  }
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(LoginModalComponent, {
+      width: "400px",
+      data: {},
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log({ result });
+    });
+  }
+
+  showAccountMenu(clickEvent: Event) {
+    const target = clickEvent.target;
+    this.isShowAccountMenu = true;
+    console.log("Run");
+    document.addEventListener("click", (e) => {
+      // @ts-ignore
+      console.log(target?.contains(e.target));
+      // @ts-ignore
+      if (!target?.contains(e.target)) {
+        this.isShowAccountMenu = false;
+      }
+    });
+  }
+
+  logout() {
+    this.authService.logout$.obs
+      .pipe(
+        tap(({ message }: any) => {
+          if (message) {
+            window.location.reload();
+          }
+        })
+      )
+      .subscribe();
+    this.authService.logout$.next(this.authService.acccessToken);
   }
 }

@@ -214,6 +214,52 @@ app-base-game-options {
   }
 }
 
+.login-modal {
+  color: white;
+  .mat-form-field-outline-start,
+  .mat-form-field-outline-gap,
+  .mat-form-field-outline-end {
+    border-color: #007efc !important;
+  }
+  .mat-form-field-autofill-control::placeholder {
+    color: white;
+  }
+  .mat-form-field-should-float {
+    .mat-form-field-label {
+      @apply bg-[#333333] px-2;
+      width: max-content !important;
+      mat-label {
+        color: #007efc !important;
+        font-weight: 600;
+        font-size: 16px;
+      }
+    }
+  }
+}
+
+/* .auth-modal { */
+/*   color: white; */
+/*   .mat-form-field-outline-start, */
+/*   .mat-form-field-outline-gap, */
+/*   .mat-form-field-outline-end { */
+/*     border-color: #007efc !important; */
+/*   } */
+/*   .mat-form-field-autofill-control::placeholder { */
+/*     color: white; */
+/*   } */
+/*   .mat-form-field-should-float { */
+/*     .mat-form-field-label { */
+/*       @apply bg-[#333333] px-2; */
+/*       width: max-content !important; */
+/*       mat-label { */
+/*         color: #007efc !important; */
+/*         font-weight: 600; */
+/*         font-size: 16px; */
+/*       } */
+/*     } */
+/*   } */
+/* } */
+
 @layer utilities {
   input[type="number"]::-webkit-inner-spin-button,
   input[type="number"]::-webkit-outer-spin-button {
@@ -237,5 +283,29 @@ app-base-game-options {
         @apply bg-accent rounded;
       }
     }
+  }
+}
+
+.mat-dialog-container {
+  @apply bg-[#333333];
+}
+
+.login-form {
+  .email-input-wrapper {
+    @apply mb-2;
+  }
+  .mat-form-field-wrapper {
+    @apply pb-0;
+  }
+}
+
+.register-form {
+  .email-input-wrapper,
+  .names-wrapper,
+  .password-wrapper {
+    @apply mb-4;
+  }
+  .mat-form-field-wrapper {
+    @apply pb-0;
   }
 }

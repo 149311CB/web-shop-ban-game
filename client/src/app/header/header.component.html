@@ -1,4 +1,4 @@
-<div [class]='paddingBottom'>
+<div [class]="paddingBottom">
   <div
     class="fixed top-0 left-0 w-full z-20 bg-primary-100/95 backdrop-blur-md"
   >
@@ -31,9 +31,47 @@
                 [cartBriefSummary]="cartBriefSummary"
               ></app-cart-dropdown>
             </div>
-            <div class="login">
+            <div
+              class="login"
+              (click)="openDialog()"
+              *ngIf="!authService.acccessToken"
+            >
               <mat-icon matSuffix>person</mat-icon>
               <span>Login</span>
+            </div>
+            <div *ngIf="authService.info" class="gap-2 w-max relative">
+              <img
+                [src]="authService.info.avatar"
+                class="w-9 h-9 cursor-pointer rounded-full border-2 border-black/0 hover:border-white/20"
+                (click)="showAccountMenu($event)"
+              />
+              <div
+                class="rounded absolute right-0 top-full p-2 bg-[#2C2C2C] w-max shadow-md border border-[#262626]"
+                *ngIf="isShowAccountMenu && authService.info"
+              >
+                <ul class="text-sm">
+                  <li class="mb-2">
+                    {{
+                      authService.info.last_name +
+                        " " +
+                        authService.info.first_name
+                    }}
+                  </li>
+                  <li
+                    class="flex items-center gap-2 p-2 relative after:absolute after:inset-0 hover:after:bg-white/[0.16] after:rounded rounded-md cursor-pointer"
+                  >
+                    <img src="assets/setting.svg" class="w-5 h-5" />
+                    <span>Settings</span>
+                  </li>
+                  <li
+                    class="flex items-center gap-2 p-2 relative after:absolute after:inset-0 hover:after:bg-white/[0.16] after:rounded rounded-md cursor-pointer"
+                    (click)="logout()"
+                  >
+                    <img src="assets/sign-out.svg" class="w-5 h-5" />
+                    <span>Logout</span>
+                  </li>
+                </ul>
+              </div>
             </div>
           </span>
         </span>
@@ -45,14 +83,14 @@
           class="{{
             active === 'discover' ? 'text-white' : 'text-white/60'
           }} hover:text-white cursor-pointer"
-          routerLink='/discover'
+          routerLink="/discover"
           >Discover</a
         >
         <a
           class="{{
             active === 'browse' ? 'text-white' : 'text-white/60'
           }} hover:text-white cursor-pointer"
-          routerLink='/browse'
+          routerLink="/browse"
           >Browse</a
         >
       </div>

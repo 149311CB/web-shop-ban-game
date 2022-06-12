@@ -29,7 +29,7 @@ const login = asyncHandler(async (req, res): Promise<any> => {
       if (req.register) {
         return res.redirect("https://149311cb.tech/auth/complete");
       }
-      return res.redirect("https://149311cb.tech");
+      return res.json({ success: true });
     } catch (error: any) {
       return res.status(500).json({ message: error.message });
     }
