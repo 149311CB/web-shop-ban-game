@@ -1,6 +1,7 @@
 import { CdkAccordionItem } from "@angular/cdk/accordion";
 import { HttpClient } from "@angular/common/http";
 import { Component, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
 import { loadScript, PayPalNamespace } from "@paypal/paypal-js";
 import { loadStripe, Stripe, StripeCardElement } from "@stripe/stripe-js";
 import { concatMap, tap } from "rxjs";
@@ -18,7 +19,8 @@ export class CheckoutComponent implements OnInit {
     private http: HttpClient,
     private authService: AuthService,
     public cartService: CartService,
-    public imageService: ImageService
+    public imageService: ImageService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -227,6 +229,15 @@ export class CheckoutComponent implements OnInit {
           "http://localhost:5000/api/orders/create",
           order,
           this.config(this.authService.acccessToken)
+        )
+        .pipe(
+          tap((data) =>
+            this.router.navigateByUrl("/success", {
+              state: {
+                order: data,
+              },
+            })
+          )
         )
         .subscribe();
     }

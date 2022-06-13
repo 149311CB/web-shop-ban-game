@@ -1,3 +1,4 @@
+import { HttpClient } from "@angular/common/http";
 import { Component, OnInit } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { NavigationEnd, Router } from "@angular/router";
@@ -32,7 +33,8 @@ export class HeaderComponent implements OnInit {
     public productService: ProductService,
     public imageService: ImageService,
     public dialog: MatDialog,
-    public authService: AuthService
+    public authService: AuthService,
+    private http: HttpClient
   ) {}
 
   ngOnInit(): void {
@@ -139,5 +141,31 @@ export class HeaderComponent implements OnInit {
       )
       .subscribe();
     this.authService.logout$.next(this.authService.acccessToken);
+  }
+
+  flag: NodeJS.Timeout | undefined;
+  searchProducts: any = [];
+  onSearchChange(event: Event) {
+    if (this.flag) {
+      clearTimeout(this.flag);
+    }
+    const target = event.target as HTMLInputElement;
+    this.flag = setTimeout(() => {
+      this.http
+        .get("http://localhost:5000/api/products/games/search", {
+          params: { keyword: target.value },
+        })
+        .pipe(
+          tap((data: any) => {
+            if (!data || data.length === 0) {
+              this.searchProducts = [];
+            } else {
+              this.searchProducts = data;
+            }
+            console.log({products: this.searchProducts})
+          })
+        )
+        .subscribe();
+    }, 400);
   }
 }

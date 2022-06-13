@@ -8,15 +8,22 @@
       >
         <span>
           <div class="logo-container">
-            <img
-              src="https://firebasestorage.googleapis.com/v0/b/images-b3099.appspot.com/o/269863143_480068400349256_2256909955739492979_n.png?alt=media&token=3a12e3c5-a40d-4747-8607-a42eb4917cd2"
-              alt="website logo"
-            />
+            <a [routerLink]="'/discover'">
+              <img
+                src="https://firebasestorage.googleapis.com/v0/b/images-b3099.appspot.com/o/269863143_480068400349256_2256909955739492979_n.png?alt=media&token=3a12e3c5-a40d-4747-8607-a42eb4917cd2"
+                alt="website logo"
+              />
+            </a>
           </div>
         </span>
         <span class="tools">
-          <span>
-            <expand-input [icon]="'search'" [iconPos]="'left'"></expand-input>
+          <span class="relative">
+            <expand-input
+              [icon]="'search'"
+              [iconPos]="'left'"
+              [onChange]="onSearchChange.bind(this)"
+            ></expand-input>
+            <app-search [products]="searchProducts"></app-search>
           </span>
           <span class="icon-list">
             <div class="cart relative">

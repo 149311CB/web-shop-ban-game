@@ -1,0 +1,20 @@
+<div class="pt-4">
+  <div
+    class="mt-1 w-1/2 mx-auto text-white bg-[#333333] border border-white/30 rounded-md"
+  >
+    <div class="flex flex-col items-center p-5">
+      <p>Thank you for your order!</p>
+      <p>We have sent invoice to your email</p>
+      <img
+        src="https://firebasestorage.googleapis.com/v0/b/images-b3099.appspot.com/o/transparent-you-rock.gif?alt=media&token=627bf196-31ba-4055-9660-1fa59dd0e952"
+        class="w-[250px] h-[150px] object-cover"
+      />
+      <a
+        [routerLink]="'/user/orders/' + order?._id"
+        class="inline-flex rounded-sm py-1 px-2 text-center bg-[#007EFC]"
+      >
+        View Order
+      </a>
+    </div>
+  </div>
+</div>

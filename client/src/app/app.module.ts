@@ -20,6 +20,8 @@ import { CartDropdownComponent } from "./header/cart-dropdown/cart-dropdown.comp
 import { CartModule } from "./cart/cart.module";
 import { SharesModule } from "./shares/shares.module";
 import { CheckoutModule } from "./checkout/checkout.module";
+import { BrowseModule } from "./browse/browse.module";
+import { SearchComponent } from './header/search/search.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +32,7 @@ import { CheckoutModule } from "./checkout/checkout.module";
     CategoryComponent,
     DiscoverComponent,
     CartDropdownComponent,
+    SearchComponent,
   ],
   imports: [
     BrowserModule,
@@ -45,7 +48,8 @@ import { CheckoutModule } from "./checkout/checkout.module";
     GameDetailModule,
     CartModule,
     SharesModule,
-    CheckoutModule
+    CheckoutModule,
+    BrowseModule
   ],
   providers: [],
   bootstrap: [AppComponent],
