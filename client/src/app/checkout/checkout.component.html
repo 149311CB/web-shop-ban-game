@@ -1,0 +1,106 @@
+<h2 class="py-5 !mb-0">Add payment method</h2>
+<div class="flex flex-col md:flex-row justify-between max-h-screen gap-12">
+  <div
+    class="p-4 border border-white/30 rounded-md bg-[#333333] overflow-y-auto w-full md:w-[40%]"
+    *ngIf="cartService.cartDetail$ | async as cartDetail"
+  >
+    <div class="stack">
+      <div *ngFor="let product of cartDetail.products; let index" class="group">
+        <div class="flex gap-5">
+          <img
+            class="w-1/4 rounded-md min-w-[115px]"
+            [src]="imageService.getPortrait(product.product.images)[0].url"
+          />
+          <div class="w-3/4 flex flex-col justify-start">
+            <a routerLink="/detail/{{ product.product._id }}"
+              ><p class="pb-2 text-lg font-bold">
+                {{ product.product.name }}
+              </p></a
+            >
+            <p class="pb-4 text-white/60">{{ product.product.developer }}</p>
+            <p
+              class="game-type bg-amber-300 text-black inline-flex rounded-md px-2 py-1 w-max"
+            >
+              ${{ product.product.sale_price }}
+            </p>
+            <p class="py-4"><span>Quantity: </span>{{ product.quantity }}</p>
+          </div>
+        </div>
+        <hr
+          *ngIf="cartDetail.products.length > 1"
+          class="group-even:!hidden border-white/[0.16] my-5"
+        />
+      </div>
+    </div>
+  </div>
+  <div
+    class="p-4 border border-white/30 rounded-md bg-[#333333] overflow-y-auto w-full md:w-[60%]"
+  >
+    <div>
+      <p
+        class="pb-3 text-lg font-bold"
+        *ngIf="cartService.cartDetail$ | async as cartDetail"
+      >
+        <span>Total: </span>${{ getCartTotal() }}
+      </p>
+    </div>
+    <cdk-accordion class="example-accordion">
+      <cdk-accordion-item
+        *ngFor="let item of items; let index = index"
+        #accordionItem="cdkAccordionItem"
+        class="example-accordion-item m-auto border"
+        role="button"
+        tabindex="0"
+        [attr.id]="'accordion-header-' + index"
+        [attr.aria-expanded]="accordionItem.expanded"
+        [attr.aria-controls]="'accordion-body-' + index"
+        [expanded]="expanded === item.id"
+      >
+        <div
+          [id]="accordionItem.id"
+          class="example-accordion-item-header"
+          (click)="openAccordion(accordionItem, item.id)"
+        >
+          {{ item.name }}
+          <span class="example-accordion-item-description">
+            Click to {{ accordionItem.expanded ? "close" : "open" }}
+          </span>
+        </div>
+        <div
+          class="example-accordion-item-body"
+          role="region"
+          [style.display]="accordionItem.expanded ? '' : 'none'"
+          [attr.id]="'accordion-body-' + index"
+          [attr.aria-labelledby]="'accordion-header-' + index"
+          *ngIf="index === 0"
+        >
+          <form id="payment-form" *ngIf="stripe$ | async as stripe">
+            <div id="card-element"></div>
+            <div id="card-errors" role="alert" class="text-red-500"></div>
+
+            <button
+              mat-raised-button
+              color="primary"
+              class="uppercase w-full !p-2 !font-semibold !mt-4"
+              (click)="stripeHandler($event)"
+            >
+              Proceed to checkout
+            </button>
+          </form>
+        </div>
+        <div
+          class="example-accordion-item-body"
+          role="region"
+          [style.display]="accordionItem.expanded ? '' : 'none'"
+          [attr.id]="'accordion-body-' + index"
+          [attr.aria-labelledby]="'accordion-header-' + index"
+          *ngIf="index === 1"
+        >
+          <div *ngIf="paypal$ | async as paypal">
+            <div id="paypal-element"></div>
+          </div>
+        </div>
+      </cdk-accordion-item>
+    </cdk-accordion>
+  </div>
+</div>

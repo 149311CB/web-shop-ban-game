@@ -123,19 +123,19 @@ const createOrder = asyncHandler(async (req, res): Promise<any> => {
             await existCart.save();
           }
         }
-        sendgrid.setApiKey(process.env.SENDGRID_API_KEY!);
-        const msg = {
-          to: user.email,
-          from: "xstk2000@gmail.com",
-          subject: "Order details",
-          html: orderConfirmationBuilder(
-            createdOrder.paid_at,
-            user,
-            createdOrder.payment_method,
-            gameList
-          ),
-        };
-        await sendgrid.send(msg);
+        // sendgrid.setApiKey(process.env.SENDGRID_API_KEY!);
+        // const msg = {
+        //   to: user.email,
+        //   from: "xstk2000@gmail.com",
+        //   subject: "Order details",
+        //   html: orderConfirmationBuilder(
+        //     createdOrder.paid_at,
+        //     user,
+        //     createdOrder.payment_method,
+        //     gameList
+        //   ),
+        // };
+        // await sendgrid.send(msg);
       }
     }
 

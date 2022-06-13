@@ -1,0 +1,12 @@
+<div mat-dialog-content class="login-modal bg-[#333333]">
+  <app-login-form
+    [isRegister]="isRegister"
+    (registerEvent)="switchToRegister($event)"
+    *ngIf="!isRegister"
+  ></app-login-form>
+  <app-register-form
+    (registerEvent)="switchToRegister($event)"
+    *ngIf="isRegister"
+  >
+  </app-register-form>
+</div>
