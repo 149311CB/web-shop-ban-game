@@ -20,6 +20,8 @@
     "@angular/platform-browser": "~13.2.0",
     "@angular/platform-browser-dynamic": "~13.2.0",
     "@angular/router": "~13.2.0",
+    "@paypal/paypal-js": "^5.0.6",
+    "@stripe/stripe-js": "^1.31.0",
     "@types/marked": "^4.0.2",
     "marked": "^4.0.12",
     "ngx-pagination": "^5.1.1",

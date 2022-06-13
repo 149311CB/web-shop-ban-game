@@ -17,6 +17,7 @@ const orderUsingStripe = asyncHandler(async (req, res) => {
     amount: items.total * 100,
     currency: "usd",
   });
+  console.log({secret: paymentIntent.client_secret, status: paymentIntent.status})
 
   res.send({ clientSecret: paymentIntent.client_secret });
 });

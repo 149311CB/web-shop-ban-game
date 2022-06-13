@@ -6,7 +6,6 @@ import { AuthService } from "../auth.service";
 import { CartService } from "../cart.service";
 import { ImageService } from "../image.service";
 import { ProductService } from "../product.service";
-import { AuthModalComponent } from "../shares/auth-modal/auth-modal.component";
 import { LoginModalComponent } from "../shares/login-modal/login-modal.component";
 import { ICartBriefSummary } from "./cart-dropdown/cart-dropdown.component";
 
@@ -94,10 +93,12 @@ export class HeaderComponent implements OnInit {
     }
     if (url.includes("cart")) {
       this.cartService.cartDetail$.subscribe((cart) => {
-        if (cart.products.length > 0) {
-          this.paddingBottom = "pb-14";
-        } else {
-          this.paddingBottom = "pb-36";
+        if (cart) {
+          if (cart.products.length > 0) {
+            this.paddingBottom = "pb-14";
+          } else {
+            this.paddingBottom = "pb-36";
+          }
         }
       });
     }

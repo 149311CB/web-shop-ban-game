@@ -18,8 +18,8 @@ import { DiscoverComponent } from "./homepage/discover/discover.component";
 import { GameDetailModule } from "./game-detail/game-detail.module";
 import { CartDropdownComponent } from "./header/cart-dropdown/cart-dropdown.component";
 import { CartModule } from "./cart/cart.module";
-import { BrowseModule } from "./browse/browse.module";
 import { SharesModule } from "./shares/shares.module";
+import { CheckoutModule } from "./checkout/checkout.module";
 
 @NgModule({
   declarations: [
@@ -44,8 +44,8 @@ import { SharesModule } from "./shares/shares.module";
     MatIconModule,
     GameDetailModule,
     CartModule,
-    BrowseModule,
     SharesModule,
+    CheckoutModule
   ],
   providers: [],
   bootstrap: [AppComponent],

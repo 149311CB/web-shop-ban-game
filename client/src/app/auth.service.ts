@@ -9,12 +9,8 @@ import { createSubjectObs } from "src/utils/actionObs";
 export class AuthService {
   constructor(private http: HttpClient) {}
 
-  private _isLogin = false;
-  private _acccessToken = null;
+  private _acccessToken: string | null = null;
   private _info: any = null;
-  get isLogin() {
-    return this._isLogin;
-  }
   get acccessToken() {
     return this._acccessToken;
   }
@@ -60,7 +56,8 @@ export class AuthService {
     .pipe(
       tap(({ token }: any) => {
         this._acccessToken = token;
-      })
+      }),
+      shareReplay(1)
     );
 
   login(email: string, password: string) {
