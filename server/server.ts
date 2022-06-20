@@ -47,6 +47,9 @@ app.use(
   })
 );
 
+// app.use("/api", (_, res) => {
+//   return res.send("Hello world...");
+// });
 app.use("/api/sample", sampleRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/carts", cartRoutes);
@@ -60,13 +63,13 @@ app.use("/api/vochers", vocherRoutes);
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
-// const credentials = {
-//   key: fs.readFileSync("./localhost-key.pem"),
-//   cert: fs.readFileSync("./localhost.pem"),
-// };
+// app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
+const credentials = {
+  key: fs.readFileSync("./localhost-key.pem"),
+  cert: fs.readFileSync("./localhost.pem"),
+};
 
-// const httpsServer = https.createServer(credentials, app);
-// httpsServer.listen(PORT, () =>
-//   console.log(`Server is running on port ${PORT}`)
-// );
+const httpsServer = https.createServer(credentials, app);
+httpsServer.listen(PORT, () =>
+  console.log(`Server is running on port ${PORT}`)
+);

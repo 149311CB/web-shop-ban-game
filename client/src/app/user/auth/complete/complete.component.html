@@ -1,0 +1,59 @@
+<div class="pt-10 w-1/2 m-auto">
+  <div class="border border-white/30 rounded-md bg-[#333333] py-4 px-6 w-full">
+    <form [formGroup]="form">
+      <div class="password-input-wrapper mb-3">
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Password</mat-label>
+          <input
+            matInput
+            id="password"
+            name="password"
+            type="password"
+            formControlName="password"
+          />
+        </mat-form-field>
+        <span
+          class="text-red-500"
+          >{{ password.touched && password.errors?.['required']  ? "Password is required" : "" }}</span
+        >
+        <span
+          class="text-red-500"
+          *ngIf="password.dirty && password.errors?.['notSecure']"
+        >
+          <span class="text-red-500"
+            >Please make sure password meet these criteria</span
+          >
+          <ul class="list-disc list-inside text-red-500">
+            <li class="text-red-500">Have at least 12 characters</li>
+            <li class="text-red-500">Have at least one special characters</li>
+            <li class="text-red-500">Have at least one digit characters</li>
+          </ul>
+        </span>
+      </div>
+      <div class="confirm-pass-input-wrapper">
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Confirm password</mat-label>
+          <input
+            matInput
+            id="confirm-pass"
+            name="confirm-pass"
+            type="password"
+            formControlName="confirmPass"
+          />
+        </mat-form-field>
+        <span
+          class="text-red-500"
+          >{{ confirmPass.touched && confirmPass.errors?.['required']  ? "Confirm password is required" : "" }}</span
+        >
+      </div>
+      <button
+        mat-raised-button
+        color="primary"
+        class="uppercase w-full !p-2 !font-semibold !mt-4"
+        (click)="onSubmit()"
+      >
+        Confirm
+      </button>
+    </form>
+  </div>
+</div>

@@ -214,6 +214,18 @@ app-base-game-options {
   }
 }
 
+/* .mat-form-field-outline-end { */
+/*   border-radius: 0 !important; */
+/* } */
+.mat-form-field-wrapper {
+  padding: 0;
+}
+.mat-form-field-outline-start,
+.mat-form-field-outline-gap,
+.mat-form-field-outline-end {
+  border-color: #007efc !important;
+}
+
 .login-modal {
   color: white;
   .mat-form-field-outline-start,
@@ -234,6 +246,61 @@ app-base-game-options {
         font-size: 16px;
       }
     }
+  }
+}
+
+.mat-form-field-should-float {
+  .mat-form-field-label {
+    @apply bg-[#333333] px-2;
+    width: max-content !important;
+    mat-label {
+      color: #007efc !important;
+      font-weight: 600;
+      font-size: 16px;
+    }
+  }
+}
+.mat-form-field-should-float {
+  .mat-form-field-label {
+    @apply bg-[#333333] px-2;
+    width: max-content !important;
+    mat-label {
+      color: #007efc !important;
+      font-weight: 600;
+      font-size: 16px;
+    }
+  }
+}
+
+#auth-modal {
+  color: white;
+  .mat-form-field-outline-start,
+  .mat-form-field-outline-gap,
+  .mat-form-field-outline-end {
+    border-color: #007efc !important;
+  }
+  .mat-form-field-autofill-control::placeholder {
+    color: white;
+  }
+  .mat-form-field-should-float {
+    .mat-form-field-label {
+      @apply bg-[#333333] px-2;
+      width: max-content !important;
+      mat-label {
+        color: #007efc !important;
+        font-weight: 600;
+        font-size: 16px;
+      }
+    }
+  }
+
+  .email-input-wrapper,
+  .names-wrapper,
+  .password-wrapper {
+    @apply mb-4;
+  }
+  .mat-form-field-wrapper {
+    @apply pb-0;
   }
 }
 
@@ -307,5 +374,11 @@ app-base-game-options {
   }
   .mat-form-field-wrapper {
     @apply pb-0;
+  }
+}
+
+.user-edit-form {
+  .mat-form-field-wrapper {
+    @apply mb-0 pb-0;
   }
 }

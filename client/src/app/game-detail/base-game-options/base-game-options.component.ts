@@ -20,4 +20,8 @@ export class BaseGameOptionsComponent implements OnInit {
       quantity: this.quantity,
     });
   }
+
+  getActiveKey(keys: any[]) {
+    return keys.filter((key) => key.status === false);
+  }
 }

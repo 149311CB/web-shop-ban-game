@@ -1,6 +1,12 @@
-<div class="group pb-2 cursor-pointer text-xl flex gap-3">
+<div
+  class="group pb-2 cursor-pointer text-xl flex gap-3"
+  (click)="browseCategory()"
+>
   {{ name }}
-  <img src="/assets/chevron-right.svg" class="group-hover:translate-x-3 transition-transform"/>
+  <img
+    src="/assets/chevron-right.svg"
+    class="group-hover:translate-x-3 transition-transform"
+  />
 </div>
 <div
   class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4"

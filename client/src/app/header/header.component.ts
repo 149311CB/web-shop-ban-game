@@ -1,3 +1,4 @@
+import { HttpClient } from "@angular/common/http";
 import { Component, OnInit } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { NavigationEnd, Router } from "@angular/router";
@@ -24,7 +25,7 @@ export class HeaderComponent implements OnInit {
     message: "",
   };
   updatedCart$ = this.cartService.addToCartAction$;
-  paddingBottom = "pb-14";
+  paddingBottom = "pb-36";
   isShowAccountMenu = false;
   constructor(
     private router: Router,
@@ -32,7 +33,8 @@ export class HeaderComponent implements OnInit {
     public productService: ProductService,
     public imageService: ImageService,
     public dialog: MatDialog,
-    public authService: AuthService
+    public authService: AuthService,
+    private http: HttpClient,
   ) {}
 
   ngOnInit(): void {
@@ -64,8 +66,10 @@ export class HeaderComponent implements OnInit {
     this.authService.refresh$
       .pipe(
         tap(({ token }: any) => {
-          this.authService.info$.obs.subscribe();
-          this.authService.info$.next(token);
+          if (token) {
+            this.authService.info$.obs.subscribe();
+            this.authService.info$.next(token);
+          }
         })
       )
       .subscribe();
@@ -80,13 +84,15 @@ export class HeaderComponent implements OnInit {
   largePad = ["discover", "browse", "cart", "detail"];
   checkRouter(url: string) {
     if (this.largePad.find((item) => url.includes(item))) {
-      this.paddingBottom = "pb-36";
+      if (!url.includes("order")) {
+        this.paddingBottom = "pb-36";
+      }
     }
     if (url.includes("discover") || url === "/") {
       this.active = "discover";
     } else if (url.includes("browse")) {
       this.active = "browse";
-    } else if (url.includes("detail")) {
+    } else if (url.includes("detail") && !url.includes("order")) {
       this.active = "detail";
     } else {
       this.active = "";
@@ -117,7 +123,6 @@ export class HeaderComponent implements OnInit {
   showAccountMenu(clickEvent: Event) {
     const target = clickEvent.target;
     this.isShowAccountMenu = true;
-    console.log("Run");
     document.addEventListener("click", (e) => {
       // @ts-ignore
       console.log(target?.contains(e.target));
@@ -139,5 +144,31 @@ export class HeaderComponent implements OnInit {
       )
       .subscribe();
     this.authService.logout$.next(this.authService.acccessToken);
+  }
+
+  flag: NodeJS.Timeout | undefined;
+  searchProducts: any = [];
+  onSearchChange(event: Event) {
+    if (this.flag) {
+      clearTimeout(this.flag);
+    }
+    const target = event.target as HTMLInputElement;
+    this.flag = setTimeout(() => {
+      this.http
+        .get("https://localhost:5000/api/products/games/search", {
+          params: { keyword: target.value },
+        })
+        .pipe(
+          tap((data: any) => {
+            if (!data || data.length === 0) {
+              this.searchProducts = [];
+            } else {
+              this.searchProducts = data;
+            }
+            console.log({ products: this.searchProducts });
+          })
+        )
+        .subscribe();
+    }, 400);
   }
 }

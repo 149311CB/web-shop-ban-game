@@ -1,0 +1,154 @@
+<div class="pt-10 w-full">
+  <div class="border border-white/30 rounded-md bg-[#333333] p-3 w-full">
+    <div class="flex flex-col gap-10">
+      <div>
+        <h2 class="!mb-0 pb-0">Account Info</h2>
+        <hr class="border-white/[0.16] my-2 mr-2 flex-grow" />
+        <div class="flex gap-16 min-w-[408px] w-full">
+          <form class="user-edit-form w-full flex gap-8" [formGroup]="form">
+            <div class="email-input-wrapper w-1/2">
+              <div class="flex items-center gap-3">
+                <mat-form-field appearance="outline" class="w-full">
+                  <mat-label>Email</mat-label>
+                  <input
+                    matInput
+                    id="email"
+                    name="email"
+                    type="email"
+                    formControlName="email"
+                    [readonly]="true"
+                  />
+                </mat-form-field>
+                <div
+                  class="p-2 rounded relative after:inset-0 after:absolute hover:after:bg-white/[0.10] after:rounded h-max w-max cursor-pointer"
+                  (click)="openDialog({ key: 'email', value: email.value })"
+                >
+                  <img [src]="'assets/edit.svg'" class="w-8" />
+                </div>
+              </div>
+            </div>
+            <div class="w-1/2">
+              <div class="flex items-center gap-3">
+                <mat-form-field appearance="outline" class="w-full">
+                  <mat-label>Password</mat-label>
+                  <input
+                    matInput
+                    id="password"
+                    name="password"
+                    type="password"
+                    formControlName="password"
+                    [readonly]="true"
+                  />
+                  <mat-icon
+                    matSuffix
+                    class="absolute text-white text-md right-0 top-1/2 -translate-y-[90%] cursor-pointer"
+                    >visibility</mat-icon
+                  >
+                </mat-form-field>
+                <div
+                  class="p-2 rounded relative after:inset-0 after:absolute hover:after:bg-white/[0.10] after:rounded h-max w-max cursor-pointer"
+                  (click)="
+                    openDialog({ key: 'password', value: password.value })
+                  "
+                >
+                  <img [src]="'assets/edit.svg'" class="w-8" />
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div>
+        <h2 class="!mb-0 pb-0">Personal Details</h2>
+        <hr class="border-white/[0.16] my-2 mr-2 flex-grow" />
+        <div class="flex gap-16 min-w-[408px] w-full">
+          <form
+            class="user-edit-form w-full grid grid-cols-2 grid-rows-3 gap-x-14 gap-y-3"
+            [formGroup]="personalDetailForm"
+          >
+            <div class="email-input-wrapper">
+              <div class="flex items-center gap-3">
+                <mat-form-field appearance="outline" class="w-full">
+                  <mat-label>First Name</mat-label>
+                  <input
+                    matInput
+                    id="first-name"
+                    name="first-name"
+                    formControlName="firstName"
+                  />
+                </mat-form-field>
+              </div>
+              <span
+                class="text-red-500"
+                >{{ firstName.touched && firstName.errors?.['required']  ? "Fist name is required" : "" }}</span
+              >
+            </div>
+            <div>
+              <div class="flex items-center gap-3">
+                <mat-form-field appearance="outline" class="w-full">
+                  <mat-label>Last Name</mat-label>
+                  <input
+                    matInput
+                    id="last-name"
+                    name="last-name"
+                    formControlName="lastName"
+                  />
+                </mat-form-field>
+              </div>
+              <span
+                class="text-red-500"
+                >{{ lastName.touched && lastName.errors?.['required'] ? "Last name is required" : "" }}</span
+              >
+            </div>
+            <div>
+              <div class="flex items-center gap-3">
+                <mat-form-field appearance="outline" class="w-full">
+                  <mat-label>Phone Number</mat-label>
+                  <input
+                    matInput
+                    id="phone-number"
+                    name="phone-number"
+                    formControlName="phoneNumber"
+                  />
+                  <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+              </div>
+            </div>
+            <div>
+              <div class="flex items-center gap-3">
+                <mat-form-field appearance="outline" class="w-full">
+                  <mat-label>Birthday</mat-label>
+                  <input matInput [matDatepicker]="picker" />
+                  <mat-datepicker-toggle
+                    matSuffix
+                    [for]="picker"
+                  ></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+              </div>
+            </div>
+            <button
+              mat-raised-button
+              color="primary"
+              class="uppercase w-full !p-2 !font-semibold col-span-2"
+              (click)="updatePersonalDetail()"
+            >
+              Confirm
+            </button>
+          </form>
+        </div>
+      </div>
+      <div>
+        <h2 class="!mb-0 pb-0">Delete Account</h2>
+        <hr class="border-white/[0.16] my-2 mr-2 flex-grow" />
+        <button
+          mat-raised-button
+          color="warn"
+          class="uppercase w-full !p-2 !font-semibold col-span-2"
+        >
+          Confirm
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

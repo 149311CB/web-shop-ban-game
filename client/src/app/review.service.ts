@@ -9,7 +9,7 @@ export class ReviewService {
   constructor(private http: HttpClient) {}
 
   getProductReviews(id: string): Observable<any> {
-    const url = `http://localhost:5000/api/reviews/all?gameId=${id}`;
+    const url = `https://localhost:5000/api/reviews/all?gameId=${id}`;
     return this.http.get<any>(url).pipe(
       tap((data) => {
         console.log('reviews', data);

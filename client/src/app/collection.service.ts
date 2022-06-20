@@ -6,7 +6,7 @@ import { catchError, Observable, tap, throwError } from "rxjs";
   providedIn: "root",
 })
 export class CollectionService {
-  topSaleUrl = "http://localhost:5000/api/collections/name";
+  topSaleUrl = "https://localhost:5000/api/collections/name";
 
   constructor(private http: HttpClient) {}
 
@@ -22,7 +22,6 @@ export class CollectionService {
   }
 
   getCollection(collections: string[]): Observable<any[]> {
-    // const query = collections.join(",");
     return this.http
       .get<any>(this.topSaleUrl + `?names=${JSON.stringify(collections)}`)
       .pipe(

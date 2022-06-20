@@ -2,8 +2,6 @@ import asyncHandler from "express-async-handler";
 import { Cart } from "../models/cartModel";
 import Order from "../models/orderModels";
 import { Game } from "../models/productModel";
-import { orderConfirmationBuilder } from "../utils/orderConfirmationBuilder";
-import sendgrid from "@sendgrid/mail";
 
 const getAllOrder = asyncHandler(async (_, res): Promise<any> => {
   const order = await Order.find({});
@@ -50,7 +48,8 @@ const getAllOrderByUser = asyncHandler(async (req, res): Promise<any> => {
         path: "cart",
         select: "products",
         populate: { path: "products.product", select: "name" },
-      });
+      })
+      .sort("-createdAt");
     const total = await Order.countDocuments({ user: user._id });
     return res.status(200).json({
       total_docs: total,

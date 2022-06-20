@@ -8,7 +8,7 @@ passport.use(
       clientID: process.env.FACEBOOK_APP_ID!,
       clientSecret: process.env.FACEBOOK_APP_SECRET!,
       callbackURL:
-        "https://web-shop-ban-game.herokuapp.com/api/users/login/facebook/callback",
+        "https://localhost:5000/api/users/login/facebook/callback",
       profileFields: [
         "id",
         "first_name",

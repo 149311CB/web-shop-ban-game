@@ -7,6 +7,7 @@ export interface IGameFilter {
   currentPage: number;
   keyword: string;
   filters: string[];
+  collection?: any;
 }
 
 @Injectable({
@@ -29,11 +30,17 @@ export class BrowseService {
     )
     .pipe(tap((games) => console.log({ games })));
 
-  private makeRequest({ currentPage, keyword, filters }: IGameFilter) {
-    const url = chainQueries("http://localhost:5000/api/products/games/all", {
+  private makeRequest({
+    currentPage,
+    keyword,
+    filters,
+    collection,
+  }: IGameFilter) {
+    const url = chainQueries("https://localhost:5000/api/products/games/all", {
       limit: 20,
       skip: currentPage,
       keyword: keyword,
+      collection,
     });
     return this.http.post(
       url,
@@ -49,6 +56,7 @@ export class BrowseService {
   }
 
   getGame(options: IGameFilter) {
+    console.log({options});
     this.gamesCoresponsedSubject.next(options);
   }
 }
