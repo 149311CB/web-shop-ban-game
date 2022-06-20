@@ -5,7 +5,6 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatIconModule } from "@angular/material/icon";
-
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
@@ -21,7 +20,8 @@ import { CartModule } from "./cart/cart.module";
 import { SharesModule } from "./shares/shares.module";
 import { CheckoutModule } from "./checkout/checkout.module";
 import { BrowseModule } from "./browse/browse.module";
-import { SearchComponent } from './header/search/search.component';
+import { SearchComponent } from "./header/search/search.component";
+import { UserModule } from "./user/user.module";
 
 @NgModule({
   declarations: [
@@ -49,7 +49,8 @@ import { SearchComponent } from './header/search/search.component';
     CartModule,
     SharesModule,
     CheckoutModule,
-    BrowseModule
+    BrowseModule,
+    UserModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

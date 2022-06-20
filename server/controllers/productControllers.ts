@@ -51,7 +51,7 @@ const getAllGame = asyncHandler(async (req, res): Promise<any> => {
     if (typeof limit === "number" && typeof skip === "number") {
       let collectionFilter;
       let total;
-      if (collection) {
+      if (collection && collection !== "undefined") {
         //@ts-ignore
         const result = await Collection.findOne({ name: collection });
         collectionFilter = result.list_game;

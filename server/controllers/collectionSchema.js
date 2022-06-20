@@ -43,7 +43,12 @@ const getCollectionByName = asyncHandler(async (req, res) => {
       path: "list_game",
       select: "name developer images sale_price",
     });
-    return res.status(200).json(collections);
+    return res
+      .status(200)
+      .json([
+        collections[collections.length - 1],
+        ...collections.splice(0, collections.length - 2),
+      ]);
   } catch (error) {
     console.log(error);
     return res.status(500);

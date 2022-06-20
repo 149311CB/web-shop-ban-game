@@ -25,7 +25,7 @@ export class HeaderComponent implements OnInit {
     message: "",
   };
   updatedCart$ = this.cartService.addToCartAction$;
-  paddingBottom = "pb-14";
+  paddingBottom = "pb-36";
   isShowAccountMenu = false;
   constructor(
     private router: Router,
@@ -34,7 +34,7 @@ export class HeaderComponent implements OnInit {
     public imageService: ImageService,
     public dialog: MatDialog,
     public authService: AuthService,
-    private http: HttpClient
+    private http: HttpClient,
   ) {}
 
   ngOnInit(): void {
@@ -66,8 +66,10 @@ export class HeaderComponent implements OnInit {
     this.authService.refresh$
       .pipe(
         tap(({ token }: any) => {
-          this.authService.info$.obs.subscribe();
-          this.authService.info$.next(token);
+          if (token) {
+            this.authService.info$.obs.subscribe();
+            this.authService.info$.next(token);
+          }
         })
       )
       .subscribe();
@@ -82,13 +84,15 @@ export class HeaderComponent implements OnInit {
   largePad = ["discover", "browse", "cart", "detail"];
   checkRouter(url: string) {
     if (this.largePad.find((item) => url.includes(item))) {
-      this.paddingBottom = "pb-36";
+      if (!url.includes("order")) {
+        this.paddingBottom = "pb-36";
+      }
     }
     if (url.includes("discover") || url === "/") {
       this.active = "discover";
     } else if (url.includes("browse")) {
       this.active = "browse";
-    } else if (url.includes("detail")) {
+    } else if (url.includes("detail") && !url.includes("order")) {
       this.active = "detail";
     } else {
       this.active = "";
@@ -119,7 +123,6 @@ export class HeaderComponent implements OnInit {
   showAccountMenu(clickEvent: Event) {
     const target = clickEvent.target;
     this.isShowAccountMenu = true;
-    console.log("Run");
     document.addEventListener("click", (e) => {
       // @ts-ignore
       console.log(target?.contains(e.target));
@@ -152,7 +155,7 @@ export class HeaderComponent implements OnInit {
     const target = event.target as HTMLInputElement;
     this.flag = setTimeout(() => {
       this.http
-        .get("http://localhost:5000/api/products/games/search", {
+        .get("https://localhost:5000/api/products/games/search", {
           params: { keyword: target.value },
         })
         .pipe(
@@ -162,7 +165,7 @@ export class HeaderComponent implements OnInit {
             } else {
               this.searchProducts = data;
             }
-            console.log({products: this.searchProducts})
+            console.log({ products: this.searchProducts });
           })
         )
         .subscribe();

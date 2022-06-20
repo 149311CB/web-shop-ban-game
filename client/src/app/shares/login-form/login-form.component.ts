@@ -1,5 +1,13 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from "@angular/core";
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { MatSnackBar } from "@angular/material/snack-bar";
 import { Subscription, tap } from "rxjs";
 import { AuthService } from "src/app/auth.service";
 
@@ -10,8 +18,11 @@ import { AuthService } from "src/app/auth.service";
 })
 export class LoginFormComponent implements OnInit, OnDestroy {
   @Input() isRegister = false;
-  @Output() registerEvent= new EventEmitter<boolean>(false);
-  constructor(public authService: AuthService) {}
+  @Output() registerEvent = new EventEmitter<boolean>(false);
+  constructor(
+    public authService: AuthService,
+    private _snackBar: MatSnackBar
+  ) {}
   subscribers: Subscription[] = [];
 
   ngOnInit(): void {
@@ -20,7 +31,12 @@ export class LoginFormComponent implements OnInit, OnDestroy {
         .pipe(
           tap(({ success }: any) => {
             if (success) {
-              window.location.href = "https://localhost:4200";
+              this.showMessage("Login successful");
+              setTimeout(() => {
+                window.location.href = "https://localhost:4200";
+              }, 3000);
+            } else {
+              this.showMessage("Login failed");
             }
           })
         )
@@ -57,5 +73,29 @@ export class LoginFormComponent implements OnInit, OnDestroy {
 
   changeToRegister() {
     this.registerEvent.emit(true);
+  }
+
+  showMessage(message: string) {
+    this._snackBar.open(message, "", {
+      horizontalPosition: "center",
+      verticalPosition: "top",
+      duration: 5000,
+    });
+  }
+
+  toggleVisibility(element: HTMLInputElement) {
+    if (element.type === "password") {
+      element.type = "text";
+    } else {
+      element.type = "password";
+    }
+  }
+
+  logginWithFacebook() {
+    window.open("https://localhost:5000/api/users/login/facebook", "_self");
+  }
+
+  loginWithGoogle() {
+    window.open("https://localhost:5000/api/users/login/google", "_self");
   }
 }

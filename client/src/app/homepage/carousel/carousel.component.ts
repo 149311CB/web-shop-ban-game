@@ -1,9 +1,4 @@
-import {
-  AfterViewChecked,
-  Component,
-  OnDestroy,
-  OnInit,
-} from "@angular/core";
+import { AfterViewChecked, Component, OnDestroy, OnInit } from "@angular/core";
 import { map, Subscription, tap } from "rxjs";
 import { ImageService } from "src/app/image.service";
 import { animateTo } from "src/utils/animateTo";
@@ -26,6 +21,7 @@ export class CarouselComponent implements OnInit, AfterViewChecked, OnDestroy {
       list_game: collections[0].list_game.slice(0, 6),
     }))
   );
+  currentPane: any = null;
 
   constructor(
     private collectionService: CollectionService,
@@ -52,6 +48,7 @@ export class CarouselComponent implements OnInit, AfterViewChecked, OnDestroy {
     }
   }
 
+  currentIndex = 0;
   ngOnInit(): void {}
 
   async animate() {
@@ -67,12 +64,11 @@ export class CarouselComponent implements OnInit, AfterViewChecked, OnDestroy {
     if (carousel && smallPanes) {
       const reset = carousel.querySelectorAll("li").length;
       const smallPanesArr = Array.from(smallPanes);
-      let currentIndex = 0;
       this.animationInterval = new AnimationInterval(
         5000,
         this.controller,
         (_: number) => {
-          const prevItem = smallPanesArr[currentIndex - 1] as HTMLElement;
+          const prevItem = smallPanesArr[this.currentIndex - 1] as HTMLElement;
           if (prevItem) {
             prevItem.style.backgroundColor = "unset";
           } else {
@@ -81,22 +77,22 @@ export class CarouselComponent implements OnInit, AfterViewChecked, OnDestroy {
             ).style.backgroundColor = "unset";
           }
 
-          const currentItem = smallPanesArr[currentIndex] as HTMLElement;
+          const currentItem = smallPanesArr[this.currentIndex] as HTMLElement;
           currentItem.style.backgroundColor = "#2C2C2C";
 
           const cover = currentItem.querySelector(".cover") as HTMLDivElement;
           const image = currentItem.querySelector("img") as HTMLImageElement;
           if (cover) {
-            this.expandWidth(cover);
+            this.currentPane = this.expandWidth(cover);
           }
           if (image) {
             this.scaleImage(image);
           }
-          this.slideToNext(carousel, currentIndex);
-          if (currentIndex !== reset - 1) {
-            currentIndex += 1;
+          this.slideToNext(carousel, this.currentIndex);
+          if (this.currentIndex !== reset - 1) {
+            this.currentIndex += 1;
           } else {
-            currentIndex = 0;
+            this.currentIndex = 0;
           }
         },
         true
@@ -141,7 +137,7 @@ export class CarouselComponent implements OnInit, AfterViewChecked, OnDestroy {
   }
 
   expandWidth(cover: HTMLDivElement) {
-    animateTo(
+    return animateTo(
       cover,
       [{ width: "100%" }],
       {
@@ -150,5 +146,17 @@ export class CarouselComponent implements OnInit, AfterViewChecked, OnDestroy {
       },
       this.controller.signal
     );
+  }
+
+  changePane(index: number) {
+    this.controller.abort();
+    const smallPanes = document.querySelectorAll(".small-panes-item");
+    smallPanes.forEach(
+      (pane) => ((pane as HTMLDivElement).style.backgroundColor = "#1c1c1c")
+    );
+    this.controller = new AbortController();
+    this.currentPane.cancel();
+    this.currentIndex = index;
+    this.animate();
   }
 }

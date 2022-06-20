@@ -104,7 +104,7 @@ export class CartService {
   removeFromCart(product: any) {
     return this.http
       .post(
-        this.getPrefixRoute() + "/carts/remove",
+        this.getPrefixRoute() + "/remove",
         {
           product,
         },
@@ -126,9 +126,9 @@ export class CartService {
   getPrefixRoute() {
     console.log({ accessToken: this.authService.acccessToken });
     if (this.authService.acccessToken) {
-      return "http://localhost:5000/api/carts/auth";
+      return "https://localhost:5000/api/carts/auth";
     } else {
-      return "http://localhost:5000/api/carts";
+      return "https://localhost:5000/api/carts";
     }
   }
 }

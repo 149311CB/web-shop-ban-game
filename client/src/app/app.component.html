@@ -1,4 +1,37 @@
-<header></header>
-<main class="w-[95%] sm:w-11/12 md:w-4/5 m-auto">
-  <router-outlet></router-outlet>
+<header *ngIf="endpoint !== '/auth/complete'"></header>
+<main
+  [class]="
+    'w-[95%] sm:w-11/12 md:w-4/5 m-auto' + (isUser ? ' flex flex-wrap lg:flex-nowrap gap-10' : '')
+  "
+>
+  <div class="side-nav w-full lg:w-[30%] pt-10" *ngIf="isUser">
+    <div class="border border-white/30 rounded-md bg-[#333333] p-3">
+      <ul class="flex flex-col gap-2">
+        <a routerLink="/user/profile">
+          <li
+            [class]="
+              'side-nav-item' + (endpoint === '/user/profile' ? ' active' : '')
+            "
+          >
+            Account
+          </li>
+        </a>
+        <a routerLink="/user/order">
+          <li
+            [class]="
+              'side-nav-item' + (endpoint.includes('/user/order') ? ' active' : '')
+            "
+          >
+            Orders
+          </li>
+        </a>
+        <a routerLink="/user/profile">
+          <li class="side-nav-item">Socials</li>
+        </a>
+      </ul>
+    </div>
+  </div>
+  <div class="w-full">
+    <router-outlet></router-outlet>
+  </div>
 </main>

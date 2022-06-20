@@ -15,17 +15,22 @@
       </li>
     </ul>
   </div>
-  <ul class="small-panes w-full lg:w-[15%] flex flex-row lg:flex-col gap-2 justify-between">
-    <li
-      class="small-panes-item rounded-lg overflow-hidden relative flex p-2 gap-2"
-      *ngFor="let game of topSales.list_game"
+  <ul
+    class="small-panes w-full lg:w-[15%] flex flex-row lg:flex-col gap-2 justify-between"
+  >
+    <div
+      class="small-panes-item rounded-lg overflow-hidden relative flex p-2 gap-2 cursor-pointer"
+      *ngFor="let game of topSales.list_game; let index = index"
+      (click)="changePane(index)"
     >
       <img
         class="rounded-lg w-[100px] lg:w-[28%] h-full object-cover z-[1]"
         src="{{ imageService.getLandscape(game.images)[0].url }}"
       />
-      <p class="text-xs hidden items-center lg:!flex z-[1]">{{ game.name }}</p>
+      <p class="text-xs hidden items-center lg:!flex z-[1]">
+        {{ game.name }}
+      </p>
       <div class="cover bg-white/[0.16] absolute inset-0 w-0"></div>
-    </li>
+    </div>
   </ul>
 </div>

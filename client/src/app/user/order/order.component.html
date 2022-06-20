@@ -1,0 +1,74 @@
+<div class="pt-10 w-full">
+  <div class="border border-white/30 rounded-md bg-[#333333] p-3 w-full">
+    <div
+      class="relative overflow-x-auto shadow-md sm:rounded-lg border border-white/[0.16]"
+      *ngIf="allOrders$ | async as allOrder"
+    >
+      <table
+        class="w-full text-sm text-left text-gray-500 dark:text-gray-400 bg-[#2c2c2c]"
+      >
+        <thead class="text-xs uppercase">
+          <tr>
+            <th scope="col" class="px-6 py-3">Id</th>
+            <th scope="col" class="px-6 py-3">Date</th>
+            <th scope="col" class="px-6 py-3">Payment Method</th>
+            <th scope="col" class="px-6 py-3">Status</th>
+            <th scope="col" class="px-6 py-3">Items</th>
+            <th scope="col" class="px-6 py-3">Total</th>
+            <th scope="col" class="px-6 py-3">View Order</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            class="border-b border-white/[0.16]"
+            *ngFor="let order of allOrder.data; let index = index"
+          >
+            <td class="px-6 py-4">{{ index + 1 }}</td>
+            <td scope="row" class="px-6 py-4">
+              {{ commonService.formatDate(order.createdAt) }}
+            </td>
+            <td class="px-6 py-4">{{ order.payment_method.method }}</td>
+            <td class="px-6 py-4">{{ order.status }}</td>
+            <td class="px-6 py-4">
+              {{ orderProductListToString(order.cart.products) }}
+            </td>
+            <td class="px-6 py-4">${{ order.total }}</td>
+            <td class="px-6 py-4 text-[#007efc]">
+              <a [routerLink]="'detail/' + order._id">View</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="flex gap-6 items-center py-2 px-3 justify-end">
+        <div class="text-sm">
+          {{ (allOrder.current_page - 1) * 10 + 1 }} -
+          {{ allOrder.current_page * 10 }} of {{ allOrder.total_docs }}
+        </div>
+        <div class="flex gap-2">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            fill="white"
+            class="w-8 h-8 rotate-180"
+            (click)="changePage(allOrder.current_page - 1)"
+          >
+            <path
+              d="M11 10L7.859 6.58a.695.695 0 0 1 0-.978.68.68 0 0 1 .969 0l3.83 3.908a.697.697 0 0 1 0 .979l-3.83 3.908a.68.68 0 0 1-.969 0 .695.695 0 0 1 0-.978L11 10z"
+            />
+          </svg>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            fill="white"
+            class="w-8 h-8"
+            (click)="changePage(allOrder.current_page + 1)"
+          >
+            <path
+              d="M11 10L7.859 6.58a.695.695 0 0 1 0-.978.68.68 0 0 1 .969 0l3.83 3.908a.697.697 0 0 1 0 .979l-3.83 3.908a.68.68 0 0 1-.969 0 .695.695 0 0 1 0-.978L11 10z"
+            />
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

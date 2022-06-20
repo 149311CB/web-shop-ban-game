@@ -15,5 +15,12 @@ export class CategoriesComponent implements OnInit {
   ]);
   constructor(private collectionService: CollectionService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    console.log("uhhh");
+  }
+
+  shift(collections: any[]) {
+    console.log([collections[0], ...collections.splice(1)])
+    return [collections[0], ...collections.splice(1)];
+  }
 }

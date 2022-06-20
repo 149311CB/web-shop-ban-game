@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
 import { tap } from "rxjs";
 import { BrowseService, IGameFilter } from "./browse.service";
 
@@ -8,10 +9,23 @@ import { BrowseService, IGameFilter } from "./browse.service";
   styleUrls: ["./browse.component.scss"],
 })
 export class BrowseComponent implements OnInit {
-  constructor(private browseService: BrowseService) {
+  constructor(
+    private browseService: BrowseService,
+    private route: ActivatedRoute
+  ) {
     this.onSearchChange = this.onSearchChange.bind(this);
   }
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.route.params.subscribe((params) => {
+      console.log({ params });
+      this.browseService.getGame({
+        currentPage: 0,
+        keyword: "",
+        filters: [],
+        collection: params["id"] ? params["id"].replace("-", " ") : undefined,
+      });
+    });
+  }
   config: IGameFilter = {
     currentPage: 0,
     keyword: "",

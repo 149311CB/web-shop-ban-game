@@ -64,12 +64,14 @@
                         authService.info.first_name
                     }}
                   </li>
-                  <li
-                    class="flex items-center gap-2 p-2 relative after:absolute after:inset-0 hover:after:bg-white/[0.16] after:rounded rounded-md cursor-pointer"
-                  >
-                    <img src="assets/setting.svg" class="w-5 h-5" />
-                    <span>Settings</span>
-                  </li>
+                  <a routerLink="/user/profile" class='w-full'>
+                    <li
+                      class="flex items-center gap-2 p-2 relative after:absolute after:inset-0 hover:after:bg-white/[0.16] after:rounded rounded-md cursor-pointer w-full"
+                    >
+                      <img src="assets/setting.svg" class="w-5 h-5" />
+                      <span>Settings</span>
+                    </li>
+                  </a>
                   <li
                     class="flex items-center gap-2 p-2 relative after:absolute after:inset-0 hover:after:bg-white/[0.16] after:rounded rounded-md cursor-pointer"
                     (click)="logout()"
@@ -90,14 +92,14 @@
           class="{{
             active === 'discover' ? 'text-white' : 'text-white/60'
           }} hover:text-white cursor-pointer"
-          routerLink="/discover"
+          [routerLink]="['/discover']"
           >Discover</a
         >
         <a
           class="{{
             active === 'browse' ? 'text-white' : 'text-white/60'
           }} hover:text-white cursor-pointer"
-          routerLink="/browse"
+          [routerLink]="['/browse']"
           >Browse</a
         >
       </div>

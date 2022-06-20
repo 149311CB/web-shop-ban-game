@@ -6,6 +6,7 @@ import {
   OnChanges,
   SimpleChanges,
 } from "@angular/core";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "category",
@@ -18,7 +19,7 @@ export class CategoryComponent implements OnInit, OnChanges {
   name = "";
   listGame: any[] = [];
 
-  constructor() {}
+  constructor(private router: Router) {}
   ngOnChanges(_: SimpleChanges): void {
     this.name =
       this.collection.name[0].toUpperCase() + this.collection.name.slice(1);
@@ -26,4 +27,15 @@ export class CategoryComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {}
+
+  browseCategory() {
+    this.router.navigateByUrl(
+      `/browse/${this.collection.name.replace(/\s+/g, "-").toLowerCase()}`,
+      {
+        state: {
+          _id: this.collection._id,
+        },
+      }
+    );
+  }
 }

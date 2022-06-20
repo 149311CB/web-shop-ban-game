@@ -14,7 +14,10 @@ import { MatIconModule } from "@angular/material/icon";
     NgxPaginationModule,
     SharesModule,
     MatIconModule,
-    RouterModule.forChild([{ path: "browse", component: BrowseComponent }]),
+    RouterModule.forChild([
+      { path: "browse", component: BrowseComponent },
+      { path: "browse/:id", component: BrowseComponent },
+    ]),
   ],
 })
 export class BrowseModule {}

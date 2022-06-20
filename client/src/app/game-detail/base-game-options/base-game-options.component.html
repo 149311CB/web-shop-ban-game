@@ -4,7 +4,7 @@
     <mat-select [(value)]="quantity">
       <mat-option
         class="hover:!bg-accent"
-        *ngFor="let key of product.keys; index as i"
+        *ngFor="let key of getActiveKey(product.keys); index as i"
         [value]="i + 1"
         >{{ i + 1 }}</mat-option
       >

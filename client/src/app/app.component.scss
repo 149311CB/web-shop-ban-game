@@ -1,5 +1,6 @@
-/* main { */
-/*   width: 80%; */
-/*   margin: 0 auto; */
-/*   outline: 1px solid black; */
-/* } */
+.side-nav-item {
+  @apply px-3 py-4 rounded-md cursor-pointer relative after:rounded-md after:absolute after:inset-0 hover:after:bg-white/[0.10];
+  &.active {
+    @apply after:bg-white/[0.10];
+  }
+}

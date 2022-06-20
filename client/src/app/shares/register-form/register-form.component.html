@@ -59,11 +59,14 @@
         name="password"
         type="password"
         formControlName="password"
+        #passwordEl
       />
-      <mat-icon
-        matSuffix
-        class="absolute text-white text-md right-0 top-1/2 -translate-y-[90%] cursor-pointer"
-        >visibility</mat-icon
+      <span
+        (click)="toggleVisibility(passwordEl)"
+        class="absolute text-white text-md right-0 top-1/2 -translate-y-[60%] cursor-pointer"
+        ><mat-icon matSuffix>{{
+          passwordEl.type === "password" ? "visibility" : "visibility_off"
+        }}</mat-icon></span
       >
     </mat-form-field>
     <span
@@ -93,11 +96,14 @@
         name="confirm-password"
         type="password"
         formControlName="confirmPass"
+        #confirmPassEl
       />
-      <mat-icon
-        matSuffix
-        class="absolute text-white text-md right-0 top-1/2 -translate-y-[90%] cursor-pointer"
-        >visibility</mat-icon
+      <span
+        (click)="toggleVisibility(confirmPassEl)"
+        class="absolute text-white text-md right-0 top-1/2 -translate-y-[60%] cursor-pointer"
+        ><mat-icon matSuffix>{{
+          confirmPassEl.type === "password" ? "visibility" : "visibility_off"
+        }}</mat-icon></span
       >
     </mat-form-field>
     <span
@@ -126,7 +132,11 @@
     Or
     <hr class="border-white/[0.16] my-4 ml-2 flex-grow" />
   </div>
-  <button mat-raised-button class="!p-2 !bg-[#1876f2] w-full !mb-2">
+  <button
+    mat-raised-button
+    class="!p-2 !bg-[#1876f2] w-full !mb-2"
+    (click)="registerWithGoogle()"
+  >
     <div class="flex items-center justify-center gap-2 w-full uppercase">
       <span>
         <img
@@ -137,7 +147,11 @@
       <span class="mt-1">Signup with facebook</span>
     </div>
   </button>
-  <button mat-raised-button class="!p-2 !bg-[#fff] w-full !mb-2">
+  <button
+    mat-raised-button
+    class="!p-2 !bg-[#fff] w-full !mb-2"
+    (click)="registerWithFacebook()"
+  >
     <div class="flex items-center justify-center gap-2 w-full uppercase">
       <span>
         <img

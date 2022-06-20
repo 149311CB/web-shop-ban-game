@@ -1,0 +1,117 @@
+<div class="pt-10 w-full">
+  <div
+    class="border border-white/30 rounded-md bg-[#333333] p-3 w-full tracking-wide"
+    *ngIf="orderDetail$ | async as orderDetail"
+  >
+    <div class="border border-white/[0.16] rounded-md bg-[#2c2c2c]">
+      <div class="p-3 text-base font-semibold">
+        <div>Payment details</div>
+      </div>
+      <hr class="border-white/[0.16] mb-2 flex-grow" />
+      <div class="py-1 px-3 leading-6">
+        <div>
+          <span class="font-semibold">Total payment: </span
+          ><span>${{ orderDetail.total }}</span>
+        </div>
+        <div>
+          <span class="font-semibold">Method: </span
+          ><span>{{ orderDetail.payment_method.method }}</span>
+        </div>
+        <div *ngIf="orderDetail.payment_method.method === 'stripe'">
+          <span class="font-semibold">Card: </span
+          ><span>**** **** **** {{orderDetail.payment_method.details.last4}}</span>
+        </div>
+        <div *ngIf="orderDetail.payment_method.method === 'stripe'">
+          <span class="font-semibold">Brand: </span
+          ><span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="1000"
+              height="1000"
+              viewBox="0 0 1000 1000"
+              fill="#2c2c2c"
+              class="w-8 h-8 inline-block"
+              *ngIf="orderDetail.payment_method.details.brand === 'visa'"
+            >
+              <path
+                fill="white"
+                d="M40 186c-22.087 0-40 17.908-40 40v548c0 22.091 17.922 40 40 40h920c22.087 0 40-17.908 40-40V226c0-22.091-17.922-40-40-40H40zm557.25 187.156c24.338 0 43.843 5.376 56.281 10.375l-8.5 53.469-5.625-2.844c-11.587-4.999-26.47-9.81-47-9.469-24.576 0-35.937 10.963-35.937 21.22-.143 11.557 13.275 19.179 35.218 30.593 36.217 17.61 52.956 38.962 52.72 67.031-.488 51.217-43.324 84.313-109.313 84.313-28.153-.31-55.276-6.27-69.938-13.157l8.813-55.25 8.094 3.938c20.617 9.212 33.967 12.938 59.093 12.938 18.043 0 37.409-7.555 37.563-24.094.117-10.8-8.095-18.5-32.532-30.594-23.812-11.804-55.38-31.577-55.03-67.031.372-47.961 44.063-81.438 106.093-81.438zM88.437 381h101.344c13.647.516 24.665 4.91 28.469 19.719l21.844 112.75c.003.01-.004.051 0 .062l6.562 33.782L308.187 381h66.563l-98.938 243.438-66.5.062-52.937-196.438c31.498 16.687 58.314 35.994 73.844 62.563-4.004-8.407-9.28-17.897-16.031-27.25-7.862-10.892-24.841-24.955-31.938-30.938-24.73-20.847-58.315-37.684-94.594-46.593l.781-4.844zm312.782.281h65.094l-40.72 243.063H360.5l40.719-243.063zm367.656 0h49.313l51.625 243.063h-59.188s-5.872-27.924-7.781-36.438c-9.303 0-74.367-.093-81.688-.093-2.477 6.58-13.437 36.53-13.437 36.53H640.75l94.719-222.874c6.706-15.838 18.137-20.188 33.406-20.188zm4.844 65.375c-3.203 9.041-8.78 23.641-8.407 23 0 0-20.037 53.44-25.28 67.313l52.655-.032C790.15 524.885 778 467.408 778 467.408l-4.281-20.75z"
+              />
+            </svg>
+            <img
+              *ngIf="orderDetail.payment_method.details.brand === 'mastercard'"
+              src="assets/mastercard.svg"
+              class="w-8 h-8 inline-block"
+            />
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="border border-white/[0.16] rounded-md bg-[#2c2c2c] mt-4 pb-3">
+      <div class="p-3 text-base font-semibold">
+        <div>Items</div>
+      </div>
+      <hr class="border-white/[0.16] mb-2 flex-grow" />
+      <div
+        *ngFor="let item of orderDetail.cart.products; let index = index"
+        [id]="item._id"
+      >
+        <div class="py-1 px-3 leading-6 flex gap-5">
+          <div class="w-[25%]">
+            <img
+              [src]="imageService.getPortrait(item.product.images)[0].url"
+              class="rounded"
+            />
+            <button
+              mat-raised-button
+              color="primary"
+              class="uppercase w-full !py-3 !mt-2 !font-semibold col-span-2 !text-xs"
+            >
+              Write review
+            </button>
+          </div>
+          <div class="flex-grow">
+            <div class="text-xl font-semibold">{{ item.product.name }}</div>
+            <div class="text-base text-white/60">
+              {{ item.product.developer }}
+            </div>
+            <div>
+              <span>Quantity: </span><span>{{ item.quantity }}</span>
+            </div>
+            <div>
+              <span>Total price: </span
+              ><span>${{ item.quantity * item.product.sale_price }}</span>
+            </div>
+            <div class="border rounded-md border-white/[0.16] mt-2">
+              <div *ngFor="let key of item.keys; let index = index">
+                <div class="px-3 py-2 relative flex items-center gap-3">
+                  <span (click)="toggleKey(key)">
+                    <mat-icon
+                      matSuffix
+                      matTooltip="Click to review key"
+                      class="text-white text-md cursor-pointer mt-1"
+                      >visibility</mat-icon
+                    > </span
+                  ><span
+                    class="cursor-copy"
+                    matTooltip="Click to copy"
+                    (click)="copyToClipBoard(key)"
+                    >{{ showKey }}</span
+                  >
+                </div>
+                <hr
+                  class="border-white/[0.16] flex-grow"
+                  *ngIf="index % 2 === 0 && item.keys.length > 1"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr
+          class="border-white/[0.16] my-2 flex-grow"
+          *ngIf="index % 2 === 0 && orderDetail.cart.products.length > 1"
+        />
+      </div>
+    </div>
+  </div>
+</div>

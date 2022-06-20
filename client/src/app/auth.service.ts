@@ -24,7 +24,7 @@ export class AuthService {
     concatMap(({ email, password }: any) => {
       return this.http
         .post(
-          "http://localhost:5000/api/users/login",
+          "https://localhost:5000/api/users/login",
           {
             email: email,
             password: password,
@@ -35,22 +35,22 @@ export class AuthService {
         )
         .pipe(catchError((err) => of({})));
     }),
-    concatMap(({ success }: any) => {
-      if (success) {
-        return this.refresh$;
-      }
-      return of({});
-    }),
-    tap(({ token }) => {
-      if (token) {
-        window.location.reload();
-      }
-    }),
+    // concatMap(({ success }: any) => {
+    //   if (success) {
+    //     return this.refresh$;
+    //   }
+    //   return of({});
+    // }),
+    // tap(({ token }) => {
+    //   if (token) {
+    //     window.location.reload();
+    //   }
+    // }),
     shareReplay(1)
   );
 
   refresh$ = this.http
-    .post("http://localhost:5000/api/users/token/refresh", null, {
+    .post("https://localhost:5000/api/users/token/refresh", null, {
       withCredentials: true,
     })
     .pipe(
@@ -66,7 +66,7 @@ export class AuthService {
 
   info$ = createSubjectObs((token) => {
     return this.http
-      .post("http://localhost:5000/api/users/details", null, {
+      .post("https://localhost:5000/api/users/details", null, {
         withCredentials: true,
         headers: {
           Authorization: `Bearer ${token}`,
@@ -80,7 +80,7 @@ export class AuthService {
   });
 
   logout$ = createSubjectObs((token) => {
-    return this.http.get("http://localhost:5000/api/users/logout", {
+    return this.http.get("https://localhost:5000/api/users/logout", {
       withCredentials: true,
       headers: {
         Authorization: `Bearer ${token}`,
@@ -93,10 +93,11 @@ export class AuthService {
     lastName: string,
     email: string,
     password: string,
-    confirmPass: string
+    confirmPass: string,
+    callback: Function
   ) {
     this.http
-      .post("http://localhost:5000/api/users/register", {
+      .post("https://localhost:5000/api/users/register", {
         first_name: firstName,
         last_name: lastName,
         email,
@@ -105,10 +106,15 @@ export class AuthService {
       })
       .pipe(
         tap(({ message }: any) => {
-          console.log(message);
           if (message === "successful") {
+            callback("Signup successful");
             this.login$.subscribe();
             this.login(email, password);
+            setTimeout(() => {
+              window.location.href = "https://localhost:4200";
+            }, 3000);
+          } else {
+            callback("Signup failed");
           }
         })
       )

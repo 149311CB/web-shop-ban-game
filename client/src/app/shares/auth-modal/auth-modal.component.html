@@ -1,3 +1,120 @@
-<div mat-dialog-content class='login-modal' bg-[#333333]>
-  Auth modal
+<div mat-dialog-content id="auth-modal" class="bg-[#333333]">
+  <form [formGroup]="form">
+    <div class="mb-2" *ngIf="data.key === 'email'">
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>{{
+          data.key[0].toUpperCase() + data.key.substring(1)
+        }}</mat-label>
+        <input
+          matInput
+          id="data.key"
+          name="data.key"
+          type="data.key"
+          formControlName="value"
+          (change)="isDisable()"
+        />
+      </mat-form-field>
+      <span
+        class="text-red-500 inline-block"
+        >{{ value.touched && value.errors?.['required'] ? data.key + " is required" : "" }}</span
+      >
+    </div>
+    <div class="mb-2" *ngIf="data.key === 'password'">
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>New Password</mat-label>
+        <input
+          matInput
+          id="data.key"
+          name="data.key"
+          type="password"
+          formControlName="value"
+          (input)="isDisable()"
+          #newPassword
+        />
+        <span
+          (click)="toggleVisibility(newPassword)"
+          class="absolute text-white text-md right-0 top-1/2 -translate-y-[60%] cursor-pointer"
+          ><mat-icon matSuffix>{{
+            newPassword.type === "password" ? "visibility" : "visibility_off"
+          }}</mat-icon></span
+        >
+      </mat-form-field>
+      <span
+        class="text-red-500 inline-block"
+        >{{ value.touched && value.errors?.['required'] ? data.key + " is required" : "" }}</span
+      >
+      <span
+        class="text-red-500 inline-block"
+        *ngIf="value.touched && value.errors?.['notSecure']"
+      >
+        <span class="text-red-500"
+          >Please make sure password meet these criteria</span
+        >
+        <ul class="list-disc list-inside text-red-500">
+          <li class="text-red-500">Have at least 12 characters</li>
+          <li class="text-red-500">Have at least one special characters</li>
+          <li class="text-red-500">Have at least one digit characters</li>
+        </ul>
+      </span>
+    </div>
+    <div class="mb-2" *ngIf="data.key === 'password'">
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Confirm New Password</mat-label>
+        <input
+          matInput
+          id="confirm-password"
+          name="confirm-password"
+          type="password"
+          formControlName="confirmPass"
+          (input)="isDisable()"
+          #confirmPassEl
+        />
+        <span
+          (click)="toggleVisibility(confirmPassEl)"
+          class="absolute text-white text-md right-0 top-1/2 -translate-y-[60%] cursor-pointer"
+          ><mat-icon matSuffix>{{
+            confirmPassEl.type === "password" ? "visibility" : "visibility_off"
+          }}</mat-icon></span
+        >
+      </mat-form-field>
+      <span
+        class="text-red-500"
+        >{{ confirmPass.touched && confirmPass.errors?.['required'] ? "Confirm password is required" : "" }}</span
+      >
+    </div>
+    <div class="mb-2">
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Password</mat-label>
+        <input
+          matInput
+          id="password"
+          name="password"
+          type="password"
+          formControlName="password"
+          (input)="isDisable()"
+          #oldPassEl
+        />
+        <span
+          (click)="toggleVisibility(oldPassEl)"
+          class="absolute text-white text-md right-0 top-1/2 -translate-y-[60%] cursor-pointer"
+          ><mat-icon matSuffix>{{
+            oldPassEl.type === "password" ? "visibility" : "visibility_off"
+          }}</mat-icon></span
+        >
+      </mat-form-field>
+      <span
+        class="text-red-500"
+        >{{ password.touched && password.errors?.['required'] ? "Password is required" : "" }}</span
+      >
+    </div>
+    <button
+      mat-raised-button
+      color="primary"
+      class="uppercase w-full !p-2 !font-semibold col-span-2"
+      [disabled]="disabled"
+      (click)="confirmUpdate()"
+    >
+      Confirm
+    </button>
+  </form>
 </div>

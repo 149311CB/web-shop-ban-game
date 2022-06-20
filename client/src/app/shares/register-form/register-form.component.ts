@@ -1,13 +1,8 @@
 import { Component, EventEmitter, OnInit, Output } from "@angular/core";
-import {
-  AbstractControl,
-  FormControl,
-  FormGroup,
-  ValidationErrors,
-  ValidatorFn,
-  Validators,
-} from "@angular/forms";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { MatSnackBar } from "@angular/material/snack-bar";
 import { AuthService } from "src/app/auth.service";
+import { securePass } from "src/utils/validators";
 
 @Component({
   selector: "app-register-form",
@@ -16,7 +11,10 @@ import { AuthService } from "src/app/auth.service";
 })
 export class RegisterFormComponent implements OnInit {
   @Output() registerEvent = new EventEmitter<boolean>();
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private _snackBar: MatSnackBar
+  ) {}
 
   ngOnInit(): void {}
 
@@ -25,7 +23,7 @@ export class RegisterFormComponent implements OnInit {
       validators: [Validators.required, Validators.email],
     }),
     password: new FormControl("", {
-      validators: [Validators.required, this.securePass()],
+      validators: [Validators.required, securePass()],
     }),
     confirmPass: new FormControl("", {
       validators: [Validators.required],
@@ -58,36 +56,42 @@ export class RegisterFormComponent implements OnInit {
     return this.form.controls["confirmPass"];
   }
 
-  securePass(): ValidatorFn {
-    return (control: AbstractControl): ValidationErrors | null => {
-      return {
-        notSecure:
-          !/^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9].*[0-9])(?=.*[a-z].*[a-z].*[a-z]).{12,}$/.test(
-            control.value
-          ),
-      };
-    };
-  }
-
-  isMatch(): ValidatorFn {
-    return (control: AbstractControl): ValidationErrors | null => {
-      return {
-        isMatch: this.password.value === control.value,
-      };
-    };
-  }
-
   onSubmit() {
     this.authService.register(
       this.firstName.value,
       this.lastName.value,
       this.email.value,
       this.password.value,
-      this.confirmPass.value
+      this.confirmPass.value,
+      this.showMessage.bind(this)
     );
   }
 
   changeToLogin() {
     this.registerEvent.emit(false);
+  }
+
+  showMessage(message: string) {
+    this._snackBar.open(message, "", {
+      horizontalPosition: "center",
+      verticalPosition: "top",
+      duration: 5000,
+    });
+  }
+
+  toggleVisibility(element: HTMLInputElement) {
+    if (element.type === "password") {
+      element.type = "text";
+    } else {
+      element.type = "password";
+    }
+  }
+
+  registerWithGoogle() {
+    window.open("https://localhost:5000/api/users/login/google", "_self");
+  }
+
+  registerWithFacebook(){
+    window.open("https://localhost:5000/api/users/login/facebook", "_self");
   }
 }

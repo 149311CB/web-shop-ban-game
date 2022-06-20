@@ -10,7 +10,7 @@ export class ProductService {
   currentProduct: any;
 
   getProductDetail(id: string): Observable<any> {
-    const url = `http://localhost:5000/api/products/games/${id}`;
+    const url = `https://localhost:5000/api/products/games/${id}`;
     return this.http.get<any>(url).pipe(
       tap((data) => {
         console.log(data);

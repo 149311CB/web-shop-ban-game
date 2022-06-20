@@ -7,6 +7,7 @@ import {
   COOKIES_OPTIONS,
 } from "../utils/generateToken";
 import jwt from "jsonwebtoken";
+import { Cart } from "../models/cartModel";
 
 // @desc    Auth user & get token
 // @route   POST /api/users/login
@@ -22,14 +23,35 @@ const login = asyncHandler(async (req, res): Promise<any> => {
 
   if (exist) {
     try {
+      const { signedCookies = {} } = req;
+      const { cart_token: cartToken } = signedCookies;
+      const existCart = await Cart.findOne({
+        status: true,
+        user: exist._id,
+      });
+      if (existCart) {
+        await existCart.update({ status: false });
+      }
+      const payload = jwt.verify(cartToken, process.env.REFRESH_TOKEN_SECRET!);
+      //@ts-ignore
+      const { cartId } = payload;
+      const newCart = await Cart.findById(cartId);
+      if (newCart) {
+        await newCart.update({ user: exist._id });
+      }
       const refreshToken = generateRefreshToken({ userId: _id });
       exist.refresh_token = refreshToken!;
       await exist.save();
       res.cookie("refresh_token", refreshToken, COOKIES_OPTIONS);
       if (req.register) {
-        return res.redirect("https://149311cb.tech/auth/complete");
+        const token = generateToken({ userId: exist._id, noPass: true });
+        return res.redirect(
+          `https://localhost:4200/auth/complete?token=${token}`
+        );
+      } else {
+        return res.redirect("https://localhost:4200/");
       }
-      return res.json({ success: true });
+      // return res.json({ success: true });
     } catch (error: any) {
       return res.status(500).json({ message: error.message });
     }
@@ -146,6 +168,7 @@ const refreshTokenController = asyncHandler(async (req, res): Promise<any> => {
       return res.status(500).json({ message: error.message });
     }
   }
+  return res.status(200).json({ message: "No refresh token" });
 });
 
 const getUserDetails = asyncHandler(async (req, res): Promise<any> => {
@@ -199,7 +222,7 @@ const updateEmail = asyncHandler(async (req, res): Promise<any> => {
   try {
     const { email, password } = req.body;
     const exist = await User.findOne({ email: email });
-    if (exist) {
+    if (exist && exist._id === user._id) {
       return res
         .status(400)
         .json({ message: "there is an account with this email" });
@@ -326,11 +349,11 @@ const createPassword = asyncHandler(async (req, res): Promise<any> => {
   }
 
   try {
-    const refreshToken = generateRefreshToken({ userId: exist._id });
-    exist.refresh_token = refreshToken!;
-    exist.password = password;
-    await exist.save();
-    res.cookie("refresh_token", refreshToken, COOKIES_OPTIONS);
+    // const refreshToken = generateRefreshToken({ userId: exist._id });
+    // exist.refresh_token = refreshToken!;
+    // exist.password = password;
+    // await exist.save();
+    // res.cookie("refresh_token", refreshToken, COOKIES_OPTIONS);
     // res.clearCookie("email_verification_token", {
     //   COOKIES_OPTIONS,
     //   maxAge: eval(process.env.SESSION_EXPIRY!),
@@ -347,17 +370,15 @@ const updatePersonalDetails = asyncHandler(async (req, res): Promise<any> => {
     return res.status(401);
   }
   try {
-    const { firstName, lastName, phoneNumber, birthday, password } = req.body;
+    const { firstName, lastName, phoneNumber, birthday } = req.body;
     const exist = await User.findById(user._id);
-    // @ts-ignore
-    if (!exist || !(await user.matchPassword(password))) {
-      return res.status(401);
+    if (exist) {
+      exist.first_name = firstName;
+      exist.last_name = lastName;
+      exist.phone_number = phoneNumber;
+      exist.birthday = new Date(birthday).toISOString();
+      await exist.save();
     }
-    exist.first_name = firstName;
-    exist.last_name = lastName;
-    exist.phone_number = phoneNumber;
-    exist.birthday = new Date(birthday).toISOString();
-    await exist.save();
     return res.status(200).json({ message: "successful" });
   } catch (error) {
     console.log(error);

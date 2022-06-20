@@ -43,7 +43,7 @@ router
 
 router
   .route("/login/facebook/callback")
-  .get(passport.authenticate("facebook"), sendVerificationEmail, login);
+  .get(passport.authenticate("facebook"), login);
 
 router
   .route("/login/google")
@@ -51,7 +51,7 @@ router
 
 router
   .route("/login/google/callback")
-  .get(passport.authenticate("google"), sendVerificationEmail, login);
+  .get(passport.authenticate("google"), login);
 
 router
   .route("/register")
