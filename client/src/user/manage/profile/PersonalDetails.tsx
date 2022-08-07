@@ -119,7 +119,7 @@ const PersonalDetails: React.FC<{ personalDetails: any }> = ({
               <DesktopDatePicker
                 inputFormat="MM/dd/yyyy"
                 value={birthday}
-                onChange={(value) => {
+                onChange={(value: any) => {
                   setBirthday(value);
                 }}
                 renderInput={(params: any) => (

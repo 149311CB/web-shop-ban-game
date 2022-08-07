@@ -122,7 +122,7 @@ const EmailStrategy = () => {
             label="Date desktop"
             inputFormat="MM/dd/yyyy"
             value={birthday}
-            onChange={(value) => {
+            onChange={(value: any) => {
               setBirthday(value);
             }}
             renderInput={(params: any) => <TextField {...params} />}

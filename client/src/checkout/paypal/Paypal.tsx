@@ -13,7 +13,6 @@ const Paypal = () => {
     handleProcessing,
     handleError,
     handleSuccess,
-    handleCancelled,
   } = useContext(CheckoutContext);
 
   const [clientId, setClientId] = useState("");
@@ -35,13 +34,16 @@ const Paypal = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const { data } = await axios.get(`https://web-shop-ban-game.herokuapp.com/api/payments/paypal`, {
-        headers: {
-          "Content-Type": "application/json",
-          //@ts-ignore
-          Authorization: `Bearer ${loginToken}`,
-        },
-      });
+      const { data } = await axios.get(
+        `https://web-shop-ban-game.herokuapp.com/api/payments/paypal`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            //@ts-ignore
+            Authorization: `Bearer ${loginToken}`,
+          },
+        }
+      );
       if (data?.status === 404) {
         history.push("/");
       }
@@ -75,13 +77,13 @@ const Paypal = () => {
               });
             }}
             onApprove={async (_, actions) => {
-              const payload = await actions.order.capture();
+              const payload = await actions?.order?.capture();
               const order = generateOrder();
               order.details = {
-                email: payload.payer.email_address,
-                name: payload.payer.name,
+                email: payload?.payer.email_address,
+                name: payload?.payer.name,
               };
-              order.paidAt = new Date(payload.create_time);
+              order.paidAt = new Date(payload?.create_time || "");
               order.status = "succeeded";
               handleSuccess(order);
             }}
