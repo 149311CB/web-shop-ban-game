@@ -42,6 +42,7 @@ app.use(
       "http://localhost:3000",
       "http://localhost:3001",
       "https://duties-designing-garcia-periodically.trycloudflare.com",
+      "https://web-shop-ban-game-next.vercel.app",
     ], // will be changed later?
     methods: "GET,POST,PUT,DELETE",
     credentials: true,
