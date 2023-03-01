@@ -28,7 +28,7 @@ const login = asyncHandler(async (req, res) => {
       if (req.register) {
         return res.redirect("https://web-shop-ban-game-next.vercel.app/auth/complete");
       }
-      return res.redirect("https://web-shop-ban-game-next.vercel.app/homepage");
+      return res.json({status: 'success'})
     } catch (error: any) {
       return res.status(500).json({ message: error.message });
     }
