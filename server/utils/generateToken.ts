@@ -4,10 +4,10 @@ const dev = process.env.NODE_ENV !== "production";
 
 const COOKIES_OPTIONS:CookieOptions = {
   path: "/",
-  domain:"web-shop-ban-game.herokuapp.com",
-  httpOnly: true,
-  secure: true,
-  signed: true,
+  domain:"localhost:5000",
+  httpOnly: false,
+  secure: false,
+  signed: false,
   maxAge: eval(process.env.REFRESH_TOKEN_EXPIRY!) * 1000,
   sameSite: "none",
 };

@@ -4,14 +4,14 @@ import connectDB from "./config/db";
 import cors from "cors";
 import passport from "passport";
 import cookieParser from "cookie-parser";
-import https from "https";
-import fs from "fs";
+// import https from "https";
+// import fs from "fs";
 
 dotenv.config();
 
 import "./controllers/strategies/jwtStrategy";
-import "./controllers/strategies/facebookStrategy";
-import "./controllers/strategies/googleStrategy";
+// import "./controllers/strategies/facebookStrategy";
+// import "./controllers/strategies/googleStrategy";
 import "./controllers/strategies/LocalStrategy";
 
 import sampleRoutes from "./routes/sampleRoutes";
@@ -39,6 +39,9 @@ app.use(
       "https://localhost:3000",
       "https://localhost:3001",
       "https://149311cb.tech",
+      "http://localhost:3000",
+      "http://localhost:3001",
+      "https://duties-designing-garcia-periodically.trycloudflare.com",
     ], // will be changed later?
     methods: "GET,POST,PUT,DELETE",
     credentials: true,
