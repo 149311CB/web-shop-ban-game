@@ -23,13 +23,12 @@ const login = asyncHandler(async (req, res) => {
     try {
       const refreshToken = generateRefreshToken({ userId: _id });
       exist.refresh_token = refreshToken!;
-      console.log({refreshToken});
       await exist.save();
       res.cookie("refresh_token", refreshToken, COOKIES_OPTIONS);
       if (req.register) {
-        return res.redirect("https://duties-designing-garcia-periodically.trycloudflare.com/auth/complete");
+        return res.redirect("https://web-shop-ban-game-next.vercel.app/auth/complete");
       }
-      return res.redirect("https://duties-designing-garcia-periodically.trycloudflare.com");
+      return res.redirect("https://web-shop-ban-game-next.vercel.app/homepage");
     } catch (error: any) {
       return res.status(500).json({ message: error.message });
     }

@@ -2,9 +2,9 @@ import { CookieOptions } from "express";
 import jwt from "jsonwebtoken";
 const dev = process.env.NODE_ENV !== "production";
 
-const COOKIES_OPTIONS:CookieOptions = {
+const COOKIES_OPTIONS: CookieOptions = {
   path: "/",
-  domain:"localhost:5000",
+  domain: "https://web-shop-ban-game-server.onrender.com",
   httpOnly: false,
   secure: false,
   signed: false,
