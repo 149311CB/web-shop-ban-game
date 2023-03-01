@@ -4,10 +4,10 @@ const dev = process.env.NODE_ENV !== "production";
 
 const COOKIES_OPTIONS: CookieOptions = {
   path: "/",
-  domain: "https://web-shop-ban-game-server.onrender.com",
-  httpOnly: false,
-  secure: false,
-  signed: false,
+  domain: "web-shop-ban-game-server.onrender.com",
+  httpOnly: true,
+  secure: true,
+  signed: true,
   maxAge: eval(process.env.REFRESH_TOKEN_EXPIRY!) * 1000,
   sameSite: "none",
 };
