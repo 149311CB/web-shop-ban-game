@@ -7,7 +7,7 @@ import GameCard from "../components/GameCard";
 
 export const getCollections = async (names: string[]) => {
   const { data } = await axios.get(
-    "https://web-shop-ban-game.herokuapp.com/api/collections/name",
+    "https://web-shop-ban-game-server.onrender.com/api/collections/name",
     {
       params: { names },
     }

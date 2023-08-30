@@ -3,7 +3,7 @@ import { ReactComponent as GoogleIcon } from "../../../../assets/google.svg";
 
 const Google: React.FC<{ register?: boolean }> = ({ register = false }) => {
   const loginWithGoogle = () => {
-    window.open("https://web-shop-ban-game.herokuapp.com/api/users/login/google", "_self");
+    window.open("https://web-shop-ban-game-server.onrender.com/api/users/login/google", "_self");
   };
 
   return (

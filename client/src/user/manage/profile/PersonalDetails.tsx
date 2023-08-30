@@ -33,7 +33,7 @@ const PersonalDetails: React.FC<{ personalDetails: any }> = ({
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
     await axios
-      .post("https://web-shop-ban-game.herokuapp.com/api/users/profile/personal-details/update", {
+      .post("https://web-shop-ban-game-server.onrender.com/api/users/profile/personal-details/update", {
         firstName,
         lastName,
         birthday,

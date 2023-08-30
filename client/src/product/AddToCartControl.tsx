@@ -34,8 +34,8 @@ const AddToCartControl: React.FC<{ data: any }> = ({ data }) => {
   const addToCart = async () => {
     setProcessing(true);
     const route = loginToken
-      ? "https://web-shop-ban-game.herokuapp.com/api/carts/auth/add"
-      : "https://web-shop-ban-game.herokuapp.com/api/carts/add";
+      ? "https://web-shop-ban-game-server.onrender.com/api/carts/auth/add"
+      : "https://web-shop-ban-game-server.onrender.com/api/carts/add";
     const { data: reponseData } = await axios.post(
       route,
       {

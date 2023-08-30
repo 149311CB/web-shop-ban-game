@@ -55,18 +55,18 @@ const getAllGame = asyncHandler(async (req, res) => {
         //@ts-ignore
         const result = await Collection.findOne({ name: collection });
         collectionFilter = result.list_game;
-        total = result.list_game.length;
+        // total = result.list_game.length;
       }
-      const games = await Game.find(
-        //@ts-ignore
-        getOptionalQueries(filters, keyword, collectionFilter)
-      )
-        .select("name developer sale_price images")
+      const optionalQueries = getOptionalQueries(
+        filters,
+        keyword.toString(),
+        collectionFilter
+      );
+      const games = await Game.find(optionalQueries)
+        .select("name developer sale_price images description")
         .skip(limit * skip)
         .limit(limit);
-      if (!total || total === undefined) {
-        total = await Game.countDocuments();
-      }
+      total = await Game.count(optionalQueries);
       return res.status(200).json({
         total_docs: total,
         total_pages: Math.ceil(total / limit),

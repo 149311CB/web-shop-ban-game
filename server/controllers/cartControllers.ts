@@ -27,7 +27,7 @@ const addToCart = async (exist: any, product: any, res: any) => {
   const existItem: any = exist.products.find((item: IItem) => {
     return item.product !== null;
   });
-  let quantityInCart = product.quantity;
+  let quantityInCart = 1;
 
   if (existItem) {
     const availabledKeys = existItem.product.keys.filter((key: any) => {
@@ -113,18 +113,12 @@ const guestAddToCart = asyncHandler(async (req, res) => {
   const { cartId } = req;
   const { product } = req.body;
   if (!cartId) {
-    console.log("new cart")
     const newCart = new Cart({
       user: null,
-      products: [{ product: product._id, quantity: product.quantity }],
+      products: [{ product: product._id, quantity: 1 }],
       status: true,
     });
     await newCart.save();
-    res.cookie(
-      "cart_token",
-      generateRefreshToken({ cartId: newCart._id }),
-      COOKIES_OPTIONS
-    );
     return res.status(200).json({ qty_in_cart: product.quantity });
   } else {
     const exist = await Cart.findById(cartId).populate({

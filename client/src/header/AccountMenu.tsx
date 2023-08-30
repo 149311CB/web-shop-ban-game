@@ -28,7 +28,7 @@ export default function AccountMenu() {
   };
 
   const handleLogout = async () => {
-    await axios.get("https://web-shop-ban-game.herokuapp.com/api/users/logout", {
+    await axios.get("https://web-shop-ban-game-server.onrender.com/api/users/logout", {
       withCredentials: true,
       headers: {
         Authorization: `Bearer ${loginToken}`,
@@ -44,7 +44,7 @@ export default function AccountMenu() {
     }
 
     const fetchData = async () => {
-      const { data } = await axios.post("https://web-shop-ban-game.herokuapp.com/api/users/details", null, {
+      const { data } = await axios.post("https://web-shop-ban-game-server.onrender.com/api/users/details", null, {
         headers: {
           Authorization: `Bearer ${loginToken}`,
         },

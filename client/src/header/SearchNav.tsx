@@ -27,9 +27,22 @@ export default function SearchNav() {
       <Box sx={{ flexGrow: 1, bgcolor: "common.black" }}>
         <AppBar
           position="static"
-          sx={{ bgcolor: "common.black", boxShadow: "none", backgroundImage:"none" }}
+          sx={{
+            bgcolor: "common.black",
+            boxShadow: "none",
+            backgroundImage: "none",
+          }}
         >
-          <Toolbar sx={{ bgcolor: "common.black", width:"80%", margin:"0 auto" }}>
+          <Toolbar
+            sx={{
+              bgcolor: "common.black",
+              width: {
+                xs: "100%",
+                lg: "80%",
+              },
+              margin: "0 auto",
+            }}
+          >
             <Box sx={{ flexGrow: 1 }}>
               <Box
                 sx={{

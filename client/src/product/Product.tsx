@@ -30,7 +30,7 @@ const Product: React.FC<RouteComponentProps> = ({ match }) => {
     }
 
     const fetchData = async () => {
-      const { data } = await axios.get(`https://web-shop-ban-game.herokuapp.com/api/products/games/${_id}`);
+      const { data } = await axios.get(`https://web-shop-ban-game-server.onrender.com/api/products/games/${_id}`);
       const { includes, included_in, ...rest } = data;
       setIncludes(includes);
       setIncludedIn(included_in);
@@ -86,6 +86,7 @@ const Product: React.FC<RouteComponentProps> = ({ match }) => {
                 sx={{
                   gridRow: "1/2",
                   gridColumn: "1/3",
+                  width: '100%',
                 }}
               >
                 <Box

@@ -36,8 +36,8 @@ const CartItem: React.FC<{
       quantity = qty - 1;
     }
     const route = loginToken
-      ? "https://web-shop-ban-game.herokuapp.com/api/carts/auth/qty/update"
-      : "https://web-shop-ban-game.herokuapp.com/api/carts/qty/update";
+      ? "https://web-shop-ban-game-server.onrender.com/api/carts/auth/qty/update"
+      : "https://web-shop-ban-game-server.onrender.com/api/carts/qty/update";
     await axios.post(
       route,
       {
@@ -57,8 +57,8 @@ const CartItem: React.FC<{
 
   const removeFromCart = async () => {
     const route = loginToken
-      ? "https://web-shop-ban-game.herokuapp.com/api/carts/auth/remove"
-      : "https://web-shop-ban-game.herokuapp.com/api/carts/remove";
+      ? "https://web-shop-ban-game-server.onrender.com/api/carts/auth/remove"
+      : "https://web-shop-ban-game-server.onrender.com/api/carts/remove";
     setUpdating(true);
     await axios.post(
       route,

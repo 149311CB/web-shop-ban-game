@@ -1,6 +1,5 @@
 import { Box, BoxProps, styled } from "@mui/material";
 import { getTransparentOverlay } from "../utils/transparentOverlay";
-import React from "react";
 
 export const StackItem = styled(
   (

@@ -52,14 +52,14 @@ const ShoppingCartBadge = () => {
       console.log(guestCart.current)
       if (loginToken && !guestCart.current) {
         const userCount = await getCart(
-          "https://web-shop-ban-game.herokuapp.com/api/carts/auth/count",
+          "https://web-shop-ban-game-server.onrender.com/api/carts/auth/count",
           loginToken
         );
 
         localCount = userCount.count;
       } else {
         const data = await getCart(
-          "https://web-shop-ban-game.herokuapp.com/api/carts/count",
+          "https://web-shop-ban-game-server.onrender.com/api/carts/count",
           ""
         ).catch((error) => error);
         if (data && data.count) {
@@ -82,7 +82,7 @@ const ShoppingCartBadge = () => {
     (async () => {
       if (loginToken && guestCart.current) {
         await axios.get(
-          "https://web-shop-ban-game.herokuapp.com/api/carts/auth/update",
+          "https://web-shop-ban-game-server.onrender.com/api/carts/auth/update",
           {
             withCredentials: true,
             headers: { Authorization: `Bearer ${loginToken}` },

@@ -38,12 +38,11 @@ const getCollectionByName = asyncHandler(async (req, res) => {
   }
   try {
     const testDb = await Collection.find({})
-    console.log(testDb)
     const collections = await Collection.find({
       name: { $in: names },
     }).populate({
       path: "list_game",
-      select: "name developer images sale_price",
+      select: "name developer images sale_price description",
     });
     return res.status(200).json(collections);
   } catch (error) {

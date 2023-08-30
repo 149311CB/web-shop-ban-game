@@ -24,7 +24,7 @@ router
   .route("/auth/update")
   .get(passport.authenticate("jwt"), getCartId, updateCart);
 router.route("/auth/add").post(passport.authenticate("jwt"), authAddToCart);
-router.route("/add").post(getCartId, guestAddToCart);
+router.route("/add").post(guestAddToCart);
 router
   .route("/auth/active")
   .post(passport.authenticate("jwt"), authGetActiveCart);

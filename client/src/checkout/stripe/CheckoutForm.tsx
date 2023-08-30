@@ -87,7 +87,7 @@ const CheckoutForm = () => {
     // fetch stripe client secret using to process payment
     const fetchData = async () => {
       const { data } = await axios.get(
-        `https://web-shop-ban-game.herokuapp.com/api/payments/stripe`,
+        `https://web-shop-ban-game-server.onrender.com/api/payments/stripe`,
         {
           headers: {
             "Content-Type": "application/json",

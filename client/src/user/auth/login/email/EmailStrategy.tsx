@@ -22,7 +22,7 @@ const EmailStrategy: React.FC<{ preview?: boolean }> = ({
     }
 
     await axios
-      .post("https://web-shop-ban-game.herokuapp.com/api/users/login", {
+      .post("https://web-shop-ban-game-server.onrender.com/api/users/login", {
         email,
         password,
       })

@@ -48,7 +48,7 @@ export const verifyReviewPermission = async (
   loginToken: string
 ) => {
   const { data } = await axios.get(
-    `https://web-shop-ban-game.herokuapp.com/api/reviews/auth/verify?gameId=${gameId}`,
+    `https://web-shop-ban-game-server.onrender.com/api/reviews/auth/verify?gameId=${gameId}`,
     {
       headers: {
         Authorization: `Bearer ${loginToken}`,
@@ -86,8 +86,8 @@ const Review: React.FC<{ gameId: string }> = ({ gameId }) => {
   const submitReview = async () => {
     try {
       const route = userReview
-        ? "https://web-shop-ban-game.herokuapp.com/api/reviews/auth/update"
-        : "https://web-shop-ban-game.herokuapp.com/api/reviews/auth/create";
+        ? "https://web-shop-ban-game-server.onrender.com/api/reviews/auth/update"
+        : "https://web-shop-ban-game-server.onrender.com/api/reviews/auth/create";
       const { data } = await axios.post(
         route,
         { gameId, rating, comment, images },
@@ -128,7 +128,7 @@ const Review: React.FC<{ gameId: string }> = ({ gameId }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const { data } = await axios.get(`https://web-shop-ban-game.herokuapp.com/api/reviews/all?gameId=${gameId}`);
+      const { data } = await axios.get(`https://web-shop-ban-game-server.onrender.com/api/reviews/all?gameId=${gameId}`);
 
       setReviews(data);
       const sum = ratingClasify(data);
@@ -142,7 +142,7 @@ const Review: React.FC<{ gameId: string }> = ({ gameId }) => {
     if (!loginToken) return;
     const getReviewByUser = async () => {
       const { data } = await axios.get(
-        `https://web-shop-ban-game.herokuapp.com/api/reviews/auth/get?gameId=${gameId}`,
+        `https://web-shop-ban-game-server.onrender.com/api/reviews/auth/get?gameId=${gameId}`,
         { headers: { Authorization: `Bearer ${loginToken}` } }
       );
       if (data) {

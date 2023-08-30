@@ -32,8 +32,8 @@ const Cart = () => {
     if (updating) return;
     const fetchData = async () => {
       const route = loginToken
-        ? "https://web-shop-ban-game.herokuapp.com/api/carts/auth/active"
-        : "https://web-shop-ban-game.herokuapp.com/api/carts/active";
+        ? "https://web-shop-ban-game-server.onrender.com/api/carts/auth/active"
+        : "https://web-shop-ban-game-server.onrender.com/api/carts/active";
       await axios
         .post(
           route,
@@ -232,7 +232,7 @@ const Cart = () => {
             sx={{ borderRadius: "0.6rem" }}
             disabled={updating}
             onClick={() => {
-              return loginToken ? history.push(`/checkout`) : setOpen(true);
+              return history.push(`/checkout`);
             }}
           >
             Proceed to checkout

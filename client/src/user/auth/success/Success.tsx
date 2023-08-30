@@ -18,9 +18,9 @@ const Success = () => {
     const {
       location: { pathname },
     } = history;
-    let route = "https://web-shop-ban-game.herokuapp.com/api/users/create-pass";
+    let route = "https://web-shop-ban-game-server.onrender.com/api/users/create-pass";
     if (pathname.includes("/reset")) {
-      route = "https://web-shop-ban-game.herokuapp.com/api/users/reset-pass";
+      route = "https://web-shop-ban-game-server.onrender.com/api/users/reset-pass";
     }
     await axios
       .post(

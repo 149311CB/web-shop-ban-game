@@ -21,7 +21,7 @@ const ChangeEmail: React.FC<{
     e.preventDefault();
     await axios
       .post(
-        "https://web-shop-ban-game.herokuapp.com/api/users/profile/update/email",
+        "https://web-shop-ban-game-server.onrender.com/api/users/profile/update/email",
         { email: newEmail, password: password },
         {
           headers: {

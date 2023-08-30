@@ -39,7 +39,7 @@ const Checkout = () => {
 
   const createOrder = async (order: any) => {
     const { data } = await axios.post(
-      "https://web-shop-ban-game.herokuapp.com/api/orders/create",
+      "https://web-shop-ban-game-server.onrender.com/api/orders/create",
       order,
       {
         headers: {
@@ -97,7 +97,7 @@ const Checkout = () => {
       setProcessing(true);
       try {
         const { data } = await axios.post(
-          "https://web-shop-ban-game.herokuapp.com/api/carts/auth/active",
+          "https://web-shop-ban-game-server.onrender.com/api/carts/auth/active",
           {},
           {
             headers: {

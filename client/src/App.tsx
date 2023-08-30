@@ -13,7 +13,11 @@ import CheckoutSwitcher from "./checkout/CheckoutSwitcher";
 import Browse from "./browse/Browse";
 import Success from "./user/auth/success/Success";
 import AuthComplete from "./user/auth/success/AuthComplete";
+import ReactGA from "react-ga";
+import Tracking from "./components/Tracking";
 
+const TRACKING_ID = "UA-186435884-1";
+ReactGA.initialize(TRACKING_ID);
 export const GlobalContext = createContext<any>(null);
 function App() {
   const [mode, setMode] = useState<PaletteMode>("dark");
@@ -37,7 +41,7 @@ function App() {
 
   const verifyUser = useCallback(async () => {
     const { data } = await axios.post(
-      "https://web-shop-ban-game.herokuapp.com/api/users/token/refresh",
+      "https://web-shop-ban-game-server.onrender.com/api/users/token/refresh",
       null,
       {
         withCredentials: true,
@@ -74,25 +78,39 @@ function App() {
             <Route component={Header} exact={false} />
             <Page>
               <Route path={"/"} exact>
-                <Homepage />
+                <Tracking>
+                  <Homepage />
+                </Tracking>
               </Route>
               <Route path={"/product/:name"} exact>
-                <Product />
+                <Tracking>
+                  <Product />
+                </Tracking>
               </Route>
               <Route path={"/cart"}>
-                <Cart />
+                <Tracking>
+                  <Cart />
+                </Tracking>
               </Route>
               <Route path={"/checkout"}>
-                <CheckoutSwitcher />
+                <Tracking>
+                  <CheckoutSwitcher />
+                </Tracking>
               </Route>
               <Route path={"/user"}>
-                <UserManager />
+                <Tracking>
+                  <UserManager />
+                </Tracking>
               </Route>
               <Route path={["/browse/:name", "/browse"]}>
-                <Browse />
+                <Tracking>
+                  <Browse />
+                </Tracking>
               </Route>
               <Route path={"/verification/create-pass"} exact>
-                <Success />
+                <Tracking>
+                  <Success />
+                </Tracking>
               </Route>
               <Route path={"/auth/complete"} exact>
                 <AuthComplete />

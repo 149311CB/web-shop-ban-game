@@ -36,7 +36,7 @@ const OrderDetails: React.FC<any> = () => {
     }
     const fetchData = async () => {
       const { data } = await axios.get(
-        `https://web-shop-ban-game.herokuapp.com/api/orders/${params.id}`,
+        `https://web-shop-ban-game-server.onrender.com/api/orders/${params.id}`,
         {
           headers: {
             Authorization: `Bearer ${loginToken}`,

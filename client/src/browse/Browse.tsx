@@ -14,7 +14,7 @@ const getGames = async (
   const limit = 20;
   const body = filters.length > 0 ? { filters } : {};
   const { data } = await axios.post(
-    "https://web-shop-ban-game.herokuapp.com/api/products/games/all",
+    "https://web-shop-ban-game-server.onrender.com/api/products/games/all",
     body,
     {
       params: { limit, skip: currentPage, keyword, collection },
